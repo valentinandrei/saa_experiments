@@ -18,7 +18,7 @@ function [v_numbers] = get_n_diff_rand (n, a, b)
   
   for i = 1 : n
     
-    num = randi(range) + a;    
+    num = randi(range) + a - 1;    
     while (length(find(num == v_numbers)) > 0)
       num = randi(range) + a;
     end

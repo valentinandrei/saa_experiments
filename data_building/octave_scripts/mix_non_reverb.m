@@ -20,15 +20,15 @@ function [s_mixed] = mix_non_reverb (m_signals, varargin)
   debug = 0;
   scale_input = 0;
   
-  if (nargin == 2)
-    scale_input = max(abs(m_signals), [], 2);
+  if (nargin < 2)
+    scale_input = max(max(abs(m_signals)));
   else
-    scale_input = varargin{2};
+    scale_input = varargin{1};
   end
     
   m_signals = m_signals ./ scale_input;
   n_signals = size(m_signals, 1);
-  s_mixed = sum(m_signals) / n_signals;
+  s_mixed = sum(m_signals, 1) / n_signals;
 
   if (debug == 1)
     subplot(2, 1, 1); plot(m_signals'); grid;

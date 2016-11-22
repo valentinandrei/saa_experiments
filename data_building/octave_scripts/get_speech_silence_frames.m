@@ -27,18 +27,20 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
   m_speech_frames = [];
   m_silence_frames = [];
   n_speech = 0;
-  m_silence = 0;
+  n_silence = 0;
   n = length(activity);
   
-  for i = 1 : n
+  for i = 1 : n - 1
     if (activity(i) == 1)
-      m_speech_frames = [m_speech_frames; speech(frame_start(i) : frame_stop(i))];
+      frame = speech(frame_start(i) : frame_stop(i));
+      m_speech_frames = [m_speech_frames; frame'];
       n_speech ++;
     end
     
     if (activity(i) == 0)
-      m_silence_frames = [m_speech_frames; speech(frame_start(i) : frame_stop(i))];
-      m_silence ++;
+      frame = speech(frame_start(i) : frame_stop(i));
+      m_silence_frames = [m_silence_frames; frame'];
+      n_silence ++;
     end
   end
   

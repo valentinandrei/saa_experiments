@@ -29,6 +29,7 @@ function [speech, frame_start, frame_stop, activity] = ...
   % activity      - 1D array with the amount of speech activity per frame (0, 1)
   
   addpath ("/home/valentin/Working/sw_tools/voicebox");
+  
   debug = 0;
   
   [si, fs, n] = wavread(wavfile);

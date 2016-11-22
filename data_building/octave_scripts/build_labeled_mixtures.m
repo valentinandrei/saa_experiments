@@ -46,7 +46,7 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
   
   for i = 1 : n_files
   
-    [s, start, stop, act] = build_vad_mask(v_wavfiles(i), ...
+    [s, start, stop, act] = build_vad_mask(v_wavfiles{i}, ...
       fs, frame_ms, n_bits, frame_inc_ms, n_seconds);
       
     [m_speech, n_speech, m_silence, n_silence] = ...
@@ -75,23 +75,23 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
     
     if (n_speakers == 0)
     
-      n_silence = randi(n_speakers);
-      n_frame = randi(size(c_silence{n_silence}, 1));
+      n_silence = randi(n_files);
+      n_frame = randi(v_n_frames_silence(n_silence), 1);
       
       m_mixtures(i, :) = c_silence{n_silence}(n_frame, :);
       v_labels(i) = 0;
       
     else
       
-      v_speakers = get_n_diff_rand(n_speakers, 1, n_max_speakers);
+      v_speakers = get_n_diff_rand(n_speakers, 1, n_files);
       v_frames = zeros(n_speakers, 1);
       for j = 1 : n_speakers
-        v_frames(j) = randi(size(c_speech{j}, 1);
+        v_frames(j) = randi(v_n_frames_speech(v_speakers(j)), 1);
       end
       
       m_single = zeros(n_speakers, n_frame_size);
       for j = 1 : n_speakers
-        m_single(j, :) = c_speech{v_speakers(j)}[v_frames(j), :];
+        m_single(j, :) = c_speech{v_speakers(j)}(v_frames(j), :);
       end
       
       if (with_reverb == 0)
