@@ -39,7 +39,7 @@ function [] = analyze_dataset (file_data, file_labels)
     vSpeakerMean = vTempMean(vIndexes);
     
     subplot(nMaxSpeakers + 1, 1, i+1); plot(vSpeakerMean); grid;
-    xlabel(mean(vSpeakerMean) * 10000); ylabel('Mean');
+    xlabel(mean(vSpeakerMean)); ylabel('Mean');
   end
 
 endfunction

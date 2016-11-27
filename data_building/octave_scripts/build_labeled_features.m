@@ -1,9 +1,9 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
+function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   n_max_speakers, n_samples_per_count, n_seconds, ...
-  fs, frame_ms, frame_inc_ms, n_bits, with_reverb)
+  fs, frame_ms, frame_inc_ms, n_bits, with_reverb, feature_type)
 
   % Usage:
   %
@@ -21,10 +21,11 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
   % frame_inc_ms        - the increment per frame in milliseconds
   % n_seconds           - the number of seconds to be analyzed
   % with_reverb         - if 1, enables reverberation inclusion in mixing
+  % feature_type        - 0 - Signal, 1 - FFT, 2 - Spectrogram
   %
   % Output:
   %
-  % m_mixtures          - the mixtures, one per row in a matrix_type
+  % m_features          - the mixtures, one per row in a matrix_type
   % v_labels            - row vector with corresponding speaker count per mixture
   
   debug = 1;
@@ -66,7 +67,14 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
   
   % Build mixtures
   
-  m_mixtures = zeros(n_train_test_size, n_frame_size);
+  n_feature_size = n_frame_size;
+  if (feature_type == 1)
+    n_feature_size = n_frame_size / 2;
+  end
+  
+  m_features = zeros(n_train_test_size, n_feature_size);
+  v_mixed = zeros(1, n_frame_size);
+  v_feature = zeros(1, n_feature_size);
   v_labels = zeros(n_train_test_size, 1);
   
   for i = 1 : n_train_test_size
@@ -78,8 +86,7 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
       n_silence = randi(n_files);
       n_frame = randi(v_n_frames_silence(n_silence), 1);
       
-      m_mixtures(i, :) = c_silence{n_silence}(n_frame, :);
-      v_labels(i) = 0;
+      v_mixed = c_silence{n_silence}(n_frame, :);
       
     else
       
@@ -95,24 +102,37 @@ function [m_mixtures, v_labels] = build_labeled_mixtures (v_wavfiles, ...
       end
       
       if (with_reverb == 0)
-        m_mixtures(i, :) = mix_non_reverb(m_single, f_scale);
+        v_mixed = mix_non_reverb(m_single, f_scale);
+        v_feature = zeros(1, length(v_mixed));
       else
         % TODO
       end
       
-      v_labels(i) = n_speakers;
-  
     end
+    
+    if (feature_type == 0)
+      v_feature = v_mixed;
+    end
+        
+    if (feature_type == 1)
+      v_fft_mixed = abs(fft(v_mixed));
+      N = length(v_fft_mixed);
+      v_feature = v_fft_mixed(1 : N/2);
+    end
+    
+    v_labels(i) = n_speakers;
+    m_features(i, :) = v_feature;
+    
   end
   
   if (debug == 1)
   
-    subplot(3, 2, 1); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 2); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 3); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 4); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 5); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 6); n_test = randi(n_train_test_size); plot(m_mixtures(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 1); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 2); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 3); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 4); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 5); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    subplot(3, 2, 6); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
   
   end
 
