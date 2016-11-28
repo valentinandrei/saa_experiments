@@ -45,6 +45,10 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   c_silence = {};
   v_n_frames_silence = zeros(n_files, 1);
   
+  ##############################################################################
+  # Sepparate Silence and Speech
+  ##############################################################################
+  
   for i = 1 : n_files
   
     [s, start, stop, act] = build_vad_mask(v_wavfiles{i}, ...
@@ -65,21 +69,38 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
       
   end
   
-  % Build mixtures
+  ##############################################################################
+  # Compute Sizes and Allocate Memory
+  ##############################################################################
   
   n_feature_size = n_frame_size;
   if (feature_type == 1)
     n_feature_size = n_frame_size / 2;
   end
   
+  if (feature_type == 2)
+    test_f = randn(1, n_frame_size);
+    test_S = get_speech_spectrogram(test_f, fs);
+    n_feature_size = length(test_S);
+  end
+  
+  n_classes = 1;
+  if (feature_type == 2)
+    n_classes = n_max_speakers + 1;
+  end
+  
   m_features = zeros(n_train_test_size, n_feature_size);
   v_mixed = zeros(1, n_frame_size);
   v_feature = zeros(1, n_feature_size);
-  v_labels = zeros(n_train_test_size, 1);
+  v_labels = zeros(n_train_test_size, n_classes);
   
   for i = 1 : n_train_test_size
 
     n_speakers = randi(n_max_speakers + 1) - 1;
+    
+    ############################################################################
+    # Produce Speech Mixtures
+    ############################################################################
     
     if (n_speakers == 0)
     
@@ -110,29 +131,51 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
       
     end
     
+    ############################################################################
+    # Produce Selected Features
+    ############################################################################
+    
     if (feature_type == 0)
       v_feature = v_mixed;
+      v_labels(i) = n_speakers;
     end
         
     if (feature_type == 1)
       v_fft_mixed = abs(fft(v_mixed));
       N = length(v_fft_mixed);
       v_feature = v_fft_mixed(1 : N/2);
+      v_labels(i) = n_speakers;
     end
     
-    v_labels(i) = n_speakers;
+    if (feature_type == 2)
+      v_feature = get_speech_spectrogram(v_mixed, fs);
+      v_labels(i, n_speakers + 1) = 1.0;
+    end
+        
     m_features(i, :) = v_feature;
     
   end
   
+  ##############################################################################
+  # Debug Plots
+  ##############################################################################
+  
   if (debug == 1)
   
-    subplot(3, 2, 1); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 2); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 3); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 4); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 5); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
-    subplot(3, 2, 6); n_test = randi(n_train_test_size); plot(m_features(n_test, :)); grid; xlabel(v_labels(n_test));
+    for i = 1 : 6
+    
+      n_test = randi(n_train_test_size);      
+      subplot(3, 2, i);
+      plot(m_features(n_test, :)); grid;      
+      x_val = v_labels(n_test);
+      
+      if (feature_type == 2)
+        [max_val, x_val] = max(v_labels(n_test, :));
+        x_val = x_val - 1;
+      end
+      
+      xlabel(x_val);
+    end
   
   end
 
