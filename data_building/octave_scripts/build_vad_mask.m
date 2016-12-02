@@ -37,9 +37,10 @@ function [speech, frame_start, frame_stop, activity] = ...
   if (fs ~= target_fs)
     disp 'Resampling signal.';
     speech = resample(speech, target_fs, fs);
+    fs = target_fs;
   end   
   
-  n_seconds = length(speech) / target_fs;
+  n_seconds = length(speech) / fs;
   n_samples_per_frame = fs / 1000 * frame_ms;
   n_samples_per_increment = fs / 1000 * frame_inc_ms;
   vad_decision = vadsohn(si, fs);
