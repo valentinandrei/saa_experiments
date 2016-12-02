@@ -21,6 +21,10 @@ function [flat_S] = get_speech_spectrogram (x, FS)
   n_db_min_clip       = -3;
   n_magnitude         = 6000;
   
+  if (n_magnitude > FS/2)
+    n_magnitude = FS/2;
+  end
+  
   step = fix(n_ms_spectral_slice * FS / 1000);  # one spectral slice every 5 ms
   window = fix(n_ms_window * FS/1000);          # 40 ms data window
   fftn = 2^nextpow2(window);                    # next highest power of 2

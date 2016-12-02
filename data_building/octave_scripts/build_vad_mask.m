@@ -2,8 +2,7 @@
 # E-Mail: am_valentin@yahoo.com
 
 function [speech, frame_start, frame_stop, activity] = ...
-  build_vad_mask(wavfile, target_fs, frame_ms, sample_bits, ...
-    frame_inc_ms, n_seconds)
+  build_vad_mask(wavfile, target_fs, frame_ms, frame_inc_ms)
   
   % Usage: [signal, start, stop, activity] = 
   %        build_vad_mask(wavfile, fs, ms, bits)
@@ -33,23 +32,14 @@ function [speech, frame_start, frame_stop, activity] = ...
   debug = 0;
   
   [si, fs, n] = wavread(wavfile);
+  speech = si(:, 1);
   
   if (fs ~= target_fs)
-    disp 'Unaccepted sampling frequency.';
-    return;
-  end
-   
-  if (n ~= sample_bits)
-    disp 'Unaccepted number of bits per sample.';
-    return;
-  end
+    disp 'Resampling signal.';
+    speech = resample(speech, target_fs, fs);
+  end   
   
-  if (n_seconds > floor(length(si(:, 1)) / fs))
-    disp 'Insufficient number of seconds in wavfile: ';
-    disp wavfile;
-  end
-  
-  speech = si(1 : n_seconds * fs, 1);
+  n_seconds = length(speech) / target_fs;
   n_samples_per_frame = fs / 1000 * frame_ms;
   n_samples_per_increment = fs / 1000 * frame_inc_ms;
   vad_decision = vadsohn(si, fs);

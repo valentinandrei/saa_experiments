@@ -2,8 +2,8 @@
 # E-Mail: am_valentin@yahoo.com
 
 function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
-  n_max_speakers, n_samples_per_count, n_seconds, ...
-  fs, frame_ms, frame_inc_ms, n_bits, with_reverb, feature_type)
+  n_max_speakers, n_samples_per_count, fs, frame_ms, frame_inc_ms, ...
+  with_reverb, feature_type)
 
   % Usage:
   %
@@ -42,8 +42,6 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   
   c_speech = {};
   v_n_frames_speech = zeros(n_files, 1);
-  c_silence = {};
-  v_n_frames_silence = zeros(n_files, 1);
   
   ##############################################################################
   # Sepparate Silence and Speech
@@ -52,15 +50,13 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   for i = 1 : n_files
   
     [s, start, stop, act] = build_vad_mask(v_wavfiles{i}, ...
-      fs, frame_ms, n_bits, frame_inc_ms, n_seconds);
+      fs, frame_ms, frame_inc_ms);
       
     [m_speech, n_speech, m_silence, n_silence] = ...
       get_speech_silence_frames(s, start, stop, act);
       
     c_speech{i} = m_speech;
     v_n_frames_speech(i) = n_speech;
-    c_silence{i} = m_silence;
-    v_n_frames_silence(i) = n_silence;
     
     f_scale_temp = max(s);
     if (f_scale < f_scale_temp)
@@ -96,41 +92,30 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   
   for i = 1 : n_train_test_size
 
-    n_speakers = randi(n_max_speakers + 1) - 1;
+    n_speakers = randi(n_max_speakers);
     
     ############################################################################
     # Produce Speech Mixtures
     ############################################################################
-    
-    if (n_speakers == 0)
-    
-      n_silence = randi(n_files);
-      n_frame = randi(v_n_frames_silence(n_silence), 1);
-      
-      v_mixed = c_silence{n_silence}(n_frame, :);
-      
-    else
-      
-      v_speakers = get_n_diff_rand(n_speakers, 1, n_files);
-      v_frames = zeros(n_speakers, 1);
-      for j = 1 : n_speakers
-        v_frames(j) = randi(v_n_frames_speech(v_speakers(j)), 1);
-      end
-      
-      m_single = zeros(n_speakers, n_frame_size);
-      for j = 1 : n_speakers
-        m_single(j, :) = c_speech{v_speakers(j)}(v_frames(j), :);
-      end
-      
-      if (with_reverb == 0)
-        v_mixed = mix_non_reverb(m_single, f_scale);
-        v_feature = zeros(1, length(v_mixed));
-      else
-        % TODO
-      end
-      
+          
+    v_speakers = get_n_diff_rand(n_speakers, 1, n_files);
+    v_frames = zeros(n_speakers, 1);
+    for j = 1 : n_speakers
+      v_frames(j) = randi(v_n_frames_speech(v_speakers(j)), 1);
     end
-    
+      
+    m_single = zeros(n_speakers, n_frame_size);
+    for j = 1 : n_speakers
+      m_single(j, :) = c_speech{v_speakers(j)}(v_frames(j), :);
+    end
+      
+    if (with_reverb == 0)
+      v_mixed = mix_non_reverb(m_single, f_scale);
+      v_feature = zeros(1, length(v_mixed));
+    else
+      % TODO
+    end
+       
     ############################################################################
     # Produce Selected Features
     ############################################################################
@@ -149,7 +134,7 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
     
     if (feature_type == 2)
       v_feature = get_speech_spectrogram(v_mixed, fs);
-      v_labels(i, n_speakers + 1) = 1.0;
+      v_labels(i, n_speakers) = 1.0;
     end
         
     m_features(i, :) = v_feature;
