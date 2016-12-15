@@ -16,7 +16,6 @@ function [speech, frame_start, frame_stop, activity] = ...
   % wavfile       - name of .wav file in the load path
   % target_fs     - targeted sampling frequency in Hz
   % frame_ms      - the number of milliseconds per frame (multiple of 20 ms)
-  % sample_bits   - targeted number of bits per sample
   % frame_inc_ms  - the increment per frame in milliseconds
   % n_seconds     - the number of seconds to be analyzed
   %
@@ -38,31 +37,37 @@ function [speech, frame_start, frame_stop, activity] = ...
     disp 'Resampling signal.';
     speech = resample(speech, target_fs, fs);
     fs = target_fs;
-  end   
+  end
   
-  n_seconds = length(speech) / fs;
-  n_samples_per_frame = fs / 1000 * frame_ms;
+  n_seconds               = floor(length(speech) / fs);
+  speech                  = speech(1 : n_seconds * fs);
+  n_samples_per_frame     = fs / 1000 * frame_ms;
   n_samples_per_increment = fs / 1000 * frame_inc_ms;
-  vad_decision = vadsohn(si, fs);
-  n_frames = 1 + floor((n_seconds * 1000 - (frame_ms - frame_inc_ms)) / frame_inc_ms);
-  frame_start = zeros(n_frames, 1);
-  frame_stop = zeros(n_frames, 1);
-  activity = zeros(n_frames, 1);
+  vad_decision            = vadsohn(speech, fs);
+  n_frames                = floor((n_seconds * 1000 - (frame_ms - frame_inc_ms)) / frame_inc_ms) - 1;
+  frame_start             = zeros(n_frames, 1);
+  frame_stop              = zeros(n_frames, 1);
+  activity                = zeros(n_frames, 1);
   
-  frame_start(1) = 1;
-  frame_stop(1) = n_samples_per_frame;
-  activity(1) = sum(vad_decision(frame_start(1) : frame_stop(1))) / n_samples_per_frame;
+  frame_start(1)          = 1;
+  frame_stop(1)           = n_samples_per_frame;
+  activity(1)             = sum(vad_decision(frame_start(1) : frame_stop(1))) / n_samples_per_frame;
   
   for i = 2 : n_frames
     
-    frame_start(i) = frame_start(i-1) + n_samples_per_increment;
-    frame_stop(i) = frame_start(i) + n_samples_per_frame - 1;
-    activity(i) = sum(vad_decision(frame_start(i) : frame_stop(i))) / n_samples_per_frame;
+    frame_start(i)  = frame_start(i-1) + n_samples_per_increment;
+    frame_stop(i)   = frame_start(i) + n_samples_per_frame - 1;
+    activity(i)     = sum(vad_decision(frame_start(i) : frame_stop(i))) / n_samples_per_frame;
   
   end
   
   if (debug == 1)
   
+    figure();
+    subplot(2, 1, 1); plot(si(:, 1)); grid;
+    subplot(2, 1, 2); plot(speech); grid;
+    
+    figure();
     subplot(3, 1, 1); plot(speech); grid;
     subplot(3, 1, 2); plot(vad_decision); grid;
     subplot(3, 1, 3); plot(activity); grid;

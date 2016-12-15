@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
+function [m_features, v_labels] = build_features(v_wavfiles, ...
   n_max_speakers, n_samples_per_count, fs, frame_ms, frame_inc_ms, ...
   with_reverb, feature_type)
 
@@ -17,11 +17,10 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   % n_samples_per_count - the number of mixtures for each targeted count
   % fs                  - targeted sampling frequency in Hz
   % frame_ms            - the number of milliseconds per frame (multiple of 20 ms)
-  % n_bits              - targeted number of bits per sample
   % frame_inc_ms        - the increment per frame in milliseconds
-  % n_seconds           - the number of seconds to be analyzed
   % with_reverb         - if 1, enables reverberation inclusion in mixing
-  % feature_type        - 0 - Signal, 1 - FFT, 2 - Spectrogram
+  % feature_type        - 0 - Signal, 1 - FFT, 2 - Spectrogram, 3 - MFCC
+  % spctr_threshold     - A value to "digitize" the spectrogram
   %
   % Output:
   %
@@ -32,11 +31,10 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   
   n_files = length(v_wavfiles);
   n_frame_size = fs / 1000 * frame_ms;
-  f_scale = 0.0;
   
   % Size of the dataset. Silence is also accounted for
   
-  n_train_test_size = n_samples_per_count * (n_max_speakers + 1);
+  n_train_test_size = n_samples_per_count * 2;
   
   % Read single speaker filesep
   
@@ -57,11 +55,6 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
       
     c_speech{i} = m_speech;
     v_n_frames_speech(i) = n_speech;
-    
-    f_scale_temp = max(s);
-    if (f_scale < f_scale_temp)
-      f_scale = f_scale_temp;
-    end
       
   end
   
@@ -69,30 +62,46 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   # Compute Sizes and Allocate Memory
   ##############################################################################
   
+  % 0 - Raw Signal
   n_feature_size = n_frame_size;
+  
+  % 1 - FFT
   if (feature_type == 1)
     n_feature_size = n_frame_size / 2;
   end
   
+  % 2 - Spectrogram
+  v_f = [];
+  v_t = [];  
   if (feature_type == 2)
     test_f = randn(1, n_frame_size);
-    test_S = get_speech_spectrogram(test_f, fs);
+    [test_S, v_f, v_t] = get_speech_spectrogram(test_f, fs);
     n_feature_size = length(test_S);
   end
   
-  n_classes = 1;
-  if (feature_type == 2)
-    n_classes = n_max_speakers + 1;
+  % 3 - MFCC
+  if (feature_type == 3)
+    test_f = randn(1, n_frame_size);
+    test_M = melcepst(test_f, fs);
+    test_M = test_M(:);
+    n_feature_size = length(test_M);
   end
   
-  m_features = zeros(n_train_test_size, n_feature_size);
-  v_mixed = zeros(1, n_frame_size);
-  v_feature = zeros(1, n_feature_size);
-  v_labels = zeros(n_train_test_size, n_classes);
+  n_classes   = 1;  % 0 means single speaker; 1 means multi speaker
+  m_features  = zeros(n_train_test_size, n_feature_size);
+  v_mixed     = zeros(1, n_frame_size);
+  v_feature   = zeros(1, n_feature_size);
+  v_labels    = zeros(n_train_test_size, n_classes);
   
   for i = 1 : n_train_test_size
 
-    n_speakers = randi(n_max_speakers);
+    single_multi = randi(2);
+    if (single_multi == 1)
+      n_speakers = 1;      
+    else
+      n_speakers = 1 + randi(n_max_speakers - 1);
+      v_labels(i) = 1.0;  % Signal multi speaker class
+    end
     
     ############################################################################
     # Produce Speech Mixtures
@@ -110,8 +119,7 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
     end
       
     if (with_reverb == 0)
-      v_mixed = mix_non_reverb(m_single, f_scale);
-      v_feature = zeros(1, length(v_mixed));
+      v_mixed = mix_non_reverb(m_single);
     else
       % TODO
     end
@@ -122,19 +130,21 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
     
     if (feature_type == 0)
       v_feature = v_mixed;
-      v_labels(i) = n_speakers;
     end
         
     if (feature_type == 1)
       v_fft_mixed = abs(fft(v_mixed));
       N = length(v_fft_mixed);
       v_feature = v_fft_mixed(1 : N/2);
-      v_labels(i) = n_speakers;
     end
     
     if (feature_type == 2)
-      v_feature = get_speech_spectrogram(v_mixed, fs);
-      v_labels(i, n_speakers) = 1.0;
+      [v_feature, v_f, v_t] = get_speech_spectrogram(v_mixed, fs);
+    end
+    
+    if (feature_type == 3)
+      v_feature_t = melcepst(v_mixed, fs);
+      v_feature = v_feature_t(:);
     end
         
     m_features(i, :) = v_feature;
@@ -147,19 +157,21 @@ function [m_features, v_labels] = build_labeled_features (v_wavfiles, ...
   
   if (debug == 1)
   
-    for i = 1 : 6
-    
+    figure();
+    for i = 1 : 6    
+            
       n_test = randi(n_train_test_size);      
       subplot(3, 2, i);
-      plot(m_features(n_test, :)); grid;      
-      x_val = v_labels(n_test);
       
       if (feature_type == 2)
-        [max_val, x_val] = max(v_labels(n_test, :));
-        x_val = x_val - 1;
+        SX = reshape(m_features(n_test, :), length(v_f) / 2 - 1, length(v_t));
+        imagesc(v_t, v_f, SX);
+        xlabel(v_labels(n_test));
+      else
+        plot(m_features(n_test, :)); grid;
+        xlabel(v_labels(n_test));
       end
       
-      xlabel(x_val);
     end
   
   end

@@ -31,6 +31,7 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
   n = length(activity);
   
   for i = 1 : n - 1
+  
     if (activity(i) == 1)
       frame = speech(frame_start(i) : frame_stop(i));
       m_speech_frames = [m_speech_frames; frame'];
@@ -42,6 +43,7 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
       m_silence_frames = [m_silence_frames; frame'];
       n_silence ++;
     end
+    
   end
   
   if (debug == 1)

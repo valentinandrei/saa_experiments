@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [flat_S] = get_speech_spectrogram (x, FS)
+function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
 
   % Usage: S = get_speech_spectrogram(x, FS)
   %
@@ -15,18 +15,18 @@ function [flat_S] = get_speech_spectrogram (x, FS)
   % flat_S  - Spectrogram as a column vector
   
   debug               = 0;
-  n_ms_spectral_slice = 30;
-  n_ms_window         = 50;
+  n_ms_spectral_slice = 5;
+  n_ms_window         = 15;
   n_db_max_clip       = -40;
   n_db_min_clip       = -3;
-  n_magnitude         = 6000;
+  n_magnitude         = 4000;
   
   if (n_magnitude > FS/2)
     n_magnitude = FS/2;
   end
   
   step = fix(n_ms_spectral_slice * FS / 1000);  # one spectral slice every 5 ms
-  window = fix(n_ms_window * FS/1000);          # 40 ms data window
+  window = fix(n_ms_window * FS/1000);          # 15 ms data window
   fftn = 2^nextpow2(window);                    # next highest power of 2
   
   [S, f, t] = specgram(x, fftn, FS, window, window-step);
@@ -37,10 +37,13 @@ function [flat_S] = get_speech_spectrogram (x, FS)
   S = min(S, 10^(n_db_min_clip/10));            # clip above -3 dB.
   
   if (debug == 1)
+    figure();
     imagesc (t, f, log(S));       # display in log scale
     set (gca, "ydir", "normal");  # put the 'y' direction in the correct direction
   end
   
   flat_S = S(:)';
+  v_f = f;
+  v_t = t;
 
 endfunction
