@@ -82,11 +82,11 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
   % 3 - MFCC
   if (feature_type == 3)
     test_f = randn(1, n_frame_size);
-    test_M = melcepst(test_f, fs);
+    test_M = melcepst(test_f, fs, 'E0');
     test_M = test_M(:);
     n_feature_size = length(test_M);
   end
-  
+
   n_classes   = 1;  % 0 means single speaker; 1 means multi speaker
   m_features  = zeros(n_train_test_size, n_feature_size);
   v_mixed     = zeros(1, n_frame_size);
@@ -143,7 +143,7 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
     end
     
     if (feature_type == 3)
-      v_feature_t = melcepst(v_mixed, fs);
+      v_feature_t = melcepst(v_mixed, fs, 'E0');
       v_feature = v_feature_t(:);
     end
         

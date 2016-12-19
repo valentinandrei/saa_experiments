@@ -1,14 +1,12 @@
 import time
 import numpy as np
-import os
 import tensorflow as tf
 import random as rng
+import gc
+# import os
 
-x_filename = '/home/valentin/Working/phd_project/dataset/x_mfcc_twoclass_S1_9_200ms_100ms_inc_16kHz_25000.txt'
-y_filename = '/home/valentin/Working/phd_project/dataset/y_mfcc_twoclass_S1_9_200ms_100ms_inc_16kHz_25000.txt'
-
-# x_filename = 'debug_x.txt'
-# y_filename = 'debug_y.txt'
+x_filename = '/home/valentin/Working/phd_project/dataset/x_mfcc_sq_S1_9_500ms_16kHz.txt'
+y_filename = '/home/valentin/Working/phd_project/dataset/y_mfcc_sq_S1_9_500ms_16kHz.txt'
 
 
 def gen_debug_data():
@@ -44,7 +42,7 @@ def main(_):
     # Generate Debug Data
     ###########################################################################
 
-    [inputs_t, outputs_t] = gen_debug_data()
+    # [inputs_t, outputs_t] = gen_debug_data()
 
     ###########################################################################
     # Load Train / Test Data
@@ -53,13 +51,12 @@ def main(_):
     t_start = time.time()
 
     # Load Input Files
-    # inputs_t = np.loadtxt(x_filename)
-    # outputs_t = np.loadtxt(y_filename)
+    inputs_t = np.loadtxt(x_filename)
+    outputs_t = np.loadtxt(y_filename)
 
     # Experiment Parameters
     n_classes = 1       # outputs.shape[1]
     n_batches = 200
-    n_steps = 1
     sz_set = inputs_t.shape[0]
 
     sz_validate = int(sz_set * 0.05)
@@ -75,6 +72,8 @@ def main(_):
         outputs[i][0] = outputs_t[i]
         for j in range(sz_input):
             inputs[i][j] = inputs_t[i][j]
+
+    gc.collect()
 
     # Debug Code - Alter Inputs
     # for i in range(sz_set):
@@ -125,13 +124,17 @@ def main(_):
     # Targeted NN Architecture
     ###########################################################################
 
-    n_dense_layers = 5
-    n_layer_size = sz_input
+    n_dense_layers = 9
+    n_layer_size = int(sz_input * 1.5)
     v_activations = []
     v_weights = []
     v_biases = []
 
-    v_activations.append(x_)
+    w_input = tf.Variable(tf.random_normal([sz_input, n_layer_size], mean=0.0), dtype=tf.float32)
+    b_input = tf.Variable(tf.random_normal([n_layer_size]), dtype=tf.float32)
+    x_input = tf.sigmoid(tf.matmul(x_, w_input) + b_input)
+
+    v_activations.append(x_input)
     for i in range(1, n_dense_layers):
         w_temp = tf.Variable(tf.random_normal([n_layer_size, n_layer_size], mean=0.0), dtype=tf.float32)
         b_temp = tf.Variable(tf.random_normal([n_layer_size]), dtype=tf.float32)
@@ -174,16 +177,20 @@ def main(_):
     # Create Session
     sess = tf.InteractiveSession()
 
+    # Create Variable Saver
+    model_saver = tf.train.Saver()
+
     # Run Training
     tf.initialize_all_variables().run()
 
     t_start = time.time()
 
-    for s in range(n_steps):
-        for i in range(n_batches):
+    b_stop = 0
+    while b_stop == 0:
+        for i in range(0, n_batches):
 
             # Get a random batch
-            n_batch = rng.randint(0, n_batches - 1)
+            n_batch = i  # rng.randint(0, n_batches - 1)
 
             batch_xs = x_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
             batch_ys = y_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)]
@@ -201,8 +208,10 @@ def main(_):
             print("P:1 %.3f  %.3f" % (f_t_pos, f_f_pos))
             print("P:0 %.3f  %.3f" % (f_f_neg, f_t_neg))
             print("**************************")
+            print("")
 
-            if (f_t_pos + f_t_neg) > 0.95:
+            if (f_t_pos + f_t_neg) > 0.9:
+                b_stop = 1
                 break
 
     t_stop = time.time()
@@ -214,6 +223,10 @@ def main(_):
 
     f_model_accuracy = sess.run(accuracy, feed_dict={x_: x_inference, y_: y_inference})
     print("Inference accuracy   : " + str(f_model_accuracy))
+
+    # Save Model Parameters
+    model_save_path = model_saver.save(sess=sess, save_path="/tmp/dn_classifier.ckpt")
+    print("Model saved in file: %s" % model_save_path)
 
 
 if __name__ == '__main__':

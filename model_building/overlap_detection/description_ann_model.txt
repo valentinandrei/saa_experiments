@@ -1,0 +1,13 @@
+Sampling Frequency (Hz):	16000
+Window Size (ms):		500
+Window Increment Size (ms):	250
+Max Speakers Per Sample:	3
+Mixing:				No reverberation; 0.5 * sum(m_signals, 1) / max(m_signals(:));
+Speakers For Train:		S1, 2, 3, 4, 5, 6, 7, 8, 9
+Speakers For Test:		S10, 11, 13, 15
+Number of Inputs:		854
+Input Features:			12 MFCC Coefficients + Energy + 0'th Coefficient; Normalized using (x - mean) / (max - min)
+Neural Network Description:	10 hidden layers, 1281 weights, each layer has bias, sigmoid activation function, predicts overlap (1) or no overlap (0)
+Accuracy Cross Validation Set:	90.4%
+Accuracy Train Testing Set:	89.5%
+Inference Accuracy:		83.1%
