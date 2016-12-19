@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [s_mixed] = mix_non_reverb (m_signals, varargin)
+function [s_mixed] = mix_non_reverb (m_signals)
 
   % Usage: mixture = mix_non_reverb(non_mixed);
   %
@@ -11,7 +11,6 @@ function [s_mixed] = mix_non_reverb (m_signals, varargin)
   % Input:
   %
   % m_signal  - matrix of input signals, one per rows
-  % f_scale   - Used to divide all samples, for scaling
   %
   % Output:
   %
@@ -20,7 +19,9 @@ function [s_mixed] = mix_non_reverb (m_signals, varargin)
   debug = 0;
 
   n_signals = size(m_signals, 1);
-  s_mixed = 0.5 * sum(m_signals, 1) / max(m_signals(:));
+  f_max = max(m_signals(:));
+  f_min = min(m_signals(:));
+  s_mixed = 0.5 * sum(m_signals, 1) / (f_max - f_min);
 
   if (debug == 1)
     subplot(2, 1, 1); plot(m_signals'); grid;
