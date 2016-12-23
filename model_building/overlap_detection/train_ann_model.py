@@ -5,8 +5,9 @@ import random as rng
 import gc
 # import os
 
-x_filename = '/home/valentin/Working/phd_project/dataset/x_mfcc_sq_S1_9_500ms_16kHz.txt'
-y_filename = '/home/valentin/Working/phd_project/dataset/y_mfcc_sq_S1_9_500ms_16kHz.txt'
+x_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/x_train_normalized.txt'
+y_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/y_train.txt'
+s_model_save_dir = '/home/valentin/Working/phd_project/build_model/'
 
 
 def gen_debug_data():
@@ -153,7 +154,12 @@ def main(_):
     ###########################################################################
 
     # Training parameters
+    f_epsilon = 0.01
     f_learning_rate = 0.1
+    f_precision_save_threshold = 0.7
+    n_iterations_for_stop = 1000
+    n_iterations_for_sleep = 250
+    n_iterations_for_reinitialize = 50
 
     # Create Training Method
     y_ = tf.placeholder(tf.float32, [None, 1])
@@ -185,12 +191,26 @@ def main(_):
 
     t_start = time.time()
 
+    n_iteration_current = 0
+    n_iterations_since_max_update = 0
+    n_iterations_since_sleep = 0
+    n_iterations_since_precision_change = 0
+    f_max_precision = 0.0
+    f_last_precision = 0.0
+
     b_stop = 0
     while b_stop == 0:
         for i in range(0, n_batches):
 
+            # Use a mechanism to let the CPU and GPU cool when doing long training
+            n_iterations_since_sleep += 1
+            if n_iterations_since_sleep == n_iterations_for_sleep:
+                time.sleep(60)  # Sleep for a little to let CPU and GPU cool
+                n_iterations_since_sleep = 0
+
             # Get a random batch
-            n_batch = i  # rng.randint(0, n_batches - 1)
+            n_batch = rng.randint(0, n_batches - 1)
+            n_iteration_current += 1
 
             batch_xs = x_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
             batch_ys = y_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)]
@@ -202,7 +222,10 @@ def main(_):
             f_f_neg = sess.run(r_f_neg, feed_dict={x_: x_validate, y_: y_validate})
             f_acc = sess.run(accuracy, feed_dict={x_: x_validate, y_: y_validate})
 
-            print("Iter.: %d; Accuracy: %.3f" % (i, f_acc))
+            print("Iter.: %d; accuracy: %.3f" % (n_iteration_current, f_acc))
+            print("Last max accuracy: %d" % n_iterations_since_max_update)
+            print("Max accuracy: %.3f" % f_max_precision)
+            print("Last accuracy change: %d" % n_iterations_since_precision_change)
             print("**************************")
             print("    A:1    A:0")
             print("P:1 %.3f  %.3f" % (f_t_pos, f_f_pos))
@@ -210,9 +233,48 @@ def main(_):
             print("**************************")
             print("")
 
-            if (f_t_pos + f_t_neg) > 0.9:
-                b_stop = 1
-                break
+            f_precision = f_t_pos + f_t_neg
+
+            # The training might get stuck in a local optimum. In this case we reset the variables.
+            if abs(f_precision - f_last_precision) < f_epsilon:
+                n_iterations_since_precision_change += 1
+                if n_iterations_since_precision_change == n_iterations_for_reinitialize:
+                    if f_precision > f_precision_save_threshold:
+                        b_stop = 1
+                        break
+                    else:
+                        print("Reinitializing all variables due to local minimum stuck.")
+                        tf.initialize_all_variables().run()
+                        n_iterations_since_max_update = 0
+                        n_iterations_since_precision_change = 0
+                        break
+            else:
+                n_iterations_since_precision_change = 0
+
+            # Save last precision
+            f_last_precision = f_precision
+
+            # Stop training when the error is not decreasing for a certain number of iterations.
+            if f_precision > f_max_precision:
+                n_iterations_since_max_update = 0
+                f_max_precision = f_precision
+
+                # Save the model
+                s_path = s_model_save_dir + str(f_precision) + "_" + str(n_iteration_current) + ".ckpt"
+                model_save_path = model_saver.save(sess=sess, save_path=s_path)
+                print("Model saved in file: %s" % model_save_path)
+            else:
+                n_iterations_since_max_update += 1
+                if n_iterations_since_max_update == n_iterations_for_stop:
+                    if f_precision < f_precision_save_threshold:
+                        print("Reinitializing all variables due to poor weight initialization.")
+                        tf.initialize_all_variables().run()
+                        n_iterations_since_max_update = 0
+                        n_iterations_since_precision_change = 0
+                        break
+                    else:
+                        b_stop = 1
+                        break
 
     t_stop = time.time()
     print("Training time        : " + str(t_stop - t_start))

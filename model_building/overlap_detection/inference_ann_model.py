@@ -4,9 +4,9 @@ import tensorflow as tf
 import gc
 # import os
 
-x_filename = '/home/valentin/Working/phd_project/1_milestones/mfcc_10dl_model/x_test_normalized.txt'
-y_filename = '/home/valentin/Working/phd_project/1_milestones/mfcc_10dl_model/y_test.txt'
-m_filemane = '/home/valentin/Working/phd_project/1_milestones/mfcc_10dl_model/10dl_model.ckpt'
+x_filename = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/x_test_normalized.txt'
+y_filename = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/y_test.txt'
+m_filemane = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/ann_model.ckpt'
 
 def main(_):
 
