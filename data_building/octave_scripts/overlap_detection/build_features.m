@@ -70,7 +70,9 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
   
   % 1 - FFT
   if (v_features(2) == 1)
-    n_feature_size += (n_frame_size / 2);
+    test_f = randn(1, n_frame_size);
+    test_FFT = get_speech_spectrum(test_f, fs);
+    n_feature_size += length(test_FFT);
   end
   
   % 2 - Spectrogram
@@ -95,6 +97,13 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
     test_AR = lpcauto(test_f, 12, 15 * fs / 1000);
     test_AR = test_AR(:, 2 : end)(:);
     n_feature_size += length(test_AR);
+  end
+  
+  % 5 - Signal Envelope, computed w/ Hilbert and decimated
+  if (v_features(6) == 1)
+    test_f = randn(1, n_frame_size);
+    test_SE = get_speech_envelope(test_f, fs);
+    n_feature_size += length(test_SE);
   end
 
   n_classes   = 1;
@@ -142,15 +151,15 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
     v_feat_spectrogram = [];
     v_feat_mfcc = [];
     v_feat_ar = [];
+    v_feat_env = [];
     
     if (v_features(1) == 1)
       v_feat_unproc_signal = [v_feat_unproc_signal, v_mixed];
     end
         
     if (v_features(2) == 1)
-      v_fft = abs(fft(v_mixed));
-      N = length(v_fft);
-      v_feat_fft = [v_feat_fft, v_fft(1 : N/2)];
+      v_fft = get_speech_spectrum(v_mixed, fs);
+      v_feat_fft = [v_feat_fft, v_fft];
     end
     
     if (v_features(3) == 1)
@@ -168,13 +177,19 @@ function [m_features, v_labels] = build_features(v_wavfiles, ...
       v_ar = v_ar(:, 2 : end)(:);
       v_feat_ar = [v_feat_ar, v_ar];
     end
-   
+    
+    % 5 - Signal Envelope, computed w/ Hilbert and decimated
+    if (v_features(6) == 1)
+      v_env = get_speech_envelope(v_mixed, fs);
+      v_feat_env = [v_feat_env, v_env];
+    end
+    
     ############################################################################
     # Combine Features
     ############################################################################   
         
-    m_features(i, :) = [v_feat_unproc_signal', v_feat_fft', v_feat_spectrogram', ...
-      v_feat_mfcc', v_feat_ar'];
+    m_features(i, :) = [v_feat_unproc_signal, v_feat_fft, v_feat_spectrogram', ...
+      v_feat_mfcc', v_feat_ar', v_feat_env];
     
   end
   
