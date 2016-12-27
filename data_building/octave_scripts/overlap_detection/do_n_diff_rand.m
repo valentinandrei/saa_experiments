@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [v_numbers] = get_n_diff_rand (n, a, b)
+function [v_numbers] = do_n_diff_rand (n, a, b)
 
   % This function returns n different random numbers between a and b
   

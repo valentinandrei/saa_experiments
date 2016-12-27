@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [s_mixed] = mix_non_reverb (m_signals)
+function [s_mixed] = do_mix_non_reverb (m_signals)
 
   % Usage: mixture = mix_non_reverb(non_mixed);
   %

@@ -2,7 +2,7 @@
 # E-Mail: am_valentin@yahoo.com
 
 function [speech, frame_start, frame_stop, activity] = ...
-  build_vad_mask(wavfile, target_fs, frame_ms, frame_inc_ms)
+  get_speech_vad_mask(wavfile, target_fs, frame_ms, frame_inc_ms)
   
   % Usage: [signal, start, stop, activity] = 
   %        build_vad_mask(wavfile, fs, ms, bits)
@@ -34,7 +34,10 @@ function [speech, frame_start, frame_stop, activity] = ...
   speech = si(:, 1);
   
   if (fs ~= target_fs)
-    disp 'Resampling signal.';
+  
+    printf('Resampling signal...\n');
+    fflush(stdout);
+    
     speech = resample(speech, target_fs, fs);
     fs = target_fs;
   end
@@ -43,7 +46,13 @@ function [speech, frame_start, frame_stop, activity] = ...
   speech                  = speech(1 : n_seconds * fs);
   n_samples_per_frame     = fs / 1000 * frame_ms;
   n_samples_per_increment = fs / 1000 * frame_inc_ms;
+  
+  t0 = time();
   vad_decision            = vadsohn(speech, fs);
+  t1 = time();
+  printf("vadsohn duration: %.3f seconds\n", t1 - t0);
+  fflush(stdout);
+  
   n_frames                = floor((n_seconds * 1000 - (frame_ms - frame_inc_ms)) / frame_inc_ms) - 1;
   frame_start             = zeros(n_frames, 1);
   frame_stop              = zeros(n_frames, 1);
@@ -60,6 +69,10 @@ function [speech, frame_start, frame_stop, activity] = ...
     activity(i)     = sum(vad_decision(frame_start(i) : frame_stop(i))) / n_samples_per_frame;
   
   end
+  
+  t2 = time();
+  printf("frame start-stop creation duration: %.3f seconds\n", t2 - t1);
+  fflush(stdout);
   
   if (debug == 1)
   
