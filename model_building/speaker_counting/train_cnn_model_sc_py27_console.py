@@ -5,9 +5,9 @@ import random as rng
 import gc
 
 # Inputs
-x_filename = '/home/vandrei/working/dataset/x_train_normalized.txt'
-y_filename = '/home/vandrei/working/dataset/y_train.txt'
-s_model_save_dir = '/home/vandrei/working/saa_experiments-master/models/speaker_counting/'
+x_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/x_train_normalized.txt'
+y_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/y_train.txt'
+s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/models/speaker_counting/'
 
 # Optimal parameters
 # 1: LR 0.01, BS 400, Decay 0.98 -> 100% on debug data and altered real data
@@ -16,27 +16,33 @@ s_model_save_dir = '/home/vandrei/working/saa_experiments-master/models/speaker_
 n_batches = 200
 
 # Architecture
-n_convolutional_layers = 10
-n_filt_pl = 10
-n_filt_sz = 50
+n_convolutional_layers = 5
+n_filt_pl = 50
+n_filt_sz = 20
 
 # Convergence
 f_start_lr = 0.1
 f_momentum = 0.1
-f_decay_rate = 0.98
+f_decay_rate = 0.96
 n_lr_gstep = 2000
 n_lr_dstep = 1000
 
 # Training
+f_use_for_validation = 0.0125
+f_use_for_inference = 0.1
 f_precision_save_threshold = 0.85
-f_reinitialization_threshold = 0.23
-n_iterations_for_reinitialize = 5000000
-n_iterations_for_stop = 5000000
-n_iterations_for_sleep = 1000
+f_reinitialization_threshold = 0.25
+n_iterations_for_reinitialize = 1000000
+n_iterations_for_stop = 1000000
+n_iterations_for_sleep = 1000000
 
 # Plotting
 b_print_output = 1
 n_plot_interval = 100
+
+# Debugging
+b_check_fitting = 0
+n_check_fitting = 60
 
 
 # Generates a set of test data to check the neural network architecture health
@@ -89,13 +95,23 @@ def main(_):
     n_classes = outputs_t.shape[1]
     sz_set = inputs_t.shape[0]
 
-    sz_validate = int(sz_set * 0.0125)
-    sz_inference = int(sz_set * 0.1)
+    # For debugging, check if the train error converges to 0% for a very small subset
+    if b_check_fitting:
+        sz_set = n_check_fitting
+        global f_use_for_validation
+        global f_use_for_inference
+        global n_batches
+        f_use_for_validation = 0.1
+        f_use_for_inference = 0.1
+        n_batches = 1
+
+    sz_validate = int(sz_set * f_use_for_validation)
+    sz_inference = int(sz_set * f_use_for_inference)
     sz_train = int(sz_set - sz_validate - sz_inference)
     sz_batch = int(sz_train / n_batches)
     sz_input = inputs_t.shape[1]
 
-    # Trick python into knowing the size of _y tensor
+    # Trick tensorflow into knowing the size of _y tensor
     inputs = np.zeros([sz_set, sz_input], dtype=float, order='C')
     outputs = np.zeros([sz_set, n_classes], dtype=float, order='C')
     for i in range(sz_set):
@@ -158,30 +174,34 @@ def main(_):
     v_filters = []
     v_biases = []
 
-    w_preproc = tf.Variable(tf.random_normal([sz_input, sz_input], mean=0.0), dtype=tf.float32)
-    b_preproc = tf.Variable(tf.random_normal([sz_input]), dtype=tf.float32);
-    x_preproc = tf.sigmoid(tf.matmul(x_, w_preproc) + b_preproc);
+    sz_input_decrease = n_filt_sz - 1
 
-    x_0 = tf.reshape(x_preproc, [-1, 1, sz_input, 1])
-    w_0 = tf.Variable(tf.random_normal([1, n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
-    b_0 = tf.Variable(tf.random_normal([n_filt_pl]), dtype=tf.float32)
-    x_10 = tf.nn.conv2d(x_0, w_0, strides=[1, 1, 1, 1], padding='SAME')
+    w_preproc = tf.Variable(tf.random_normal([sz_input, sz_input], mean=0.0), dtype=tf.float32)
+    b_preproc = tf.Variable(tf.random_normal([sz_input]), dtype=tf.float32)
+    x_preproc = tf.sigmoid(tf.matmul(x_, w_preproc) + b_preproc)
+
+    x_0 = tf.reshape(x_preproc, [-1, sz_input, 1])
+    w_0 = tf.Variable(tf.random_normal([n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
+    b_0 = tf.Variable(tf.random_normal([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
+    x_10 = tf.nn.conv1d(x_0, w_0, stride=1, padding='VALID')
     x_1 = tf.sigmoid(x_10 + b_0)
     v_activations.append(x_1)
 
     for i in range(1, n_convolutional_layers):
-        w_i = tf.Variable(tf.random_normal([1, n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
-        b_i = tf.Variable(tf.random_normal([n_filt_pl]), dtype=tf.float32)
-        x_i0 = tf.nn.conv2d(v_activations[i-1], w_i, strides=[1, 1, 1, 1], padding='SAME')
+        sz_input_new = sz_input - (i+1) * sz_input_decrease
+        w_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
+        b_i = tf.Variable(tf.random_normal([sz_input_new, n_filt_pl]), dtype=tf.float32)
+        x_i0 = tf.nn.conv1d(v_activations[i-1], w_i, stride=1, padding='VALID')
         x_i1 = tf.sigmoid(x_i0 + b_i)
 
         v_filters.append(w_i)
         v_biases.append(b_i)
         v_activations.append(x_i1)
 
-    w_final = tf.Variable(tf.random_normal([sz_input * n_filt_pl, n_classes], mean=0.0), dtype=tf.float32)
+    sz_input_new = sz_input - n_convolutional_layers * sz_input_decrease
+    w_final = tf.Variable(tf.random_normal([sz_input_new * n_filt_pl, n_classes], mean=0.0), dtype=tf.float32)
     b_final = tf.Variable(tf.random_normal([n_classes]), dtype=tf.float32)
-    x_final_conv = tf.reshape(v_activations[n_convolutional_layers - 1], [-1, sz_input * n_filt_pl])
+    x_final_conv = tf.reshape(v_activations[n_convolutional_layers - 1], [-1, sz_input_new * n_filt_pl])
     y = tf.sigmoid(tf.matmul(x_final_conv, w_final) + b_final)
 
     ###########################################################################
@@ -194,8 +214,8 @@ def main(_):
 
     # Create Gradient Descent Optimizer
     f_learning_rate = tf.train.exponential_decay(f_start_lr, n_lr_gstep, n_lr_dstep, f_decay_rate, staircase=True)
-    # train_step = tf.train.GradientDescentOptimizer(f_learning_rate).minimize(cost_function)
-    train_step = tf.train.MomentumOptimizer(f_start_lr, f_momentum).minimize(cost_function);
+    train_step = tf.train.MomentumOptimizer(f_learning_rate, f_momentum, use_locking=False,
+                                            use_nesterov=True).minimize(cost_function)
 
     # Create Validation / Inference Method
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
@@ -255,6 +275,8 @@ def main(_):
                 print("Iter.: %d; Validation: %.5f Training: %.5f" % (n_iteration_current, f_acc, f_train_acc))
 
             f_precision = f_acc
+            if b_check_fitting:
+                f_precision = f_train_acc
 
             # The training might get stuck in a local optimum. In this case we reset the weights.
             if n_iterations_since_reinitialize < n_iterations_for_reinitialize:
