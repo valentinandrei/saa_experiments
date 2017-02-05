@@ -5,24 +5,24 @@ import random as rng
 import gc
 
 # Inputs
-x_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/x_train_normalized.txt'
-y_filename = '/home/valentin/Working/phd_project/build_dataset/scripts/y_train.txt'
-s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/models/speaker_counting/'
+x_filename = '/home/vandrei/working/dataset/x_train_normalized.txt'
+y_filename = '/home/vandrei/working/dataset/y_train.txt'
+s_model_save_dir = '/home/vandrei/working/saa_experiments/model_building/models/speaker_counting/'
 
 # Optimal parameters
 # 1: LR 0.01, BS 400, Decay 0.98 -> 100% on debug data and altered real data
 
 # Dataset Splitting
-n_batches = 200
+n_batches = 400
 
 # Architecture
 n_convolutional_layers = 5
 n_filt_pl = 50
-n_filt_sz = 20
+n_filt_sz = 15
 
 # Convergence
-f_start_lr = 0.1
-f_momentum = 0.1
+f_start_lr = 0.001
+f_momentum = 1.0
 f_decay_rate = 0.96
 n_lr_gstep = 2000
 n_lr_dstep = 1000
@@ -34,14 +34,14 @@ f_precision_save_threshold = 0.85
 f_reinitialization_threshold = 0.25
 n_iterations_for_reinitialize = 1000000
 n_iterations_for_stop = 1000000
-n_iterations_for_sleep = 1000000
+n_iterations_for_sleep = 1000
 
 # Plotting
 b_print_output = 1
 n_plot_interval = 100
 
 # Debugging
-b_check_fitting = 0
+b_check_fitting = 1
 n_check_fitting = 60
 
 
