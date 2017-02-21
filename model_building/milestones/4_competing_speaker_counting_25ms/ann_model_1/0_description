@@ -1,0 +1,14 @@
+Sampling Frequency (Hz):	16000
+Window Size (ms):		25
+Window Increment Size (ms):	5
+Max Speakers Per Sample:	5
+Mixing:				No reverberation; 0.5 * sum(m_signals, 1) / (max - min);
+Speakers For Train:		S1, 2, 3, 4, 5, 6, 7, 8, 9
+Speakers For Test:		?
+Number of Inputs:		280
+Input Features:			FFT; 12 MFCC Coefficients + 'E0'; AR Coefficients 12 ms x 12; Decimated Hilbert Signal Envelope
+Neural Network Description:	20 hidden layers, 420 weights, each layer has bias, sigmoid activation function, predicts speaker count
+Learning Rate:			0.15; Automatic decay;
+Accuracy Cross Validation Set:	41.9%
+Accuracy Train Testing Set:	?
+Inference Accuracy:		?
