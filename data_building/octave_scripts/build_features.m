@@ -87,11 +87,11 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   s0 = time();
   
   for i = 1 : n_train_test_size
-       
     ############################################################################
     # Produce Selected Features
     ############################################################################
     
+    b_finite = 1;
     v_feature = [];
     v_mixed   = m_mixtures(i, :);
     
@@ -111,7 +111,12 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     
     if (v_features(4) == 1)
       v_mfcc = melcepst(v_mixed, fs, s_mfcc_parameters)(:);
-      v_feature = [v_feature, v_mfcc'];
+      if (sum(isfinite(v_mfcc)) ~= length(v_mfcc))
+        b_finite = 0;
+        printf("Mixture %d resulted in Inf.\n", i);
+        fflush(stdout);        
+      end
+      v_feature = [v_feature, v_mfcc'];        
     end
     
     if (v_features(5) == 1)
@@ -127,7 +132,9 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     end
     
     % Save feature
-    m_features(i, :) = v_feature;
+    if (b_finite == 1)
+      m_features(i, :) = v_feature;
+    end      
     
   end
   

@@ -14,9 +14,9 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
   %
   % flat_S  - Spectrogram as a column vector
   
-  debug               = 0;
-  n_ms_spectral_slice = 5;
-  n_ms_window         = 15;
+  debug               = 1;
+  n_ms_spectral_slice = 3;
+  n_ms_window         = 5;
   n_db_max_clip       = -40;
   n_db_min_clip       = -3;
   n_magnitude         = 4000;

@@ -2,13 +2,14 @@
 # E-Mail: am_valentin@yahoo.com
 
 function [m_features, v_files_link, v_files_frames] = build_features_multiple_files (c_wavfiles, ...
-  frame_ms, frame_inc_ms, fs, v_features, speech_threshold, s_path, b_just_sizes)
+  frame_ms, frame_inc_ms, frame_vad, fs, v_features, speech_threshold, s_path, b_just_sizes)
   
   addpath ("/home/valentin/Working/sw_tools/voicebox");  
 
   n_files = length(c_wavfiles);
   n_frame = floor(fs * frame_ms / 1000);
   n_frame_inc = floor(fs * frame_inc_ms / 1000);
+  n_frame_vad = floor(fs * frame_vad / 1000);
   
   % Preallocation trick so that the code runs faster
   n_estimated_mixtures = n_files * 4;
@@ -34,43 +35,53 @@ function [m_features, v_files_link, v_files_frames] = build_features_multiple_fi
     v_files_frames(i) = n_frames;
     
     if (b_just_sizes == 0)
-      while ((n_sig_idx + n_frame - 1) <= n_sample_length)
+      while ((n_sig_idx + n_frame_vad - 1) <= n_sample_length)
       
         % Verify if the selected frame contains voice activity
         
-        v_mixture = sig_speech(n_sig_idx : n_sig_idx + n_frame - 1);
-        vad_samples = sum(vadsohn(v_mixture, fs));
-        b_speech = 0;
-        if ((vad_samples / length(v_mixture)) > speech_threshold)
+        v_mixture_vad = sig_speech(n_sig_idx : n_sig_idx + n_frame_vad - 1);
+        vad_masks = vadsohn(v_mixture_vad, fs);
+        vad_samples = sum(vad_masks);
+        
+        b_speech = 0;        
+        if ((vad_samples / length(v_mixture_vad)) > speech_threshold)
           b_speech = 1;
-        end
+        end      
         
         % Save only speech samples as silence has totally different numerical properties
         
         if (b_speech == 1)
-          if (n_mixtures < n_estimated_mixtures)
-            m_mixtures(n_mixtures, :) = v_mixture;
-            v_files_link(n_mixtures) = i;
-          else
-            
-            % Allocate more space
-            m_new_space = zeros(n_files * 4, n_frame);
-            v_new_space = zeros(n_files * 4, 1);
-            
-            n_estimated_mixtures = n_estimated_mixtures + (n_files * 4);
-            m_mixtures = [m_mixtures; m_new_space];
-            v_files_link = [v_files_link; v_new_space];
-            
-            m_mixtures(n_mixtures, :) = v_mixture;
-            v_files_link(n_mixtures) = i;
-          end
+        
+          n_mix_idx = 1;
+          while ((n_mix_idx + n_frame - 1) <= n_frame_vad)       
+        
+            v_mixture = v_mixture_vad(n_mix_idx : n_mix_idx + n_frame - 1);
+        
+            if (n_mixtures < n_estimated_mixtures)
+              m_mixtures(n_mixtures, :) = v_mixture;
+              v_files_link(n_mixtures) = i;
+            else              
+              % Allocate more space
+              m_new_space = zeros(n_files * 4, n_frame);
+              v_new_space = zeros(n_files * 4, 1);
+              
+              n_estimated_mixtures = n_estimated_mixtures + (n_files * 4);
+              m_mixtures = [m_mixtures; m_new_space];
+              v_files_link = [v_files_link; v_new_space];
+              
+              m_mixtures(n_mixtures, :) = v_mixture;
+              v_files_link(n_mixtures) = i;
+            end
 
-          n_mixtures = n_mixtures + 1;
+            n_mixtures = n_mixtures + 1;
+            n_mix_idx = n_mix_idx + n_frame_inc;          
+          end
+          
         end
         
         % Advance to the next frame
         
-        n_sig_idx = n_sig_idx + n_frame_inc;
+        n_sig_idx = n_sig_idx + n_frame_vad;
       
       end
     end

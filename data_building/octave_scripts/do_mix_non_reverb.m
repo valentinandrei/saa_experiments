@@ -19,9 +19,7 @@ function [s_mixed] = do_mix_non_reverb (m_signals)
   debug = 0;
 
   n_signals = size(m_signals, 1);
-  f_max = max(m_signals(:));
-  f_min = min(m_signals(:));
-  s_mixed = 0.5 * sum(m_signals, 1) / (f_max - f_min);
+  s_mixed = (1/n_signals) * sum(m_signals, 1);
 
   if (debug == 1)
     subplot(2, 1, 1); plot(m_signals'); grid;

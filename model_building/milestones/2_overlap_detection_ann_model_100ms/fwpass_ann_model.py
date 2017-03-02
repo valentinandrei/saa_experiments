@@ -77,7 +77,7 @@ def main(_):
     w_final = tf.Variable(tf.random_normal([n_layer_size, n_classes], mean=0.0), dtype=tf.float32)
     b_final = tf.Variable(tf.random_normal([n_classes]), dtype=tf.float32)
     y = tf.sigmoid(tf.matmul(v_activations[n_dense_layers - 1], w_final) + b_final)
-    y_decision = tf.round(y)
+    y_decision = tf.to_float(y > 0.8)
 
     ###########################################################################
     # Restore Model
