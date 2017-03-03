@@ -4,9 +4,17 @@ import tensorflow as tf
 import gc
 # import os
 
-x_filename = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/x_test_normalized.txt'
-y_filename = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/y_test.txt'
-m_filemane = '/home/valentin/Working/phd_project/1_milestones/2_overlap_detection_ann_model_100ms/ann_model.ckpt'
+x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/x_test_normalized.txt'
+y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/y_test.txt'
+m_filename = '/home/valentin/Working/saa_experiments/model_building/milestones/3_overlap_detection_25ms/ann_model_3/a2.ckpt'
+
+# Architecture
+n_first_layer_multiplier = 1.5
+n_convolutional_layers = 4
+n_dense_layers = 6
+n_filt_pl = 20
+n_filt_sz = 10
+
 
 def main(_):
 
@@ -23,7 +31,7 @@ def main(_):
     outputs_t = np.loadtxt(y_filename)
 
     # Experiment Parameters
-    n_classes = 1  # outputs_t.shape[1]
+    n_classes = 1
     sz_set = inputs_t.shape[0]
     sz_input = inputs_t.shape[1]
 
@@ -57,29 +65,70 @@ def main(_):
     # Targeted NN Architecture
     ###########################################################################
 
-    n_dense_layers = 9
-    n_layer_size = int(sz_input * 1.5)
     v_activations = []
-    v_weights = []
+    v_filters = []
     v_biases = []
+    idx_last = 0
 
-    w_input = tf.Variable(tf.random_normal([sz_input, n_layer_size], mean=0.0), dtype=tf.float32)
-    b_input = tf.Variable(tf.random_normal([n_layer_size]), dtype=tf.float32)
-    x_input = tf.sigmoid(tf.matmul(x_, w_input) + b_input)
+    sz_input_decrease = n_filt_sz - 1
+    sz_layer = int(sz_input * n_first_layer_multiplier)
 
-    v_activations.append(x_input)
+    # First Convolutional Layer
+
+    xc_t = tf.reshape(x_, [-1, sz_input, 1])
+    wc_0 = tf.Variable(tf.random_normal([n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
+    bc_0 = tf.Variable(tf.random_normal([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
+    xc_0 = tf.sigmoid(tf.nn.conv1d(xc_t, wc_0, stride=1, padding='VALID') + bc_0)
+
+    v_filters.append(wc_0)
+    v_biases.append(bc_0)
+    v_activations.append(xc_0)
+
+    # Remaining Convolutional Layers
+
+    for i in range(1, n_convolutional_layers):
+        sz_input_new = sz_input - (i + 1) * sz_input_decrease
+        wc_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
+        bc_i = tf.Variable(tf.random_normal([sz_input_new, n_filt_pl]), dtype=tf.float32)
+        xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)
+
+        v_filters.append(wc_i)
+        v_biases.append(bc_i)
+        v_activations.append(xc_i)
+        idx_last += 1
+
+    sz_input_new = sz_input - n_convolutional_layers * sz_input_decrease
+    sz_output_conv = sz_input_new * n_filt_pl
+    x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_output_conv])
+
+    # First Densly Connected Layer
+
+    wd_0 = tf.Variable(tf.random_normal([sz_output_conv, sz_layer], mean=0.0), dtype=tf.float32)
+    bd_0 = tf.Variable(tf.random_normal([sz_layer]), dtype=tf.float32)
+    xd_0 = tf.sigmoid(tf.matmul(x_final_conv, wd_0) + bd_0)
+
+    v_filters.append(wd_0)
+    v_biases.append(bd_0)
+    v_activations.append(xd_0)
+    idx_last += 1
+
+    # Remaining Densly Connected Layers
+
     for i in range(1, n_dense_layers):
-        w_temp = tf.Variable(tf.random_normal([n_layer_size, n_layer_size], mean=0.0), dtype=tf.float32)
-        b_temp = tf.Variable(tf.random_normal([n_layer_size]), dtype=tf.float32)
-        x_temp = tf.sigmoid(tf.matmul(v_activations[i - 1], w_temp) + b_temp)
+        wd_i = tf.Variable(tf.random_normal([sz_layer, sz_layer], mean=0.0), dtype=tf.float32)
+        bd_i = tf.Variable(tf.random_normal([sz_layer]), dtype=tf.float32)
+        xd_i = tf.sigmoid(tf.matmul(v_activations[idx_last], wd_i) + bd_i)
 
-        v_weights.append(w_temp)
-        v_biases.append(b_temp)
-        v_activations.append(x_temp)
+        v_filters.append(wd_i)
+        v_biases.append(bd_i)
+        v_activations.append(xd_i)
+        idx_last += 1
 
-    w_final = tf.Variable(tf.random_normal([n_layer_size, n_classes], mean=0.0), dtype=tf.float32)
-    b_final = tf.Variable(tf.random_normal([n_classes]), dtype=tf.float32)
-    y = tf.sigmoid(tf.matmul(v_activations[n_dense_layers - 1], w_final) + b_final)
+    # Final Layer
+
+    w_final = tf.Variable(tf.random_normal([sz_layer, n_classes], mean=0.0), dtype=tf.float32)
+    b_final = tf.Variable(tf.random_normal([n_classes]))
+    y = tf.sigmoid(tf.matmul(v_activations[idx_last], w_final) + b_final)
 
     ###########################################################################
     # Restore Model
@@ -92,7 +141,7 @@ def main(_):
     model_saver = tf.train.Saver()
 
     # Load Model
-    model_saver.restore(sess, save_path=m_filemane)
+    model_saver.restore(sess, save_path=m_filename)
 
     ###########################################################################
     # Run Inference
@@ -101,9 +150,38 @@ def main(_):
     correct_prediction = tf.equal(tf.round(y), y_)
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+    # Compute Per Class Scores
+    t_pos = tf.logical_and(tf.cast(tf.round(y), tf.bool), tf.cast(y_, tf.bool))
+    f_pos = tf.logical_and(tf.cast(tf.round(y), tf.bool), tf.logical_not(tf.cast(y_, tf.bool)))
+    t_neg = tf.logical_and(tf.logical_not(tf.cast(tf.round(y), tf.bool)), tf.logical_not(tf.cast(y_, tf.bool)))
+    f_neg = tf.logical_and(tf.logical_not(tf.cast(tf.round(y), tf.bool)), tf.cast(y_, tf.bool))
+
+    r_t_pos = tf.reduce_mean(tf.cast(t_pos, tf.float32))
+    r_f_pos = tf.reduce_mean(tf.cast(f_pos, tf.float32))
+    r_t_neg = tf.reduce_mean(tf.cast(t_neg, tf.float32))
+    r_f_neg = tf.reduce_mean(tf.cast(f_neg, tf.float32))
+
     f_model_accuracy = sess.run(accuracy, feed_dict={x_: inputs, y_: outputs})
     print("Inference accuracy   : " + str(f_model_accuracy))
 
+    # Compute F-Score
+    f_t_pos = sess.run(r_t_pos, feed_dict={x_: inputs, y_: outputs})
+    f_f_pos = sess.run(r_f_pos, feed_dict={x_: inputs, y_: outputs})
+    f_t_neg = sess.run(r_t_neg, feed_dict={x_: inputs, y_: outputs})
+    f_f_neg = sess.run(r_f_neg, feed_dict={x_: inputs, y_: outputs})
+
+    print("True positives       : " + str(f_t_pos))
+    print("False positives      : " + str(f_f_pos))
+    print("True negatives       : " + str(f_t_neg))
+    print("False negatives      : " + str(f_f_neg))
+
+    f_prec = f_t_pos / (f_t_pos + f_f_pos)
+    f_recall = f_t_pos / (f_t_pos + f_f_neg)
+    f_score = 2 * f_prec * f_recall / (f_prec + f_recall)
+
+    print("Precision            : " + str(f_prec))
+    print("Recall               : " + str(f_recall))
+    print("F1-Score             : " + str(f_score))
 
 if __name__ == '__main__':
 

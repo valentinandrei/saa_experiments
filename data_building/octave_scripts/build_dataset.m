@@ -15,11 +15,13 @@ wavfiles  = { "/home/valentin/Working/saa_experiments_db/valentin_recordings/S1.
               "/home/valentin/Working/saa_experiments_db/valentin_recordings/S7.wav", ...
               "/home/valentin/Working/saa_experiments_db/valentin_recordings/S8.wav", ...
               "/home/valentin/Working/saa_experiments_db/valentin_recordings/S9.wav"};
+#}
 
 #{
 wavfiles  = { "/home/valentin/Working/saa_experiments_db/valentin_recordings/S10.wav", ...
+              "/home/valentin/Working/saa_experiments_db/valentin_recordings/S11.wav", ...
               "/home/valentin/Working/saa_experiments_db/valentin_recordings/S13.wav", ...
-              "/home/valentin/Working/saa_experiments_db/valentin_recordings/S15.wav"};
+              "/home/valentin/Working/saa_experiments_db/valentin_recordings/S14.wav"};
 #}
 
 #{
@@ -32,15 +34,15 @@ wavfiles  = { "/home/valentin/Working/saa_experiments_db/valentin_recordings/TES
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 25;
-frame_inc_ms        = 5;
+frame_ms            = 500;
+frame_inc_ms        = 250;
 n_classes           = 1;
 n_max_speakers      = 3;
-n_samples_per_count = 50000;
+n_samples_per_count = 10000;
 with_reverb         = 0;
 count_speakers      = 0;
-b_add_square_feats  = 1;
-b_normalize         = 1;
+b_add_square_feats  = 0;
+b_normalize         = 0;
 b_do_pca_analysis   = 0;
 
 % Specify selected features:
@@ -51,7 +53,7 @@ b_do_pca_analysis   = 0;
 %   AR_Coefficients (12 coefs for each 15 ms window)
 %   Decimated Speech Signal Envelope
 
-v_features  = [0, 1, 0, 1, 1, 1];
+v_features  = [0, 0, 0, 1, 0, 0];
 
 % ------------------------------------------------------------------------------
 

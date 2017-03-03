@@ -5,8 +5,8 @@ import random as rng
 import gc
 
 # Inputs
-x_filename = './x_train_normalized.txt'
-y_filename = './y_train.txt'
+x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/x_train_normalized.txt'
+y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/y_train.txt'
 s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/overlap_detection/'
 
 # Optimal parameters
@@ -17,18 +17,18 @@ s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/overla
 n_batches = 200
 
 # Architecture
-n_first_layer_multiplier = 2.0
+n_first_layer_multiplier = 1.5
 n_convolutional_layers = 4
 n_dense_layers = 6
-n_filt_pl = 10
-n_filt_sz = 7
+n_filt_pl = 20
+n_filt_sz = 10
 
 # Convergence
 f_start_lr = 0.001
-f_momentum = 1.0
-f_decay_rate = 0.96
-n_lr_gstep = 100
-n_lr_dstep = 50
+f_momentum = 0.9
+f_decay_rate = 0.99
+n_lr_gstep = 2000
+n_lr_dstep = 1000
 
 # Training
 f_use_for_validation = 0.0125
