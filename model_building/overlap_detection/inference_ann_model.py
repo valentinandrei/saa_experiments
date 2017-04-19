@@ -4,16 +4,17 @@ import tensorflow as tf
 import gc
 # import os
 
-x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/x_test_normalized.txt'
-y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_25/y_test.txt'
-m_filename = '/home/valentin/Working/saa_experiments/model_building/milestones/3_overlap_detection_25ms/ann_model_3/a2.ckpt'
+x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_500/x_test_normalized.txt'
+y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_500/y_test.txt'
+#m_filename = '/home/valentin/Working/saa_experiments/model_building/milestones/1_overlap_detection_500ms/model_500ms_4c_6d.ckpt'
+m_filename = './0.8536_5946.ckpt'
 
 # Architecture
 n_first_layer_multiplier = 1.5
-n_convolutional_layers = 4
-n_dense_layers = 6
-n_filt_pl = 20
-n_filt_sz = 10
+n_convolutional_layers = 3
+n_dense_layers = 7
+n_filt_pl = 10
+n_filt_sz = 7
 
 
 def main(_):
@@ -70,40 +71,47 @@ def main(_):
     v_biases = []
     idx_last = 0
 
-    sz_input_decrease = n_filt_sz - 1
+    if n_convolutional_layers > 0:
+
+        # First Convolutional Layer
+
+        sz_input_decrease = n_filt_sz - 1
+        xc_t = tf.reshape(x_, [-1, sz_input, 1])
+        wc_0 = tf.Variable(tf.random_normal([n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
+        bc_0 = tf.Variable(tf.random_normal([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
+        xc_0 = tf.sigmoid(tf.nn.conv1d(xc_t, wc_0, stride=1, padding='VALID') + bc_0)
+
+        v_filters.append(wc_0)
+        v_biases.append(bc_0)
+        v_activations.append(xc_0)
+
+        # Remaining Convolutional Layers
+
+        for i in range(1, n_convolutional_layers):
+            sz_input_new = sz_input - (i + 1) * sz_input_decrease
+            wc_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
+            bc_i = tf.Variable(tf.random_normal([sz_input_new, n_filt_pl]), dtype=tf.float32)
+            xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)
+
+            v_filters.append(wc_i)
+            v_biases.append(bc_i)
+            v_activations.append(xc_i)
+            idx_last += 1
+
+        sz_input_new = sz_input - n_convolutional_layers * sz_input_decrease
+        sz_input_ann = sz_input_new * n_filt_pl
+        x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_input_ann])
+
+    else:
+
+        sz_input_ann = sz_input
+        x_final_conv = x_
+        idx_last = -1
+
+    # First Densely Connected Layer
+
     sz_layer = int(sz_input * n_first_layer_multiplier)
-
-    # First Convolutional Layer
-
-    xc_t = tf.reshape(x_, [-1, sz_input, 1])
-    wc_0 = tf.Variable(tf.random_normal([n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
-    bc_0 = tf.Variable(tf.random_normal([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
-    xc_0 = tf.sigmoid(tf.nn.conv1d(xc_t, wc_0, stride=1, padding='VALID') + bc_0)
-
-    v_filters.append(wc_0)
-    v_biases.append(bc_0)
-    v_activations.append(xc_0)
-
-    # Remaining Convolutional Layers
-
-    for i in range(1, n_convolutional_layers):
-        sz_input_new = sz_input - (i + 1) * sz_input_decrease
-        wc_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
-        bc_i = tf.Variable(tf.random_normal([sz_input_new, n_filt_pl]), dtype=tf.float32)
-        xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)
-
-        v_filters.append(wc_i)
-        v_biases.append(bc_i)
-        v_activations.append(xc_i)
-        idx_last += 1
-
-    sz_input_new = sz_input - n_convolutional_layers * sz_input_decrease
-    sz_output_conv = sz_input_new * n_filt_pl
-    x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_output_conv])
-
-    # First Densly Connected Layer
-
-    wd_0 = tf.Variable(tf.random_normal([sz_output_conv, sz_layer], mean=0.0), dtype=tf.float32)
+    wd_0 = tf.Variable(tf.random_normal([sz_input_ann, sz_layer], mean=0.0), dtype=tf.float32)
     bd_0 = tf.Variable(tf.random_normal([sz_layer]), dtype=tf.float32)
     xd_0 = tf.sigmoid(tf.matmul(x_final_conv, wd_0) + bd_0)
 
@@ -112,7 +120,7 @@ def main(_):
     v_activations.append(xd_0)
     idx_last += 1
 
-    # Remaining Densly Connected Layers
+    # Remaining Densely Connected Layers
 
     for i in range(1, n_dense_layers):
         wd_i = tf.Variable(tf.random_normal([sz_layer, sz_layer], mean=0.0), dtype=tf.float32)

@@ -14,7 +14,7 @@ frame_ms_vad	    = 500;
 v_features          = [0, 0, 0, 1, 1, 0];
 b_add_square_feats  = 1;
 f_speech_threshold  = 0.95;
-s_path              = "/home/valentin/Working/phd_project/build_dataset/wavfiles/naa_corpus/audio_micSamson_parts/";
+s_path              = "/home/valentin/Working/saa_experiments_db/naa_corpus/audio_micSamson_parts/";
 b_just_sizes        = 0;
 
 % Build features
