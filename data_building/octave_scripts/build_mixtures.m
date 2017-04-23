@@ -13,7 +13,7 @@ function [m_mixtures, v_labels] = build_mixtures ...
   % v_n_frames_speech - Frame count per speaker
   % n_set_size        - The number of mixtures to be created
   % n_max_speakers    - Maximum number of speakers in a mix
-  % n_files           - Number of single speaker filesep
+  % n_files           - Number of single speaker files
   % n_frame_size      - The length of the frame in #samples
   % with_reverb       - Enable/Disable reverberation effects
   % count_speakers    - If 1, the label is an array where v(k) is 1 if k 
@@ -65,7 +65,7 @@ function [m_mixtures, v_labels] = build_mixtures ...
 
     % Mix all signals in the matrix      
     if (with_reverb == 0)
-      m_mixtures(i, :) = do_mix_non_reverb(m_single);
+      m_mixtures(i, :) = do_mix_non_reverb(m_single, 0);
     else
       % TODO
     end

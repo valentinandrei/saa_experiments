@@ -38,6 +38,9 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   n_train_test_size = size(m_mixtures, 1);  
   n_feature_size    = 0;
   
+  % Generate dummy signal to compute the number of features
+  test_f = randn(1, n_frame_size);
+  
   % - Unprocessed Signal
   if (v_features(1) == 1)
     n_feature_size += n_frame_size;
@@ -45,7 +48,6 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   
   % 1 - FFT
   if (v_features(2) == 1)
-    test_f = randn(1, n_frame_size);
     test_FFT = get_speech_spectrum(test_f, fs, n_fft_stop_freq);
     n_feature_size += length(test_FFT);
   end
@@ -54,21 +56,18 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   v_f = [];
   v_t = [];  
   if (v_features(3) == 1)
-    test_f = randn(1, n_frame_size);
     [test_S, v_f, v_t] = get_speech_spectrogram(test_f, fs);
     n_feature_size += length(test_S);    
   end
   
   % 3 - MFCC
   if (v_features(4) == 1)
-    test_f = randn(1, n_frame_size);
     test_M = melcepst(test_f, fs, s_mfcc_parameters)(:);    
     n_feature_size += length(test_M);
   end
   
   % 4 - AR Coefficients
   if (v_features(5) == 1)
-    test_f = randn(1, n_frame_size);
     test_AR = lpcauto(test_f, n_ar_coefficients, n_ar_frame_ms * fs / 1000);
     test_AR = test_AR(:, 2 : end)(:);
     n_feature_size += length(test_AR);
@@ -76,9 +75,14 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   
   % 5 - Signal Envelope, computed w/ Hilbert and decimated
   if (v_features(6) == 1)
-    test_f = randn(1, n_frame_size);
     test_SE = get_speech_envelope(test_f, fs, n_env_resample_freq);
     n_feature_size += length(test_SE);
+  end
+  
+  % 6 - Power Spectral Density
+  if (v_features(7) == 1)
+    [test_PSD, F] = periodogram(test_f, [], length(test_f), fs);
+    n_feature_size += length(test_PSD);
   end
   
   % Allocate memory
@@ -87,11 +91,14 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   s0 = time();
   
   for i = 1 : n_train_test_size
+  
     ############################################################################
     # Produce Selected Features
     ############################################################################
     
+    % MFCC has some bugs and produces infinite values in some cases
     b_finite = 1;
+    
     v_feature = [];
     v_mixed   = m_mixtures(i, :);
     
@@ -111,11 +118,13 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     
     if (v_features(4) == 1)
       v_mfcc = melcepst(v_mixed, fs, s_mfcc_parameters)(:);
+      
       if (sum(isfinite(v_mfcc)) ~= length(v_mfcc))
         b_finite = 0;
         printf("Mixture %d resulted in Inf.\n", i);
         fflush(stdout);        
       end
+      
       v_feature = [v_feature, v_mfcc'];        
     end
     
@@ -125,16 +134,20 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
       v_feature = [v_feature, v_ar'];
     end
     
-    % 5 - Signal Envelope, computed w/ Hilbert and decimated
     if (v_features(6) == 1)
       v_env = get_speech_envelope(v_mixed, fs, n_env_resample_freq);
       v_feature = [v_feature, v_env];
     end
     
+    if (v_features(7) == 1)
+      [v_psd, F] = periodogram(v_mixed, [], length(v_mixed), fs);
+      v_feature = [v_feature, v_psd];
+    end
+    
     % Save feature
     if (b_finite == 1)
       m_features(i, :) = v_feature;
-    end      
+    end
     
   end
   

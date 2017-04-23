@@ -18,14 +18,14 @@ n_batches = 200
 
 # Architecture
 n_first_layer_multiplier = 1.5
-n_convolutional_layers = 5
-n_dense_layers = 10
+n_convolutional_layers = 3
+n_dense_layers = 7
 n_filt_pl = 10
 n_filt_sz = 7
 
 # Convergence
 f_start_lr = 0.0001
-f_momentum = 0.9
+f_momentum = 1.0
 f_decay_rate = 0.95
 n_lr_gstep = 2000
 n_lr_dstep = 1000
@@ -42,10 +42,11 @@ n_iterations_for_sleep = 2500
 
 # Plotting
 b_print_output = 1
-n_print_interval = 25
+n_print_interval = 200
 
 # Debugging
-b_check_fitting = 0
+b_debug = 0
+b_check_fitting = 1
 n_check_fitting = 80
 
 
@@ -90,8 +91,8 @@ def main(_):
         global f_use_for_validation
         global f_use_for_inference
         global n_batches
-        f_use_for_validation = 0.1
-        f_use_for_inference = 0.1
+        f_use_for_validation = 0.25
+        f_use_for_inference = 0.0
         n_batches = 1
 
     sz_validate = int(sz_set * f_use_for_validation)
@@ -108,6 +109,10 @@ def main(_):
             outputs[i][j] = outputs_t[i][j]
         for j in range(sz_input):
             inputs[i][j] = inputs_t[i][j]
+
+        if b_debug:
+            i_class = np.argmax(outputs[i])
+            inputs[i] += (1 / float(i_class + 5))
 
     gc.collect()
 
