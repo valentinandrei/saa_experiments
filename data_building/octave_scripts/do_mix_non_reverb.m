@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [s_mixed] = do_mix_non_reverb (m_signals)
+function [s_mixed] = do_mix_non_reverb (m_signals, b_normalize)
 
   % Usage: mixture = mix_non_reverb(non_mixed);
   %
@@ -19,7 +19,13 @@ function [s_mixed] = do_mix_non_reverb (m_signals)
   debug = 0;
 
   n_signals = size(m_signals, 1);
-  s_mixed = (1/n_signals) * sum(m_signals, 1);
+  
+  f_multiplier = 1;
+  if (b_normalize == 1)
+    f_multiplier = 1 / n_signals;
+  end
+  
+  s_mixed = f_multiplier * sum(m_signals, 1);
 
   if (debug == 1)
     subplot(2, 1, 1); plot(m_signals'); grid;

@@ -1,7 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="valentin">
     <words>
+      <w>cuda</w>
+      <w>dstep</w>
+      <w>gstep</w>
       <w>preproc</w>
+      <w>tensorflow</w>
     </words>
   </dictionary>
 </component>

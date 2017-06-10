@@ -37,11 +37,11 @@ frame_ms            = 100;
 frame_inc_ms        = 50;
 n_classes           = 5;
 n_max_speakers      = 5;
-n_samples_per_count = 10000;
+n_samples_per_count = 20000;
 with_reverb         = 0;
 count_speakers      = 1;
-b_add_square_feats  = 1;
-b_train             = 0;
+b_add_square_feats  = 0;
+b_train             = 1;
 b_do_pca_analysis   = 0;
 
 % Specify selected features:
@@ -51,8 +51,9 @@ b_do_pca_analysis   = 0;
 %   MFCC ('E0')
 %   AR_Coefficients (12 coefs for each 15 ms window)
 %   Decimated Speech Signal Envelope
+%   Power Spectral Density
 
-v_features  = [0, 1, 0, 1, 1, 1];
+v_features  = [0, 1, 0, 1, 1, 1, 0];
 
 % ------------------------------------------------------------------------------
 
@@ -101,22 +102,13 @@ end
 % Features' Mean Normalization and Scaling
 if (b_train == 1)
 
-  v_max       = max (m_features);
-  v_min       = min (m_features);
-  v_mean      = mean(m_features);
-  m_features  = (m_features - v_mean) ./ (v_max - v_min);
-  m_mmm       = [v_max; v_min; v_mean];
-  save("-ascii", "mmm_train.txt", "m_mmm");
-  save("-ascii", "x_train_normalized.txt", "m_features");
+  [m_features_norm, mu, sigma] = do_feature_normalization(m_features);
+  save("-ascii", "x_train_normalized.txt", "m_features_norm");
   save("-ascii", "y_train.txt", "v_labels");
   
 else
 
-  m_mmm   = load("mmm_train.txt");
-  v_max   = m_mmm(1, :);
-  v_min   = m_mmm(2, :);
-  v_mean  = m_mmm(3, :);
-  m_features  = (m_features - v_mean) ./ (v_max - v_min);  
+  [m_features_norm, mu, sigma] = do_feature_normalization(m_features);
   save("-ascii", "x_test_normalized.txt", "m_features");
   save("-ascii", "y_test.txt", "v_labels");  
   

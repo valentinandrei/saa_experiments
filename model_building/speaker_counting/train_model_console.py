@@ -1,12 +1,12 @@
+import gc
+import random as rng
 import time
 import numpy as np
 import tensorflow as tf
-import random as rng
-import gc
 
 # Inputs
-x_filename = '/home/valentin/Working/saa_experiments/data_building/octave_scripts/x_train_normalized.txt'
-y_filename = '/home/valentin/Working/saa_experiments/data_building/octave_scripts/y_train.txt'
+x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_100/speaker_counting/x_train_normalized.txt'
+y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_100/speaker_counting/y_train.txt'
 s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/speaker_counting/'
 
 # Optimal parameters
@@ -24,8 +24,8 @@ n_filt_pl = 10
 n_filt_sz = 7
 
 # Convergence
-f_start_lr = 0.001
-f_momentum = 0.9
+f_start_lr = 0.0001
+f_momentum = 1.0
 f_decay_rate = 0.95
 n_lr_gstep = 2000
 n_lr_dstep = 1000
@@ -42,11 +42,29 @@ n_iterations_for_sleep = 2500
 
 # Plotting
 b_print_output = 1
-n_plot_interval = 100
+n_print_interval = 200
 
 # Debugging
-b_check_fitting = 0
-n_check_fitting = 40
+b_debug = 0
+b_check_fitting = 1
+n_check_fitting = 80
+
+
+def print_confusion_matrix(v_predicted, v_true, n_classes):
+    m_confusion = np.zeros([n_classes, n_classes], dtype=int)
+    n_samples = v_predicted.shape[0]
+
+    for i in range(n_samples):
+        i_pred = v_predicted[i]
+        i_true = v_true[i]
+        m_confusion[i_true][i_pred] += 1
+
+    print("")
+    print("Confusion Matrix: ")
+    print(m_confusion)
+    print("")
+
+    return [m_confusion]
 
 
 def main(_):
@@ -73,8 +91,8 @@ def main(_):
         global f_use_for_validation
         global f_use_for_inference
         global n_batches
-        f_use_for_validation = 0.1
-        f_use_for_inference = 0.1
+        f_use_for_validation = 0.25
+        f_use_for_inference = 0.0
         n_batches = 1
 
     sz_validate = int(sz_set * f_use_for_validation)
@@ -88,9 +106,13 @@ def main(_):
     outputs = np.zeros([sz_set, n_classes], dtype=float, order='C')
     for i in range(sz_set):
         for j in range(n_classes):
-            outputs[j] = outputs_t[j]
+            outputs[i][j] = outputs_t[i][j]
         for j in range(sz_input):
             inputs[i][j] = inputs_t[i][j]
+
+        if b_debug:
+            i_class = np.argmax(outputs[i])
+            inputs[i] += (1 / float(i_class + 5))
 
     gc.collect()
 
@@ -218,6 +240,7 @@ def main(_):
     # Create Validation / Inference Method
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    y_predicted_tensor = tf.argmax(y, 1)
 
     # Create Session
     sess = tf.InteractiveSession()
@@ -234,6 +257,7 @@ def main(_):
     n_iteration_current = 0
     n_iterations_since_max_update = 0
     n_iterations_since_sleep = 0
+    n_iterations_since_print = 0
     f_max_precision = 0.0
 
     # Used for real time plotting
@@ -262,9 +286,10 @@ def main(_):
             batch_ys = y_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
             sess.run(train_step, feed_dict={x_: batch_xs, y_: batch_ys})
 
-            # Validation
-            f_acc = sess.run(accuracy, feed_dict={x_: x_validate, y_: y_validate})
+            # Build Confusion Matrix
             f_train_acc = sess.run(accuracy, feed_dict={x_: batch_xs, y_: batch_ys})
+            f_acc = sess.run(accuracy, feed_dict={x_: x_validate, y_: y_validate})
+            y_predicted = sess.run(y_predicted_tensor, feed_dict={x_: x_validate, y_: y_validate})
 
             x_iteration_count.append(n_iteration_current)
             y_train_error.append(1 - f_train_acc)
@@ -273,6 +298,12 @@ def main(_):
             # Display output in console
             if b_print_output:
                 print("Iter.: %d; Validation: %.8f Training: %.8f" % (n_iteration_current, f_acc, f_train_acc))
+                n_iterations_since_print += 1
+                if n_iterations_since_print == n_print_interval:
+                    # Print confusion matrix
+                    y_true = np.argmax(y_validate, 1)
+                    print_confusion_matrix(y_predicted, y_true, n_classes)
+                    n_iterations_since_print = 0
 
             f_precision = f_acc
             if b_check_fitting:
@@ -288,8 +319,9 @@ def main(_):
                 model_save_path = model_saver.save(sess=sess, save_path=s_path)
                 print("Model saved in file: %s" % model_save_path)
 
-                # TODO
-                # Add per class statistics to aide debugging
+                # Print confusion matrix
+                y_true = np.argmax(y_validate, 1)
+                print_confusion_matrix(y_predicted, y_true, n_classes)
 
             else:
                 n_iterations_since_max_update += 1
