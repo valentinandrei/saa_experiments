@@ -1,53 +1,43 @@
-import gc
 import random as rng
 import time
 import numpy as np
 import tensorflow as tf
 
 # Inputs
-x_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_100/speaker_counting/x_train_normalized.txt'
-y_filename = '/home/valentin/Working/saa_experiments_db/valentin_ann_features/ms_100/speaker_counting/y_train.txt'
+x_filename = '/home/valentin/Working/saa_db/features/ms_100/sc_2/x_train_normalized.txt'
+y_filename = '/home/valentin/Working/saa_db/features/ms_100/sc_2/y_train.txt'
 s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/speaker_counting/'
 
-# Optimal parameters
-# 1: LR 0.01, BS 400, Decay 0.98 -> 100% on debug data and altered real data
-# 2: CL 10, FSZ 15 FPL 25 LR 0.0001 M 1.0 D 0.96 -> 100% on first inputs
-
 # Dataset Splitting
-n_batches = 200
+n_batches = 400
 
 # Architecture
 n_first_layer_multiplier = 1.5
-n_convolutional_layers = 3
-n_dense_layers = 7
-n_filt_pl = 10
-n_filt_sz = 7
+n_convolutional_layers = 4
+n_dense_layers = 6
+n_filt_pl = 20
+n_filt_sz = 10
 
 # Convergence
-f_start_lr = 0.0001
+f_start_lr = 0.001
 f_momentum = 1.0
-f_decay_rate = 0.95
+f_decay_rate = 0.96
 n_lr_gstep = 2000
 n_lr_dstep = 1000
 
 # Training
-f_use_for_validation = 0.0125
+f_use_for_validation = 0.025
 f_use_for_inference = 0.1
 f_precision_save_threshold = 0.85
 f_reinitialization_threshold = 0.25
-n_iterations_for_reinitialize = 1000000
-n_max_iterations = 7000
+n_max_iterations = 20000
 n_iterations_for_stop = 5000
-n_iterations_for_sleep = 2500
+n_iterations_for_sleep = 1000
 
-# Plotting
+# Plotting & debugging
 b_print_output = 1
 n_print_interval = 200
-
-# Debugging
-b_debug = 0
-b_check_fitting = 1
-n_check_fitting = 80
+b_check_fitting = 0
 
 
 def print_confusion_matrix(v_predicted, v_true, n_classes):
@@ -78,16 +68,11 @@ def main(_):
     t_start = time.time()
 
     # Load Input Files
-    inputs_t = np.loadtxt(x_filename)
-    outputs_t = np.loadtxt(y_filename)
-
-    # Experiment Parameters
-    n_classes = outputs_t.shape[1]
-    sz_set = inputs_t.shape[0]
+    inputs = np.loadtxt(x_filename)
+    outputs = np.loadtxt(y_filename)
 
     # For debugging, check if the train error converges to 0% for a very small subset
     if b_check_fitting:
-        sz_set = n_check_fitting
         global f_use_for_validation
         global f_use_for_inference
         global n_batches
@@ -95,31 +80,19 @@ def main(_):
         f_use_for_inference = 0.0
         n_batches = 1
 
+    # Experiment Parameters
+    n_classes = outputs.shape[1]
+    sz_set = inputs.shape[0]
     sz_validate = int(sz_set * f_use_for_validation)
     sz_inference = int(sz_set * f_use_for_inference)
     sz_train = int(sz_set - sz_validate - sz_inference)
     sz_batch = int(sz_train / n_batches)
-    sz_input = inputs_t.shape[1]
-
-    # Trick tensorflow into knowing the size of _y tensor
-    inputs = np.zeros([sz_set, sz_input], dtype=float, order='C')
-    outputs = np.zeros([sz_set, n_classes], dtype=float, order='C')
-    for i in range(sz_set):
-        for j in range(n_classes):
-            outputs[i][j] = outputs_t[i][j]
-        for j in range(sz_input):
-            inputs[i][j] = inputs_t[i][j]
-
-        if b_debug:
-            i_class = np.argmax(outputs[i])
-            inputs[i] += (1 / float(i_class + 5))
-
-    gc.collect()
+    sz_input = inputs.shape[1]
 
     t_stop = time.time()
-    print("Input prepare time   : ", str(t_stop - t_start))
 
     # Debug Messages
+    print("Input prepare time   : ", str(t_stop - t_start))
     print("Total inputs         : ", str(sz_set))
     print("Input length         : ", str(sz_input))
     print("Number of classes    : ", str(n_classes))
@@ -153,16 +126,23 @@ def main(_):
     v_activations = []
     v_filters = []
     v_biases = []
-    idx_last = 0
+
+    # First layer of the network
+
+    sz_input_ann = sz_input
+    x_final_conv = x_
+    idx_last = -1
 
     if n_convolutional_layers > 0:
+
+        idx_last = 0
 
         # First Convolutional Layer
 
         sz_input_decrease = n_filt_sz - 1
         xc_t = tf.reshape(x_, [-1, sz_input, 1])
         wc_0 = tf.Variable(tf.random_normal([n_filt_sz, 1, n_filt_pl], mean=0.0), dtype=tf.float32)
-        bc_0 = tf.Variable(tf.random_normal([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
+        bc_0 = tf.Variable(tf.zeros([sz_input - sz_input_decrease, n_filt_pl]), dtype=tf.float32)
         xc_0 = tf.sigmoid(tf.nn.conv1d(xc_t, wc_0, stride=1, padding='VALID') + bc_0)
 
         v_filters.append(wc_0)
@@ -174,7 +154,7 @@ def main(_):
         for i in range(1, n_convolutional_layers):
             sz_input_new = sz_input - (i + 1) * sz_input_decrease
             wc_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
-            bc_i = tf.Variable(tf.random_normal([sz_input_new, n_filt_pl]), dtype=tf.float32)
+            bc_i = tf.Variable(tf.zeros([sz_input_new, n_filt_pl]), dtype=tf.float32)
             xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)
 
             v_filters.append(wc_i)
@@ -186,17 +166,11 @@ def main(_):
         sz_input_ann = sz_input_new * n_filt_pl
         x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_input_ann])
 
-    else:
-
-        sz_input_ann = sz_input
-        x_final_conv = x_
-        idx_last = -1
-
     # First Densely Connected Layer
 
     sz_layer = int(sz_input * n_first_layer_multiplier)
     wd_0 = tf.Variable(tf.random_normal([sz_input_ann, sz_layer], mean=0.0), dtype=tf.float32)
-    bd_0 = tf.Variable(tf.random_normal([sz_layer]), dtype=tf.float32)
+    bd_0 = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
     xd_0 = tf.sigmoid(tf.matmul(x_final_conv, wd_0) + bd_0)
     
     v_filters.append(wd_0)
@@ -208,7 +182,7 @@ def main(_):
 
     for i in range(1, n_dense_layers):
         wd_i = tf.Variable(tf.random_normal([sz_layer, sz_layer], mean=0.0), dtype=tf.float32)
-        bd_i = tf.Variable(tf.random_normal([sz_layer]), dtype=tf.float32)
+        bd_i = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
         xd_i = tf.sigmoid(tf.matmul(v_activations[idx_last], wd_i) + bd_i)
 
         v_filters.append(wd_i)
@@ -219,8 +193,8 @@ def main(_):
     # Final Layer
 
     w_final = tf.Variable(tf.random_normal([sz_layer, n_classes], mean=0.0), dtype=tf.float32)
-    b_final = tf.Variable(tf.random_normal([n_classes]))
-    y = tf.sigmoid(tf.matmul(v_activations[idx_last], w_final) + b_final)
+    b_final = tf.Variable(tf.zeros([n_classes]))
+    y = tf.matmul(v_activations[idx_last], w_final) + b_final
 
     ###########################################################################
     # Run Training
@@ -228,7 +202,7 @@ def main(_):
 
     # Create Training Method
     y_ = tf.placeholder(tf.float32, [None, n_classes])
-    cost_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y, y_))
+    cost_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
 
     # Create Gradient Descent Optimizer
     f_learning_rate = tf.train.exponential_decay(f_start_lr, n_lr_gstep, n_lr_dstep, f_decay_rate, staircase=True)
@@ -255,7 +229,6 @@ def main(_):
 
     # Used for automated training
     n_iteration_current = 0
-    n_iterations_since_max_update = 0
     n_iterations_since_sleep = 0
     n_iterations_since_print = 0
     f_max_precision = 0.0
@@ -267,67 +240,59 @@ def main(_):
 
     b_stop = 0
     while b_stop == 0:
-        for i in range(0, n_batches):
 
-            # Use a mechanism to let the CPU and GPU cool when doing long training
-            n_iterations_since_sleep += 1
-            if n_iterations_since_sleep == n_iterations_for_sleep:
-                time.sleep(60)  # Sleep for a little to let CPU and GPU cool
-                n_iterations_since_sleep = 0
+        # Use a mechanism to let the CPU and GPU cool when doing long training
+        n_iterations_since_sleep += 1
+        if n_iterations_since_sleep == n_iterations_for_sleep:
+            time.sleep(60)  # Sleep for a little to let CPU and GPU cool
+            n_iterations_since_sleep = 0
 
-            # Get a random batch
-            n_batch = rng.randint(0, n_batches - 1)
-            n_iteration_current += 1
+        # Get a random batch
+        n_batch = rng.randint(0, n_batches - 1)
+        n_iteration_current += 1
 
-            if n_iteration_current == n_max_iterations:
-                b_stop = 1
+        if n_iteration_current == n_max_iterations:
+            b_stop = 1
 
-            batch_xs = x_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
-            batch_ys = y_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
-            sess.run(train_step, feed_dict={x_: batch_xs, y_: batch_ys})
+        batch_xs = x_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
+        batch_ys = y_train[(n_batch * sz_batch):((n_batch + 1) * sz_batch)][:]
+        sess.run(train_step, feed_dict={x_: batch_xs, y_: batch_ys})
 
-            # Build Confusion Matrix
-            f_train_acc = sess.run(accuracy, feed_dict={x_: batch_xs, y_: batch_ys})
-            f_acc = sess.run(accuracy, feed_dict={x_: x_validate, y_: y_validate})
-            y_predicted = sess.run(y_predicted_tensor, feed_dict={x_: x_validate, y_: y_validate})
+        # Build Confusion Matrix
+        f_train_acc = sess.run(accuracy, feed_dict={x_: batch_xs, y_: batch_ys})
+        f_acc = sess.run(accuracy, feed_dict={x_: x_validate, y_: y_validate})
+        y_predicted = sess.run(y_predicted_tensor, feed_dict={x_: x_validate, y_: y_validate})
 
-            x_iteration_count.append(n_iteration_current)
-            y_train_error.append(1 - f_train_acc)
-            y_validate_error.append(1 - f_acc)
+        x_iteration_count.append(n_iteration_current)
+        y_train_error.append(1 - f_train_acc)
+        y_validate_error.append(1 - f_acc)
 
-            # Display output in console
-            if b_print_output:
-                print("Iter.: %d; Validation: %.8f Training: %.8f" % (n_iteration_current, f_acc, f_train_acc))
-                n_iterations_since_print += 1
-                if n_iterations_since_print == n_print_interval:
-                    # Print confusion matrix
-                    y_true = np.argmax(y_validate, 1)
-                    print_confusion_matrix(y_predicted, y_true, n_classes)
-                    n_iterations_since_print = 0
-
-            f_precision = f_acc
-            if b_check_fitting:
-                f_precision = f_train_acc
-
-            # Stop training when the error is not decreasing for a certain number of iterations.
-            if f_precision > f_max_precision:
-                n_iterations_since_max_update = 0
-                f_max_precision = f_precision
-
-                # Save the model
-                s_path = s_model_save_dir + str(f_precision) + "_" + str(n_iteration_current) + ".ckpt"
-                model_save_path = model_saver.save(sess=sess, save_path=s_path)
-                print("Model saved in file: %s" % model_save_path)
-
+        # Display output in console
+        if b_print_output:
+            print("Iter.: %d; Validation: %.8f Training: %.8f" % (n_iteration_current, f_acc, f_train_acc))
+            n_iterations_since_print += 1
+            if n_iterations_since_print == n_print_interval:
                 # Print confusion matrix
                 y_true = np.argmax(y_validate, 1)
                 print_confusion_matrix(y_predicted, y_true, n_classes)
+                n_iterations_since_print = 0
 
-            else:
-                n_iterations_since_max_update += 1
-                if n_iterations_since_max_update == n_iterations_for_stop:
-                    b_stop = 1
-                    break
+        f_precision = f_acc
+        if b_check_fitting:
+            f_precision = f_train_acc
+
+        # Stop training when the error is not decreasing for a certain number of iterations.
+        if f_precision > f_max_precision:
+            f_max_precision = f_precision
+
+            # Save the model
+            s_path = s_model_save_dir + str(f_precision) + "_" + str(n_iteration_current) + ".ckpt"
+            model_save_path = model_saver.save(sess=sess, save_path=s_path)
+            print("Model saved in file: %s" % model_save_path)
+
+            # Print confusion matrix
+            y_true = np.argmax(y_validate, 1)
+            print_confusion_matrix(y_predicted, y_true, n_classes)
 
     t_stop = time.time()
     print("Training time        : " + str(t_stop - t_start))

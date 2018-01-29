@@ -4,6 +4,7 @@
       <w>cuda</w>
       <w>dstep</w>
       <w>gstep</w>
+      <w>pred</w>
       <w>preproc</w>
       <w>tensorflow</w>
     </words>
