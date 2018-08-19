@@ -1,26 +1,24 @@
+import os
 import random as rng
 import time
 import numpy as np
 import tensorflow as tf
 
 # Inputs
-x_filename = '/home/valentin/Working/saa_db/features/ms_100/sc_2/x_train_normalized.txt'
-y_filename = '/home/valentin/Working/saa_db/features/ms_100/sc_2/y_train.txt'
-s_model_save_dir = '/home/valentin/Working/saa_experiments/model_building/speaker_counting/'
-
-# Dataset Splitting
-n_batches = 400
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/data_building/octave_scripts/x_dummy.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/data_building/octave_scripts/y_dummy.txt'
+s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/model_building/speaker_counting/'
 
 # Architecture
 n_first_layer_multiplier = 1.5
-n_convolutional_layers = 4
-n_dense_layers = 6
+n_convolutional_layers = 2
+n_dense_layers = 3
 n_filt_pl = 20
 n_filt_sz = 10
 
 # Convergence
 f_start_lr = 0.001
-f_momentum = 1.0
+f_momentum = 0.95
 f_decay_rate = 0.96
 n_lr_gstep = 2000
 n_lr_dstep = 1000
@@ -28,6 +26,7 @@ n_lr_dstep = 1000
 # Training
 f_use_for_validation = 0.025
 f_use_for_inference = 0.1
+sz_batch = 32
 f_precision_save_threshold = 0.85
 f_reinitialization_threshold = 0.25
 n_max_iterations = 20000
@@ -78,7 +77,6 @@ def main(_):
         global n_batches
         f_use_for_validation = 0.25
         f_use_for_inference = 0.0
-        n_batches = 1
 
     # Experiment Parameters
     n_classes = outputs.shape[1]
@@ -86,8 +84,8 @@ def main(_):
     sz_validate = int(sz_set * f_use_for_validation)
     sz_inference = int(sz_set * f_use_for_inference)
     sz_train = int(sz_set - sz_validate - sz_inference)
-    sz_batch = int(sz_train / n_batches)
     sz_input = inputs.shape[1]
+    n_batches = int(sz_train / sz_batch)
 
     t_stop = time.time()
 
