@@ -3,8 +3,6 @@
 
 function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
 
-  addpath ("/home/valentin/Working/sw_tools/voicebox");
-
   % ----------------------------------------------------------------------------
   % Input:
   % ----------------------------------------------------------------------------

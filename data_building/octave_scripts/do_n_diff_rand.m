@@ -9,7 +9,7 @@ function [v_numbers] = do_n_diff_rand (n, a, b)
   
   if (abs(a - b) < n)
     disp 'Interval is too narrow.';
-    break;
+    return;
   end
   
   v_numbers = zeros(n, 1);

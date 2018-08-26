@@ -34,31 +34,34 @@ function [m_mixtures, v_labels] = build_mixtures ...
   
   m_mixtures = zeros(n_set_size, n_frame_size);  
   v_labels   = zeros(n_set_size, n_classes); 
-  n_speakers = 1;
+  n_concurrent = 1;
   n_label    = 0;
   
   for i = 1 : n_set_size
     
     % Select number of speakers
-    n_speakers = 1;
+    n_concurrent = 1;
     if (count_speakers == 1)
-      n_speakers = randi(n_max_speakers);
-      v_labels(i, n_speakers) = 1.0;
+      n_concurrent = randi(n_max_speakers);
+      v_labels(i, n_concurrent) = 1.0;
     else
       single_multi = randi(2);
        
       if (single_multi ~= 1)
-        n_speakers = 1 + randi(n_max_speakers - 1);
+        n_concurrent = randi(n_max_speakers);
         v_labels(i) = 1.0;
       end
     end
 
-    % Get n_speakers different indexes    
-    v_speakers = do_n_diff_rand(n_speakers, 1, n_files);
+    % Get n_concurrent different indexes    
+    v_speakers = do_n_diff_rand(n_concurrent, 1, n_files);
+    if (length(v_speakers) == 0)
+      error("Issues when generating random speaker pairs.");
+    endif
     
     % Collect all single speech frames in a matrix
-    m_single = zeros(n_speakers, n_frame_size);
-    for j = 1 : n_speakers
+    m_single = zeros(n_concurrent, n_frame_size);
+    for j = 1 : n_concurrent
       idx_frame = randi(v_n_frames_speech(v_speakers(j)), 1);
       m_single(j, :) = c_speech{v_speakers(j)}(idx_frame, :);
     end

@@ -1,42 +1,20 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-addpath ("/home/valentin/Working/saa_db/recordings/valentin/");
 pkg load signal
 
 % ------------------------------------------------------------------------------
 
-wavfiles  = { "/home/valentin/Working/saa_db/recordings/valentin/S1.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S2.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S3.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S4.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S5.wav", ... 
-              "/home/valentin/Working/saa_db/recordings/valentin/S6.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S7.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S8.wav", ...
-              "/home/valentin/Working/saa_db/recordings/valentin/S9.wav"};
-
-#{
-wavfiles  = { "/home/valentin/Working/saa_db/valentin_recordings/S10.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/S11.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/S13.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/S14.wav"};
-#}
-
-#{
-wavfiles  = { "/home/valentin/Working/saa_db/valentin_recordings/TEST.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/TEST.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/TEST.wav", ...
-              "/home/valentin/Working/saa_db/valentin_recordings/TEST.wav"};
-#}
+v_dir_database  = 'E:\1_Proiecte_Curente\1_Speaker_Counting\datasets\librispeech_dev_clean\dev-clean\*';
+n_max_speaker_directories = 10;
 
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
 frame_ms            = 100;
 frame_inc_ms        = 50;
-n_classes           = 5;
-n_max_speakers      = 5;
+n_classes           = 3;
+n_max_speakers      = 3;
 n_samples_per_count = 20000;
 with_reverb         = 0;
 count_speakers      = 1;
@@ -58,21 +36,23 @@ v_features  = [0, 1, 0, 1, 1, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
+v_directories = glob(strcat(v_dir_database));
+
 % Process Speech Inputs
-[c_speech, v_n_frames_speech] = build_speech_input ...
-  ( wavfiles, fs, frame_ms, frame_inc_ms);
+[c_speech, v_n_frames_speech, n_speakers_recorded] = build_speech_input ...
+  ( v_directories, fs, frame_ms, frame_inc_ms, n_max_speaker_directories);
 
 % Create Speech Mixtures
 n_set_size = (n_classes + 1) * n_samples_per_count;
 if (count_speakers == 1)
   n_set_size = n_max_speakers * n_samples_per_count;
 end
-n_files       = length(wavfiles);
+
 n_frame_size  = fs/1000 * frame_ms;
 
 [m_mixtures, v_labels] = build_mixtures ...
   ( c_speech, v_n_frames_speech, ...
-    n_set_size, n_max_speakers, n_files, ...
+    n_set_size, n_max_speakers, n_speakers_recorded, ...
     n_frame_size, with_reverb, count_speakers);
 
 % Create Features from Mixtures

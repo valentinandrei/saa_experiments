@@ -20,7 +20,7 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
   % m_silence_frames  - silence frames
   % m_silence         - Number of silence frames
   
-  debug             = 1;  
+  debug             = 0;  
   n                 = length(activity);
   n_speech          = sum(activity == 1);
   n_silence         = sum(activity == 0);
@@ -30,7 +30,7 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
   m_speech_frames   = zeros(n_speech, sz_frame);
   m_silence_frames  = zeros(n_silence, sz_frame);
     
-  t0 = time();
+  % t0 = time();
   
   for i = 1 : n - 1
     % Speech
@@ -48,9 +48,9 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
     end
   end
 
-  t1 = time();
-  printf("speech/silence frames sepparation duration: %.3f seconds\n", t1 - t0);
-  fflush(stdout);
+  % t1 = time();
+  % printf("speech/silence frames sepparation duration: %.3f seconds\n", t1 - t0);
+  % fflush(stdout);
 
   if (debug == 1)
     printf('Speech Frames: %d\n', sum(activity));;

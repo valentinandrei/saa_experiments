@@ -26,11 +26,12 @@ function [speech, frame_start, frame_stop, activity] = ...
   % frame_stop    - 1D array containing the stop of each frame
   % activity      - 1D array with the amount of speech activity per frame (0, 1)
   
-  addpath ("/home/valentin/Working/sw_tools/voicebox");
+  addpath ("E:/1_Proiecte_Curente/1_Speaker_Counting/3rdparty/voicebox");
   
   debug = 0;
   
-  [si, fs, n] = wavread(wavfile);
+  % TODO: Use wavread for .wav files. We are using this function for .flav files.
+  [si, fs] = audioread(wavfile);
   speech = si(:, 1);
   
   if (fs ~= target_fs)
@@ -50,7 +51,7 @@ function [speech, frame_start, frame_stop, activity] = ...
   t0 = time();
   vad_decision            = vadsohn(speech, fs);
   t1 = time();
-  printf("vadsohn duration: %.3f seconds\n", t1 - t0);
+  % printf("vadsohn duration: %.3f seconds\n", t1 - t0);
   fflush(stdout);
   
   n_frames                = floor((n_seconds * 1000 - (frame_ms - frame_inc_ms)) / frame_inc_ms) - 1;
@@ -71,7 +72,7 @@ function [speech, frame_start, frame_stop, activity] = ...
   end
   
   t2 = time();
-  printf("frame start-stop creation duration: %.3f seconds\n", t2 - t1);
+  % printf("frame start-stop creation duration: %.3f seconds\n", t2 - t1);
   fflush(stdout);
   
   if (debug == 1)
