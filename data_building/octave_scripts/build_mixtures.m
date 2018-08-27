@@ -32,13 +32,15 @@ function [m_mixtures, v_labels] = build_mixtures ...
     n_classes = n_max_speakers;
   end
   
-  m_mixtures = zeros(n_set_size, n_frame_size);  
-  v_labels   = zeros(n_set_size, n_classes); 
-  n_concurrent = 1;
-  n_label    = 0;
+  m_mixtures    = zeros(n_set_size, n_frame_size);  
+  v_labels      = zeros(n_set_size, n_classes); 
+  n_concurrent  = 1;
+  n_label       = 0;
+  n_errors      = 0;
   
-  for i = 1 : n_set_size
-    
+  i = 1;
+  while (i <= n_set_size)
+
     % Select number of speakers
     n_concurrent = 1;
     if (count_speakers == 1)
@@ -62,20 +64,27 @@ function [m_mixtures, v_labels] = build_mixtures ...
     % Collect all single speech frames in a matrix
     m_single = zeros(n_concurrent, n_frame_size);
     for j = 1 : n_concurrent
-      idx_frame = randi(v_n_frames_speech(v_speakers(j)), 1);
+      idx_frame = randi(v_n_frames_speech(v_speakers(j)));
       m_single(j, :) = c_speech{v_speakers(j)}(idx_frame, :);
     end
 
     % Mix all signals in the matrix      
     if (with_reverb == 0)
-      m_mixtures(i, :) = do_mix_non_reverb(m_single, 0);
+      if (sum(m_single(:)) ~=0)
+        v_mixture = do_mix_non_reverb(m_single, 1);
+        m_mixtures(i, :) = v_mixture;
+        i = i + 1;       
+      else
+        n_errors = n_errors + 1;
+      endif
     else
       % TODO
-    end
-  end
+    end    
+  endwhile
   
   t1 = time();
   printf("build mixtures duration: %.3f seconds\n", t1 - t0);
+  printf("number of errors (Inf values): %d\n", n_errors);
   fflush(stdout);
 
 endfunction

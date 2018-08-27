@@ -30,7 +30,7 @@ function [speech, frame_start, frame_stop, activity] = ...
   
   debug = 0;
   
-  % TODO: Use wavread for .wav files. We are using this function for .flav files.
+  % TODO: Use wavread for .wav files. We are using this function for .flac files.
   [si, fs] = audioread(wavfile);
   speech = si(:, 1);
   

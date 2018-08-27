@@ -19,13 +19,11 @@ function [s_mixed] = do_mix_non_reverb (m_signals, b_normalize)
   debug = 0;
 
   n_signals = size(m_signals, 1);
+  s_mixed = sum(m_signals, 1);
   
-  f_multiplier = 1;
   if (b_normalize == 1)
-    f_multiplier = 1 / n_signals;
-  end
-  
-  s_mixed = f_multiplier * sum(m_signals, 1);
+    s_mixed = normalize(s_mixed, 'peak');
+  endif
 
   if (debug == 1)
     subplot(2, 1, 1); plot(m_signals'); grid;

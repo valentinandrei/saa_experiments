@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
+function [m_speech_frames, n_speech] = ...
   get_speech_silence_frames (speech, frame_start, frame_stop, activity)
   
   % This function extracts silence and speech frames and returns 2 containers.
@@ -20,32 +20,36 @@ function [m_speech_frames, n_speech, m_silence_frames, n_silence] = ...
   % m_silence_frames  - silence frames
   % m_silence         - Number of silence frames
   
-  debug             = 0;  
+  debug             = 0;
+  f_vad_threshold   = 0.99;
   n                 = length(activity);
   n_speech          = sum(activity == 1);
-  n_silence         = sum(activity == 0);
   i_speech          = 1;
-  i_silence         = 1;
   sz_frame          = frame_stop(1) - frame_start(1) + 1;  
   m_speech_frames   = zeros(n_speech, sz_frame);
-  m_silence_frames  = zeros(n_silence, sz_frame);
+  
+  % We don't need the silence frames for the moment, since VAD will select only
+  % speech in a real system
+  % n_silence         = sum(activity == 0);  
+  % m_silence_frames  = zeros(n_silence, sz_frame);
+  % i_silence         = 1
     
   % t0 = time();
   
   for i = 1 : n - 1
     % Speech
-    if (activity(i) == 1)
+    if (activity(i) > f_vad_threshold)
       frame = speech(frame_start(i) : frame_stop(i));
       m_speech_frames(i_speech, :) = frame';
       i_speech ++;
     end
     
     % Silence
-    if (activity(i) == 0)
-      frame = speech(frame_start(i) : frame_stop(i));
-      m_silence_frames(i_silence, :) = frame';
-      i_silence ++;
-    end
+    % if (activity(i) == 0)
+    %  frame = speech(frame_start(i) : frame_stop(i));
+    %  m_silence_frames(i_silence, :) = frame';
+    %  i_silence ++;
+    % end
   end
 
   % t1 = time();

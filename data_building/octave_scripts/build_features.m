@@ -25,6 +25,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   n_ar_frame_ms       = 25;
   n_fft_stop_freq     = 4000;
   n_env_resample_freq = fs/8;
+  n_histogram_bins    = 100;
   
   ##############################################################################
   # Compute Sizes and Allocate Memory
@@ -87,7 +88,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   if (v_features(8) == 1)
     f_min = min(test_f);
     f_max = max(test_f);
-    test_hist = get_histogram(test_f, f_min, f_max, 50);
+    test_hist = get_histogram(test_f, f_min, f_max, n_histogram_bins);
     n_feature_size += length(test_hist);
   end
   
@@ -96,7 +97,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   
   s0 = time();
   
-  n_progress_step = 5000;
+  n_progress_step = 2000;
   
   for i = 1 : n_train_test_size
   
@@ -104,11 +105,9 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     # Produce Selected Features
     ############################################################################
     
-    % MFCC has some bugs and produces infinite values in some cases
     b_finite = 1;
-    
     v_feature = [];
-    v_mixed   = m_mixtures(i, :);
+    v_mixed   = m_mixtures(i, :);   
     
     if (v_features(1) == 1)
       v_feature = [v_feature, v_mixed];
@@ -120,21 +119,12 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     end
     
     if (v_features(3) == 1)
-      v_spectrogram = get_speech_spectrogram(v_mixed, fs);
+      v_spectrogram = get_speech_spectrogram(v_mixed, fs)';
       v_feature = [v_feature, v_spectrogram'];
     end
     
     if (v_features(4) == 1)
       v_mfcc = melcepst(v_mixed, fs, s_mfcc_parameters)(:);
-      
-      if (sum(isfinite(v_mfcc)) ~= length(v_mfcc))
-        b_finite = 0;
-        printf("Mixture %d resulted in Inf.\n", i);
-        fflush(stdout);
-     
-        continue;   
-      end
-      
       v_feature = [v_feature, v_mfcc'];        
     end
     
@@ -157,7 +147,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     if (v_features(8) == 1)
       f_min = min(v_mixed);
       f_max = max(v_mixed);
-      v_hist = get_histogram(v_mixed, f_min, f_max, 50);
+      v_hist = get_histogram(v_mixed, f_min, f_max, n_histogram_bins);
       v_feature = [v_feature, v_hist];
     end      
     

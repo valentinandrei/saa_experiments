@@ -2,20 +2,22 @@
 # E-Mail: am_valentin@yahoo.com
 
 pkg load signal
+pkg load ltfat
+debug_on_warning(1);
 
 % ------------------------------------------------------------------------------
 
 v_dir_database  = 'E:\1_Proiecte_Curente\1_Speaker_Counting\datasets\librispeech_dev_clean\dev-clean\*';
-n_max_speaker_directories = 10;
+n_max_speaker_directories = 30;
 
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
 frame_ms            = 100;
 frame_inc_ms        = 50;
-n_classes           = 3;
-n_max_speakers      = 3;
-n_samples_per_count = 20000;
+n_classes           = 4;
+n_max_speakers      = 4;
+n_samples_per_count = 50000;
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;
@@ -32,7 +34,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 1, 0, 1, 1, 1, 0, 1];
+v_features  = [0, 0, 1, 0, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
@@ -54,6 +56,10 @@ n_frame_size  = fs/1000 * frame_ms;
   ( c_speech, v_n_frames_speech, ...
     n_set_size, n_max_speakers, n_speakers_recorded, ...
     n_frame_size, with_reverb, count_speakers);
+    
+% Here we don't need to store the single speech frames into memory
+% clear c_speech
+% clear v_n_frames_speech
 
 % Create Features from Mixtures
 m_features = build_features (m_mixtures, fs, frame_ms, v_features);

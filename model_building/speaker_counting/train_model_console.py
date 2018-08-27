@@ -5,19 +5,24 @@ import numpy as np
 import tensorflow as tf
 
 # Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/data_building/octave_scripts/x_dummy.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/data_building/octave_scripts/y_dummy.txt'
-s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/model_building/speaker_counting/'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/y_train.txt'
+s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
 n_first_layer_multiplier = 1.5
 n_convolutional_layers = 2
-n_dense_layers = 3
-n_filt_pl = 20
-n_filt_sz = 10
+n_dense_layers = 4
+n_filt_pl = 30
+n_filt_sz = 20
+n_drop_bn_jump = 2
 
 # Convergence
-f_start_lr = 0.001
+f_start_lr = 0.0001
 f_momentum = 0.95
 f_decay_rate = 0.96
 n_lr_gstep = 2000
@@ -26,9 +31,11 @@ n_lr_dstep = 1000
 # Training
 f_use_for_validation = 0.025
 f_use_for_inference = 0.1
-sz_batch = 32
+sz_batch = 8
 f_precision_save_threshold = 0.85
 f_reinitialization_threshold = 0.25
+f_bn_epsilon = 1
+f_dropout_prob = 0.85
 n_max_iterations = 20000
 n_iterations_for_stop = 5000
 n_iterations_for_sleep = 1000
@@ -153,7 +160,7 @@ def main(_):
             sz_input_new = sz_input - (i + 1) * sz_input_decrease
             wc_i = tf.Variable(tf.random_normal([n_filt_sz, n_filt_pl, n_filt_pl], mean=0.0), dtype=tf.float32)
             bc_i = tf.Variable(tf.zeros([sz_input_new, n_filt_pl]), dtype=tf.float32)
-            xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)
+            xc_i = tf.sigmoid(tf.nn.conv1d(v_activations[idx_last], wc_i, stride=1, padding='VALID') + bc_i)           
 
             v_filters.append(wc_i)
             v_biases.append(bc_i)
@@ -164,12 +171,17 @@ def main(_):
         sz_input_ann = sz_input_new * n_filt_pl
         x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_input_ann])
 
+        # Do batch normalization
+
+        bn_conv_mean, bn_conv_var = tf.nn.moments(x_final_conv, [0])
+        x_final_conv_bn = tf.nn.batch_normalization(x_final_conv, bn_conv_mean, bn_conv_var, None, None, f_bn_epsilon)
+
     # First Densely Connected Layer
 
     sz_layer = int(sz_input * n_first_layer_multiplier)
     wd_0 = tf.Variable(tf.random_normal([sz_input_ann, sz_layer], mean=0.0), dtype=tf.float32)
     bd_0 = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
-    xd_0 = tf.sigmoid(tf.matmul(x_final_conv, wd_0) + bd_0)
+    xd_0 = tf.sigmoid(tf.matmul(x_final_conv_bn, wd_0) + bd_0)
     
     v_filters.append(wd_0)
     v_biases.append(bd_0)
@@ -181,7 +193,15 @@ def main(_):
     for i in range(1, n_dense_layers):
         wd_i = tf.Variable(tf.random_normal([sz_layer, sz_layer], mean=0.0), dtype=tf.float32)
         bd_i = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
-        xd_i = tf.sigmoid(tf.matmul(v_activations[idx_last], wd_i) + bd_i)
+        xd_i_1 = tf.matmul(v_activations[idx_last], wd_i)
+
+        if (i % n_drop_bn_jump == 0):
+            bn_dense_mean, bn_dense_var = tf.nn.moments(xd_i_1, [0])
+            xd_i_2 = tf.nn.batch_normalization(xd_i_1, bn_dense_mean, bn_dense_var, None, None, f_bn_epsilon)
+        else:
+            xd_i_2 = tf.nn.dropout(xd_i_1, f_dropout_prob)
+
+        xd_i = tf.sigmoid(xd_i_2 + bd_i)
 
         v_filters.append(wd_i)
         v_biases.append(bd_i)
