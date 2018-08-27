@@ -15,35 +15,37 @@ s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
 n_first_layer_multiplier = 1.5
-n_convolutional_layers = 2
-n_dense_layers = 4
-n_filt_pl = 30
-n_filt_sz = 20
-n_drop_bn_jump = 2
+n_convolutional_layers = 4
+n_dense_layers = 8
+n_filt_pl = 60
+n_filt_sz = 8
+do_bn_conv = 1
+do_bn_dense = 1
+do_dropout_dense = 1
+n_drop_jump = 3
+n_bn_jump = 4
 
 # Convergence
-f_start_lr = 0.0001
-f_momentum = 0.95
+f_start_lr = 0.01
+f_momentum = 0.98
 f_decay_rate = 0.96
-n_lr_gstep = 2000
-n_lr_dstep = 1000
+n_lr_gstep = 1000
+n_lr_dstep = 500
 
 # Training
-f_use_for_validation = 0.025
-f_use_for_inference = 0.1
-sz_batch = 8
-f_precision_save_threshold = 0.85
-f_reinitialization_threshold = 0.25
-f_bn_epsilon = 1
+f_use_for_validation = 0.005
+f_use_for_inference = 0.001
+sz_batch = 64
+f_bn_epsilon = 1e-9
 f_dropout_prob = 0.85
-n_max_iterations = 20000
+n_max_iterations = 30000
 n_iterations_for_stop = 5000
 n_iterations_for_sleep = 1000
+n_sleep_seconds = 60
 
 # Plotting & debugging
 b_print_output = 1
 n_print_interval = 200
-b_check_fitting = 0
 
 
 def print_confusion_matrix(v_predicted, v_true, n_classes):
@@ -76,14 +78,6 @@ def main(_):
     # Load Input Files
     inputs = np.loadtxt(x_filename)
     outputs = np.loadtxt(y_filename)
-
-    # For debugging, check if the train error converges to 0% for a very small subset
-    if b_check_fitting:
-        global f_use_for_validation
-        global f_use_for_inference
-        global n_batches
-        f_use_for_validation = 0.25
-        f_use_for_inference = 0.0
 
     # Experiment Parameters
     n_classes = outputs.shape[1]
@@ -172,16 +166,16 @@ def main(_):
         x_final_conv = tf.reshape(v_activations[idx_last], [-1, sz_input_ann])
 
         # Do batch normalization
-
-        bn_conv_mean, bn_conv_var = tf.nn.moments(x_final_conv, [0])
-        x_final_conv_bn = tf.nn.batch_normalization(x_final_conv, bn_conv_mean, bn_conv_var, None, None, f_bn_epsilon)
+        if (do_bn_conv == 1):
+            bn_conv_mean, bn_conv_var = tf.nn.moments(x_final_conv, [0])
+            x_final_conv = tf.nn.batch_normalization(x_final_conv, bn_conv_mean, bn_conv_var, None, None, f_bn_epsilon)
 
     # First Densely Connected Layer
 
     sz_layer = int(sz_input * n_first_layer_multiplier)
     wd_0 = tf.Variable(tf.random_normal([sz_input_ann, sz_layer], mean=0.0), dtype=tf.float32)
     bd_0 = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
-    xd_0 = tf.sigmoid(tf.matmul(x_final_conv_bn, wd_0) + bd_0)
+    xd_0 = tf.sigmoid(tf.matmul(x_final_conv, wd_0) + bd_0)
     
     v_filters.append(wd_0)
     v_biases.append(bd_0)
@@ -193,15 +187,18 @@ def main(_):
     for i in range(1, n_dense_layers):
         wd_i = tf.Variable(tf.random_normal([sz_layer, sz_layer], mean=0.0), dtype=tf.float32)
         bd_i = tf.Variable(tf.zeros([sz_layer]), dtype=tf.float32)
-        xd_i_1 = tf.matmul(v_activations[idx_last], wd_i)
+        xd_i = tf.matmul(v_activations[idx_last], wd_i)
 
-        if (i % n_drop_bn_jump == 0):
-            bn_dense_mean, bn_dense_var = tf.nn.moments(xd_i_1, [0])
-            xd_i_2 = tf.nn.batch_normalization(xd_i_1, bn_dense_mean, bn_dense_var, None, None, f_bn_epsilon)
-        else:
-            xd_i_2 = tf.nn.dropout(xd_i_1, f_dropout_prob)
+        if (do_bn_dense == 1):
+            if (i % n_bn_jump == 0):
+                bn_dense_mean, bn_dense_var = tf.nn.moments(xd_i, [0])
+                xd_i = tf.nn.batch_normalization(xd_i, bn_dense_mean, bn_dense_var, None, None, f_bn_epsilon)
+                
+        if (do_dropout_dense == 1):
+            if (i % n_drop_jump == 0):
+                xd_i = tf.nn.dropout(xd_i, f_dropout_prob)
 
-        xd_i = tf.sigmoid(xd_i_2 + bd_i)
+        xd_i = tf.sigmoid(xd_i + bd_i)
 
         v_filters.append(wd_i)
         v_biases.append(bd_i)
@@ -262,7 +259,7 @@ def main(_):
         # Use a mechanism to let the CPU and GPU cool when doing long training
         n_iterations_since_sleep += 1
         if n_iterations_since_sleep == n_iterations_for_sleep:
-            time.sleep(60)  # Sleep for a little to let CPU and GPU cool
+            time.sleep(n_sleep_seconds)  # Sleep for a little to let CPU and GPU cool
             n_iterations_since_sleep = 0
 
         # Get a random batch
@@ -296,8 +293,6 @@ def main(_):
                 n_iterations_since_print = 0
 
         f_precision = f_acc
-        if b_check_fitting:
-            f_precision = f_train_acc
 
         # Stop training when the error is not decreasing for a certain number of iterations.
         if f_precision > f_max_precision:
