@@ -5,28 +5,28 @@ import numpy as np
 import tensorflow as tf
 
 # Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/x_train_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/y_train.txt'
-s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
-
-# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/x_train_normalized.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/y_train.txt'
 # s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+
 # Architecture
-n_first_layer_multiplier = 1.5
-n_convolutional_layers = 4
-n_dense_layers = 8
-n_filt_pl = 60
-n_filt_sz = 8
-do_bn_conv = 1
-do_bn_dense = 1
-do_dropout_dense = 1
+n_first_layer_multiplier = 1.0
+n_convolutional_layers = 1
+n_dense_layers = 2
+n_filt_pl = 30
+n_filt_sz = 10
+do_bn_conv = 0
+do_bn_dense = 0
+do_dropout_dense = 0
 n_drop_jump = 3
 n_bn_jump = 4
 
 # Convergence
-f_start_lr = 0.01
+f_start_lr = 0.001
 f_momentum = 0.98
 f_decay_rate = 0.96
 n_lr_gstep = 1000
@@ -34,7 +34,6 @@ n_lr_dstep = 500
 
 # Training
 f_use_for_validation = 0.005
-f_use_for_inference = 0.001
 sz_batch = 64
 f_bn_epsilon = 1e-9
 f_dropout_prob = 0.85
@@ -83,8 +82,7 @@ def main(_):
     n_classes = outputs.shape[1]
     sz_set = inputs.shape[0]
     sz_validate = int(sz_set * f_use_for_validation)
-    sz_inference = int(sz_set * f_use_for_inference)
-    sz_train = int(sz_set - sz_validate - sz_inference)
+    sz_train = int(sz_set - sz_validate)
     sz_input = inputs.shape[1]
     n_batches = int(sz_train / sz_batch)
 
@@ -96,20 +94,17 @@ def main(_):
     print("Input length         : ", str(sz_input))
     print("Number of classes    : ", str(n_classes))
     print("Used for training    : ", str(sz_train))
-    print("Used for inference   : ", str(sz_inference))
     print("Used for validation  : ", str(sz_validate))
     print("Batch size           : ", str(sz_batch))
 
     ###########################################################################
-    # Split Data into Train, Test and Validate
+    # Split Data into Train and Validate
     ###########################################################################
 
     x_train = inputs[0:sz_train][:]
-    x_inference = inputs[sz_train:sz_train+sz_inference][:]
-    x_validate = inputs[sz_train+sz_inference:sz_set][:]
+    x_validate = inputs[sz_train:sz_set][:]
     y_train = outputs[0:sz_train][:]
-    y_inference = outputs[sz_train:sz_train+sz_inference][:]
-    y_validate = outputs[sz_train+sz_inference:sz_set][:]
+    y_validate = outputs[sz_train:sz_set][:]
 
     ###########################################################################
     # Build Model Graph
@@ -237,8 +232,8 @@ def main(_):
     # Create Variable Saver
     model_saver = tf.train.Saver()
 
-    # Run Training
-    tf.initialize_all_variables().run()
+    # Initialize variables
+    tf.global_variables_initializer().run()
 
     t_start = time.time()
 
@@ -253,6 +248,7 @@ def main(_):
     y_train_error = list()
     y_validate_error = list()
 
+    # Run training
     b_stop = 0
     while b_stop == 0:
 
@@ -309,13 +305,6 @@ def main(_):
 
     t_stop = time.time()
     print("Training time        : " + str(t_stop - t_start))
-
-    ###########################################################################
-    # Run Inference
-    ###########################################################################
-
-    f_model_accuracy = sess.run(accuracy, feed_dict={x_: x_inference, y_: y_inference})
-    print("Inference accuracy   : " + str(f_model_accuracy))
 
 
 if __name__ == '__main__':

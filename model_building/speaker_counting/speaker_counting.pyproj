@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{ddab86ef-cab3-4c3c-a748-990a2cec65d5}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>train_model_console.py</StartupFile>
+    <StartupFile>train_model_console_keras.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="inference_ann_model.py" />
     <Compile Include="train_model_console.py" />
+    <Compile Include="train_model_console_keras.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
