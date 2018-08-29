@@ -8,25 +8,29 @@ from tensorflow import keras
 from tensorflow.keras.callbacks import CSVLogger
 
 # Inputs
-# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/x_train_normalized.txt'
-# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/y_train.txt'
-# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
-
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_30s_4c/y_train.txt'
 s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
-# Architecture
-n_filters_L1 = 30
-n_kernel_sz_L1 = 10
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
-# Convergence
-f_start_lr = 0.001
+# Architecture
+n_filters_L1        = 20
+n_kernel_sz_L1      = 10
+n_filters_L2        = 30
+n_kernel_sz_L2      = 5
+f_dropout_prob_L1   = 0.5
+n_units_dense_L1    = 2048
+n_units_dense_L2    = 1024
+f_dropout_prob_L2   = 0.5
 
 # Training
 f_use_for_validation = 0.005
 sz_batch = 64
-n_epochs = 5
+n_epochs = 20
+f_start_lr = 0.001
 
 # Plotting & debugging
 # TODO
@@ -84,11 +88,17 @@ def main(_):
 
     the_network.add(keras.layers.Conv1D(filters = n_filters_L1, kernel_size = (n_kernel_sz_L1)))
 
+    the_network.add(keras.layers.Conv1D(filters = n_filters_L2, kernel_size = (n_kernel_sz_L2)))
+
+    the_network.add(keras.layers.Dropout(f_dropout_prob_L1))
+
     the_network.add(keras.layers.Flatten())
 
-    the_network.add(keras.layers.Dense(sz_input, activation='relu'))
+    the_network.add(keras.layers.Dense(n_units_dense_L1, activation='relu'))
 
-    the_network.add(keras.layers.Dense(sz_input, activation='relu'))
+    the_network.add(keras.layers.Dense(n_units_dense_L2, activation='relu'))
+
+    the_network.add(keras.layers.Dropout(f_dropout_prob_L2))
 
     the_network.add(keras.layers.Dense(n_classes, activation='softmax'))
 
@@ -101,7 +111,16 @@ def main(_):
                         metrics=['categorical_accuracy'])
    
     s_log_file = s_model_save_dir + "the_network_log.csv"
+
     csv_logger = CSVLogger(s_log_file, append=True, separator=';')
+    
+    model_saver = keras.callbacks.ModelCheckpoint(s_model_save_dir + "the_network.h5", 
+                                                  monitor='val_categorical_accuracy', 
+                                                  verbose=0, 
+                                                  save_best_only=True, 
+                                                  save_weights_only=False, 
+                                                  mode='auto', 
+                                                  period=1)
 
     t_start = time.time()
     the_network.fit(x = x_train, 
@@ -109,17 +128,10 @@ def main(_):
                     epochs=n_epochs, 
                     batch_size=sz_batch, 
                     validation_data=(x_validate, y_validate),
-                    callbacks=[csv_logger])
+                    callbacks=[csv_logger, model_saver])
     
     t_stop = time.time()
     print("Training time : " + str(t_stop - t_start))
-
-    ###########################################################################
-    # Save Model
-    ###########################################################################
-
-    s_model_file = s_model_save_dir + "the_network.h5"
-    the_network.save(s_model_file)
 
 if __name__ == '__main__':
 
