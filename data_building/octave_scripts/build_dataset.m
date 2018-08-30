@@ -3,7 +3,7 @@
 
 pkg load signal
 pkg load ltfat
-debug_on_warning(1);
+% debug_on_warning(1);
 
 % ------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 0, 1, 0, 0, 1, 0, 1];
+v_features  = [1, 1, 0, 0, 0, 0, 0, 0];
 
 % ------------------------------------------------------------------------------
 
@@ -58,11 +58,14 @@ n_frame_size  = fs/1000 * frame_ms;
     n_frame_size, with_reverb, count_speakers);
     
 % Here we don't need to store the single speech frames into memory
-% clear c_speech
-% clear v_n_frames_speech
+clear c_speech
+clear v_n_frames_speech
 
 % Create Features from Mixtures
 m_features = build_features (m_mixtures, fs, frame_ms, v_features);
+
+% Here we just need to store the features
+clear m_mixtures
 
 % ------------------------------------------------------------------------------
 
@@ -93,22 +96,19 @@ end
 if (b_train == 1)
 
   [m_features_norm, mu, sigma] = do_feature_normalization(m_features);
+  
+  % Here we don't need to store the unnormalized features anymore
+  clear m_features
+  
   save("-ascii", "x_train_normalized.txt", "m_features_norm");
   save("-ascii", "y_train.txt", "v_labels");
-  
-  figure();
-  
-  subplot(2,2,1); plot(m_features(randi(n_samples), :)); grid;
-  subplot(2,2,2); plot(m_features(randi(n_samples), :)); grid;
-  subplot(2,2,3); plot(m_features(randi(n_samples), :)); grid;
-  subplot(2,2,4); plot(m_features(randi(n_samples), :)); grid;
   
   figure();
   
   subplot(2,2,1); plot(m_features_norm(randi(n_samples), :)); grid;
   subplot(2,2,2); plot(m_features_norm(randi(n_samples), :)); grid;
   subplot(2,2,3); plot(m_features_norm(randi(n_samples), :)); grid;
-  subplot(2,2,4); plot(m_features_norm(randi(n_samples), :)); grid;  
+  subplot(2,2,4); plot(m_features_norm(randi(n_samples), :)); grid; 
   
 else
 
