@@ -25,7 +25,9 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   n_ar_frame_ms       = 25;
   n_fft_stop_freq     = 4000;
   n_env_resample_freq = fs/8;
-  n_histogram_bins    = 100;
+  n_histogram_bins    = 50;
+  f_histogram_start   = 0;
+  f_histogram_stop    = 0.5;
   
   ##############################################################################
   # Compute Sizes and Allocate Memory
@@ -145,9 +147,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
     end
     
     if (v_features(8) == 1)
-      f_min = min(v_mixed);
-      f_max = max(v_mixed);
-      v_hist = get_histogram(v_mixed, f_min, f_max, n_histogram_bins);
+      v_hist = get_histogram(v_mixed, f_histogram_start, f_histogram_stop, n_histogram_bins);
       v_feature = [v_feature, v_hist];
     end      
     

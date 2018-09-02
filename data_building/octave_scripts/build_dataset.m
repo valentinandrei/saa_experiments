@@ -8,7 +8,7 @@ pkg load ltfat
 % ------------------------------------------------------------------------------
 
 v_dir_database  = 'E:\1_Proiecte_Curente\1_Speaker_Counting\datasets\librispeech_dev_clean\dev-clean\*';
-n_max_speaker_directories = 30;
+n_max_speaker_directories = 35;
 
 % ------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ frame_ms            = 100;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 50000;
+n_samples_per_count = 100000;
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;
@@ -34,7 +34,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [1, 1, 0, 0, 0, 0, 0, 0];
+v_features  = [0, 1, 0, 0, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
