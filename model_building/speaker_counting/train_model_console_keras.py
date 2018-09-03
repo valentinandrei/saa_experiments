@@ -20,8 +20,8 @@ s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 # Architecture
 n_filters_L1        = 16
 n_filters_L2        = 32
-n_kernel_sz_L1      = 16
-n_kernel_sz_L2      = 8
+n_kernel_sz_L1      = 32
+n_kernel_sz_L2      = 16
 n_strides_L1        = 1
 n_strides_L2        = 1
 n_strides_L3        = 1
