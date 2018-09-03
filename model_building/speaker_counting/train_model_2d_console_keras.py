@@ -9,22 +9,22 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-# x_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/x_train_normalized.txt'
-# y_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/y_train.txt'
-# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
+x_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/x_train_normalized.txt'
+y_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/y_train.txt'
+s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
-s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
-n_size_x            = 25
-n_size_y            = 20
-n_conv_blocks       = 2
-v_convs_per_block   = [2, 2]
-v_pool_size         = [2, 2]
-v_filters_per_conv  = [64, 128]
-v_krn_sz_per_conv   = [3, 3]
+n_size_x            = 127
+n_size_y            = 48
+n_conv_blocks       = 3
+v_convs_per_block   = [3, 3, 3]
+v_pool_size         = [1, 1, 2]
+v_filters_per_conv  = [64, 128, 256]
+v_krn_sz_per_conv   = [3, 3, 3]
 f_dropout_conv      = 1.0
 n_fc_layers         = 2
 v_fc_layer_sz       = [1024, 512]
