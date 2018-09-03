@@ -34,9 +34,15 @@ f_dropout_prob_L3   = 0.1
 
 # Training
 f_use_for_validation = 0.02
+<<<<<<< HEAD
 sz_batch = 256
 n_epochs = 160
 f_start_lr = 0.001
+=======
+sz_batch = 64
+n_epochs = 80
+f_start_lr = 0.0005
+>>>>>>> 27e69a3c873bdcb72f66d2eed1df087a5600a4ad
 
 # Plotting & debugging
 # TODO
@@ -136,7 +142,11 @@ def main(_):
    
     s_log_file = s_model_save_dir + "the_network_log.csv"
 
+<<<<<<< HEAD
     class_predictions = ConfusionMatrix()
+=======
+    conf_matrix = ConfusionMatrix()
+>>>>>>> 27e69a3c873bdcb72f66d2eed1df087a5600a4ad
 
     csv_logger = CSVLogger(s_log_file, append=True, separator=';')
     
@@ -154,7 +164,11 @@ def main(_):
                     epochs=n_epochs, 
                     batch_size=sz_batch, 
                     validation_data=(x_validate, y_validate),
+<<<<<<< HEAD
                     callbacks=[class_predictions, csv_logger, model_saver])
+=======
+                    callbacks=[conf_matrix, csv_logger, model_saver])
+>>>>>>> 27e69a3c873bdcb72f66d2eed1df087a5600a4ad
     
     t_stop = time.time()
     print("Training time : " + str(t_stop - t_start))
