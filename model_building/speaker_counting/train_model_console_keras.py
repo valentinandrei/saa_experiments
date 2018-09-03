@@ -6,21 +6,22 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import CSVLogger
+from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/x_train_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/y_train.txt'
-s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+x_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/x_train_normalized.txt'
+y_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/y_train.txt'
+s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
-# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
-# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+# x_filename = '/home/valentin_m_andrei/datasets/x_dummy.txt'
+# y_filename = '/home/valentin_m_andrei/datasets/y_dummy.txt'
+# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
 # Architecture
-n_filters_L1        = 20
-n_filters_L2        = 30
-n_kernel_sz_L1      = 15
-n_kernel_sz_L2      = 10
+n_filters_L1        = 16
+n_filters_L2        = 32
+n_kernel_sz_L1      = 16
+n_kernel_sz_L2      = 8
 n_strides_L1        = 1
 n_strides_L2        = 1
 n_strides_L3        = 1
@@ -32,13 +33,21 @@ f_dropout_prob_L2   = 0.1
 f_dropout_prob_L3   = 0.1
 
 # Training
-f_use_for_validation = 0.005
-sz_batch = 64
-n_epochs = 80
-f_start_lr = 0.0001
+f_use_for_validation = 0.02
+sz_batch = 256
+n_epochs = 160
+f_start_lr = 0.001
 
 # Plotting & debugging
 # TODO
+
+class ConfusionMatrix(keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs={}):
+        print('Confusion matrix: ')
+        y_prob = self.model.predict(self.validation_data[0])
+        y_pred = np.argmax(y_prob, axis=1)
+        y_true = np.argmax(self.validation_data[1], axis=1)
+        print(confusion_matrix(y_true, y_pred))
 
 def main(_):
 
@@ -127,6 +136,8 @@ def main(_):
    
     s_log_file = s_model_save_dir + "the_network_log.csv"
 
+    class_predictions = ConfusionMatrix()
+
     csv_logger = CSVLogger(s_log_file, append=True, separator=';')
     
     model_saver = keras.callbacks.ModelCheckpoint(s_model_save_dir + "the_network.h5", 
@@ -137,13 +148,13 @@ def main(_):
                                                   mode='auto', 
                                                   period=1)
 
-    t_start = time.time()
+    t_stiart = time.time()
     the_network.fit(x = x_train, 
                     y = y_train, 
                     epochs=n_epochs, 
                     batch_size=sz_batch, 
                     validation_data=(x_validate, y_validate),
-                    callbacks=[csv_logger, model_saver])
+                    callbacks=[class_predictions, csv_logger, model_saver])
     
     t_stop = time.time()
     print("Training time : " + str(t_stop - t_start))

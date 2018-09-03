@@ -1,23 +1,24 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
+addpath("/home/valentin_m_andrei/libs/voicebox");
 pkg load signal
 pkg load ltfat
 % debug_on_warning(1);
 
 % ------------------------------------------------------------------------------
 
-v_dir_database  = 'E:\1_Proiecte_Curente\1_Speaker_Counting\datasets\librispeech_dev_clean\dev-clean\*';
+v_dir_database  = '/home/valentin_m_andrei/datasets/LibriSpeech/dev-clean/*';
 n_max_speaker_directories = 35;
 
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 100;
+frame_ms            = 300;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 100000;
+n_samples_per_count = 50000;
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;

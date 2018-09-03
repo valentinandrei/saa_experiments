@@ -42,12 +42,12 @@ function [c_speech, v_n_frames_speech, n_speakers] = build_speech_input ...
     printf("Folder: %s\n", v_directories{i});
     fflush(stdout);
     
-    sessions_list = glob(strcat(v_directories{i}, "\\*"));
+    sessions_list = glob(strcat(v_directories{i}, "/*"));
     
     % Loop across all speaker sessions
     for j = 1 : length(sessions_list)
       
-      file_list = glob(strcat(sessions_list{j}, "\\*.flac"));
+      file_list = glob(strcat(sessions_list{j}, "/*.flac"));
       
       % Loop across all speaker recordings
       for k = 1: length(file_list)

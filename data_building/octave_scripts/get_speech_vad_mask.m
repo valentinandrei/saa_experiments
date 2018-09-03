@@ -26,7 +26,7 @@ function [speech, frame_start, frame_stop, activity] = ...
   % frame_stop    - 1D array containing the stop of each frame
   % activity      - 1D array with the amount of speech activity per frame (0, 1)
   
-  addpath ("E:/1_Proiecte_Curente/1_Speaker_Counting/3rdparty/voicebox");
+  % addpath ("E:/1_Proiecte_Curente/1_Speaker_Counting/3rdparty/voicebox");
   
   debug = 0;
   
