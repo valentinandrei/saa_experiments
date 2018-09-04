@@ -14,12 +14,12 @@ n_max_speaker_directories = 5;
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 300;
+frame_ms            = 500;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 500;
-n_block_size        = 100;
+n_samples_per_count = 5000;
+n_block_size        = 4000;
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;
@@ -36,7 +36,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 1, 0, 0, 0, 1, 0, 1];
+v_features  = [0, 0, 1, 0, 0, 0, 0, 0];
 
 % ------------------------------------------------------------------------------
 

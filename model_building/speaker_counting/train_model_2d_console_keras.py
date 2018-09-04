@@ -13,8 +13,8 @@ from sklearn.metrics import confusion_matrix
 # y_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/y_train.txt'
 # s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_train.txt'
 s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
@@ -157,7 +157,10 @@ def main(_):
                                                   mode='auto', 
                                                   period=1)
 
-    t_stiart = time.time()
+    print(the_network.summary())
+    input("Press Enter to continue...")
+
+    t_start = time.time()
     the_network.fit(x = x_train, 
                     y = y_train, 
                     epochs=n_epochs, 

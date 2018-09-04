@@ -9,33 +9,29 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/x_train_normalized.txt'
-y_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/y_train.txt'
-s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/y_train.txt'
+s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
-# x_filename = '/home/valentin_m_andrei/datasets/x_dummy.txt'
-# y_filename = '/home/valentin_m_andrei/datasets/y_dummy.txt'
-# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
+# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
-n_filters_L1        = 16
-n_filters_L2        = 32
-n_kernel_sz_L1      = 16
-n_kernel_sz_L2      = 8
-n_strides_L1        = 1
-n_strides_L2        = 1
-n_strides_L3        = 1
-n_units_dense_L1    = 2048
-n_units_dense_L2    = 1024
-n_units_dense_L3    = 512
-f_dropout_prob_L1   = 0.8
-f_dropout_prob_L2   = 0.1
-f_dropout_prob_L3   = 0.1
+n_conv_blocks       = 2
+v_convs_per_block   = [3, 3]
+v_pool_size         = [2, 2]
+v_filters_per_conv  = [64, 128]
+v_krn_sz_per_conv   = [10, 10]
+f_dropout_conv      = 0.8
+n_fc_layers         = 2
+v_fc_layer_sz       = [1024, 512]
+v_dropout_fc        = [0.25, 1.0]
 
 # Training
 f_use_for_validation    = 0.02
-sz_batch                = 256
-n_epochs                = 160
+sz_batch                = 64
+n_epochs                = 80
 f_start_lr              = 0.001
 
 # Plotting & debugging
@@ -60,8 +56,11 @@ def main(_):
     t_start = time.time()
 
     # Load Input Files
-    inputs = np.loadtxt(x_filename)
-    outputs = np.loadtxt(y_filename)
+    inputs = np.loadtxt(x_filename, dtype=np.float32)
+    outputs = np.loadtxt(y_filename, dtype=np.float32)
+
+    print(type(inputs[0][0]))
+    print(type(outputs[0][0]))
 
     # Experiment Parameters
     n_classes = outputs.shape[1]
@@ -100,30 +99,42 @@ def main(_):
 
     the_network = keras.Sequential()
 
-    the_network.add(keras.layers.Conv1D(filters = n_filters_L1, 
-                                        kernel_size = (n_kernel_sz_L1), 
-                                        strides = n_strides_L1))
+    # Add the 2D convolutional blocks
+    for i in range(0, n_conv_blocks):
+        n_convs_per_block = v_convs_per_block[i]
+        n_filters_per_conv = v_filters_per_conv[i]
+        n_krn_size_per_conv = v_krn_sz_per_conv[i]
+        n_pool_size = v_pool_size[i]
 
-    the_network.add(keras.layers.Conv1D(filters = n_filters_L2, 
-                                        kernel_size = (n_kernel_sz_L2), 
-                                        strides = n_strides_L2))
+        # Add the connected convolutional layers
+        for j in range (0, n_convs_per_block):
+            the_network.add(keras.layers.Conv1D(filters = n_filters_per_conv,
+                                                kernel_size = n_krn_size_per_conv,
+                                                padding = "valid"))
 
-    the_network.add(keras.layers.Dropout(f_dropout_prob_L1))
+        # Add max pooling layer
+        if (n_pool_size != 1): 
+            the_network.add(keras.layers.MaxPooling1D(pool_size = n_pool_size,
+                                                      padding = "valid"))
 
+    if (f_dropout_conv < 1.0):
+        the_network.add(keras.layers.Dropout(f_dropout_conv))
+
+    # Add batch normalization
     the_network.add(keras.layers.BatchNormalization())
 
+    # Prepare input for fully connected layers
     the_network.add(keras.layers.Flatten())
 
-    the_network.add(keras.layers.Dense(n_units_dense_L1, activation='sigmoid'))
+    # Add fully connected layers
+    for i in range(0, n_fc_layers):
+        the_network.add(keras.layers.Dense(v_fc_layer_sz[i], activation='relu'))
 
-    the_network.add(keras.layers.Dropout(f_dropout_prob_L2))
+        # Add dropout
+        if (v_dropout_fc[i] < 1.0):
+            the_network.add(keras.layers.Dropout(v_dropout_fc[i]))
 
-    the_network.add(keras.layers.Dense(n_units_dense_L2, activation='relu'))
-
-    the_network.add(keras.layers.Dropout(f_dropout_prob_L3))
-
-    the_network.add(keras.layers.Dense(n_units_dense_L3, activation='relu'))
-
+    # Add output layer
     the_network.add(keras.layers.Dense(n_classes, activation='softmax'))
 
     ###########################################################################
@@ -148,7 +159,10 @@ def main(_):
                                                   mode='auto', 
                                                   period=1)
 
-    t_stiart = time.time()
+    # print(the_network.summary())
+    input("Press Enter to continue...")
+
+    t_start = time.time()
     the_network.fit(x = x_train, 
                     y = y_train, 
                     epochs=n_epochs, 
