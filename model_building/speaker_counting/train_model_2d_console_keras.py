@@ -3,36 +3,37 @@ import datetime
 import random as rng
 import time
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/x_train_normalized.txt'
-y_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/y_train.txt'
+# x_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/x_train_normalized.txt'
+# y_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/y_train.txt'
+# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
+
+x_filename = '/home/valentin_m_andrei/datasets/x_dummy.txt'
+y_filename = '/home/valentin_m_andrei/datasets/y_dummy.txt'
 s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
-# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
-# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
-# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
-
 # Architecture
-n_size_x            = 127
-n_size_y            = 48
+n_size_x            = 25 #127
+n_size_y            = 20 #48
 n_conv_blocks       = 3
 v_convs_per_block   = [3, 3, 3]
 v_pool_size         = [1, 1, 2]
 v_filters_per_conv  = [64, 128, 256]
 v_krn_sz_per_conv   = [3, 3, 3]
 f_dropout_conv      = 1.0
-n_fc_layers         = 2
-v_fc_layer_sz       = [1024, 512]
-v_dropout_fc        = [0.25, 1.0]
+n_fc_layers         = 3
+v_fc_layer_sz       = [4096, 2048, 1024]
+v_dropout_fc        = [0.25, 0.25, 1.0]
 
 # Training
 f_use_for_validation    = 0.02
-sz_batch                = 256
+sz_batch                = 128
 n_epochs                = 160
 f_start_lr              = 0.001
 
@@ -58,8 +59,13 @@ def main(_):
     t_start = time.time()
 
     # Load Input Files
-    inputs = np.loadtxt(x_filename)
-    outputs = np.loadtxt(y_filename)
+
+    # TODO - numpy and pandas default to float64. GPU's have at least 2X more float32 throughput. This increases mem usage.
+    inputs = pd.read_csv(x_filename, delim_whitespace=True, header=None).astype(np.float32, copy=False, casting='same_kind').values
+    outputs = np.loadtxt(y_filename).astype(np.float32, copy=False, casting='same_kind')
+
+    print(type(inputs[0][0]))
+    print(type(outputs[0][0]))
 
     # Experiment Parameters
     n_classes = outputs.shape[1]
@@ -156,6 +162,9 @@ def main(_):
                                                   save_weights_only=False, 
                                                   mode='auto', 
                                                   period=1)
+
+    print(the_network.summary())
+    input("Press ENTER to continue ...")
 
     t_stiart = time.time()
     the_network.fit(x = x_train, 
