@@ -10,30 +10,30 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-# x_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/x_train_normalized.txt'
-# y_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/y_train.txt'
-# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
-
-x_filename = '/home/valentin_m_andrei/datasets/x_dummy.txt'
-y_filename = '/home/valentin_m_andrei/datasets/y_dummy.txt'
+x_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/x_train_normalized.txt'
+y_filename = '/home/valentin_m_andrei/datasets/500ms_specgram/y_train.txt'
 s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
+# x_filename = '/home/valentin_m_andrei/datasets/x_dummy.txt'
+# y_filename = '/home/valentin_m_andrei/datasets/y_dummy.txt'
+# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
+
 # Architecture
-n_size_x            = 25 #127
-n_size_y            = 20 #48
+n_size_x            = 127
+n_size_y            = 48
 n_conv_blocks       = 3
 v_convs_per_block   = [3, 3, 3]
-v_pool_size         = [1, 1, 2]
-v_filters_per_conv  = [64, 128, 256]
+v_pool_size         = [1, 2, 2]
+v_filters_per_conv  = [32, 64, 128]
 v_krn_sz_per_conv   = [3, 3, 3]
 f_dropout_conv      = 1.0
 n_fc_layers         = 3
-v_fc_layer_sz       = [4096, 2048, 1024]
+v_fc_layer_sz       = [1024, 512, 256]
 v_dropout_fc        = [0.25, 0.25, 1.0]
 
 # Training
 f_use_for_validation    = 0.02
-sz_batch                = 128
+sz_batch                = 32
 n_epochs                = 160
 f_start_lr              = 0.001
 
@@ -61,8 +61,8 @@ def main(_):
     # Load Input Files
 
     # TODO - numpy and pandas default to float64. GPU's have at least 2X more float32 throughput. This increases mem usage.
-    inputs = pd.read_csv(x_filename, delim_whitespace=True, header=None).astype(np.float32, copy=False, casting='same_kind').values
-    outputs = np.loadtxt(y_filename).astype(np.float32, copy=False, casting='same_kind')
+    inputs = pd.read_csv(x_filename, dtype=np.float32, delim_whitespace=True, header=None)
+    outputs = np.loadtxt(y_filename, dtype=np.float32)
 
     print(type(inputs[0][0]))
     print(type(outputs[0][0]))
