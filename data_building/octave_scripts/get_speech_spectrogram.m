@@ -40,6 +40,7 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
     figure();
     imagesc (t, f, log(S));       # display in log scale
     set (gca, "ydir", "normal");  # put the 'y' direction in the correct direction
+    size(S)
   end
   
   flat_S = S(:)';

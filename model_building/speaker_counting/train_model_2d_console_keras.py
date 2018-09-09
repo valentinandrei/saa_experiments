@@ -9,32 +9,32 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-# x_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/x_train_normalized.txt'
-# y_filename = '/home/valentin_m_andrei/datasets/300ms_fft_env_hist/y_train.txt'
-# s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
-
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_train_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_train.txt'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_40s_4c_2D/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_40s_4c_2D/y_train.txt'
 s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
+# x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_train_normalized.txt'
+# y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_train.txt'
+# s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
+
 # Architecture
-n_size_x            = 25
-n_size_y            = 20
+n_size_x            = 39
+n_size_y            = 30
 n_conv_blocks       = 2
-v_convs_per_block   = [2, 2]
-v_pool_size         = [2, 2]
-v_filters_per_conv  = [64, 128]
-v_krn_sz_per_conv   = [3, 3]
-f_dropout_conv      = 1.0
-n_fc_layers         = 2
-v_fc_layer_sz       = [1024, 512]
-v_dropout_fc        = [0.25, 1.0]
+v_convs_per_block   = [2, 2, 2]
+v_pool_size         = [1, 2, 1]
+v_filters_per_conv  = [32, 64, 128]
+v_krn_sz_per_conv   = [3, 3, 3]
+f_dropout_conv      = 0.75
+n_fc_layers         = 3
+v_fc_layer_sz       = [1024, 512, 256]
+v_dropout_fc        = [0.2, 0.2, 0.5]
 
 # Training
-f_use_for_validation    = 0.02
-sz_batch                = 256
+f_use_for_validation    = 0.04
+sz_batch                = 64
 n_epochs                = 160
-f_start_lr              = 0.001
+f_start_lr              = 0.00001
 
 # Plotting & debugging
 # TODO
@@ -116,7 +116,7 @@ def main(_):
 
 
     if (f_dropout_conv < 1.0):
-        the_network.add(keras.layers.Dropout(f_dropout_prob_L1))
+        the_network.add(keras.layers.Dropout(f_dropout_conv))
 
     # Add batch normalization
     the_network.add(keras.layers.BatchNormalization())
@@ -157,7 +157,7 @@ def main(_):
                                                   mode='auto', 
                                                   period=1)
 
-    print(the_network.summary())
+    # print(the_network.summary())
     input("Press Enter to continue...")
 
     t_start = time.time()

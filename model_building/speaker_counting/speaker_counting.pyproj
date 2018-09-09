@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{ddab86ef-cab3-4c3c-a748-990a2cec65d5}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>train_model_1d_console_keras.py</StartupFile>
+    <StartupFile>inference_1d_console_keras.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -19,6 +19,7 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="inference_1d_console_keras.py" />
     <Compile Include="train_model_1d_console_keras.py" />
     <Compile Include="train_model_2d_console_keras.py" />
   </ItemGroup>

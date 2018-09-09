@@ -9,8 +9,8 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/x_train_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_35s_4c/y_train.txt'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_40s_4c/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean-features_40s_4c/y_train.txt'
 s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
@@ -18,21 +18,21 @@ s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 # s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
-n_conv_blocks       = 2
-v_convs_per_block   = [3, 3]
-v_pool_size         = [2, 2]
-v_filters_per_conv  = [64, 128]
-v_krn_sz_per_conv   = [10, 10]
-f_dropout_conv      = 0.8
-n_fc_layers         = 2
-v_fc_layer_sz       = [1024, 512]
-v_dropout_fc        = [0.25, 1.0]
+n_conv_blocks       = 3
+v_convs_per_block   = [3, 3, 3]
+v_pool_size         = [1, 2, 2]
+v_filters_per_conv  = [32, 64, 128]
+v_krn_sz_per_conv   = [5, 5, 5]
+f_dropout_conv      = 0.75
+n_fc_layers         = 3
+v_fc_layer_sz       = [1024, 512, 256]
+v_dropout_fc        = [0.1, 0.1, 0.75]
 
 # Training
-f_use_for_validation    = 0.02
+f_use_for_validation    = 0.025
 sz_batch                = 64
-n_epochs                = 80
-f_start_lr              = 0.001
+n_epochs                = 160
+f_start_lr              = 0.0005
 
 # Plotting & debugging
 # TODO
