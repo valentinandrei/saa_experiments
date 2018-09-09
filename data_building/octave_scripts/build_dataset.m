@@ -1,7 +1,7 @@
 # Author: Valentin Andrei
 # E-Mail: am_valentin@yahoo.com
 
-addpath("/home/valentin_m_andrei/libs//voicebox");
+addpath("/home/valentin_m_andrei/libs/voicebox");
 pkg load signal
 pkg load ltfat
 % debug_on_warning(1);
@@ -18,13 +18,13 @@ frame_ms            = 500;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 100000;
-n_block_size        = 50000;
+n_samples_per_count = 150000;
+n_block_size        = 50000
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;
-b_train             = 1;
 b_do_pca_analysis   = 0;
+n_digits_precision  = 6;
 
 % Specify selected features:
 %   Entire Signal
@@ -36,7 +36,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 0, 1, 0, 0, 0, 0, 0];
+v_features  = [0, 1, 0, 0, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
@@ -101,14 +101,13 @@ while (n_current_set_size < n_set_size)
   % Here we don't need to store the unnormalized features anymore
   clear m_features  
   
+  n_old_digits = save_precision(n_digits_precision);
+
   % Features' Mean Normalization and Scaling
-  if (b_train == 1)
-    save("-ascii", "-append", "x_train_normalized.txt", "m_features_norm");
-    save("-ascii", "-append", "y_train.txt", "v_labels");
-  else
-    save("-ascii", "-append", "x_test_normalized.txt", "m_features");
-    save("-ascii", "-append", "y_test.txt", "v_labels");      
-  end
+  save("-ascii", "-append", "x_train_normalized.txt", "m_features_norm");
+  save("-ascii", "-append", "y_train.txt", "v_labels");
+  save("-ascii", "-append", "x_mu.txt", "mu");
+  save("-ascii", "-append", "x_sigma.txt", "sigma");
  
   % Free memory for processing the next block
   clear m_features_norm

@@ -21,21 +21,21 @@ s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 # Architecture
 n_size_x            = 127
 n_size_y            = 48
-n_conv_blocks       = 3
-v_convs_per_block   = [3, 3, 3]
-v_pool_size         = [1, 2, 2]
-v_filters_per_conv  = [32, 64, 128]
-v_krn_sz_per_conv   = [3, 3, 3]
-f_dropout_conv      = 1.0
+n_conv_blocks       = 4
+v_convs_per_block   = [3, 3, 3, 3]
+v_pool_size         = [1, 1, 2, 2]
+v_filters_per_conv  = [32, 64, 128, 256]
+v_krn_sz_per_conv   = [3, 3, 3, 3]
+f_dropout_conv      = 0.75
 n_fc_layers         = 3
 v_fc_layer_sz       = [1024, 512, 256]
-v_dropout_fc        = [0.25, 0.25, 1.0]
+v_dropout_fc        = [0.1, 0.1, 0.5]
 
 # Training
-f_use_for_validation    = 0.02
-sz_batch                = 32
-n_epochs                = 160
-f_start_lr              = 0.001
+f_use_for_validation    = 0.04
+sz_batch                = 64
+n_epochs                = 40
+f_start_lr              = 0.0005
 
 # Plotting & debugging
 # TODO
@@ -122,7 +122,7 @@ def main(_):
 
 
     if (f_dropout_conv < 1.0):
-        the_network.add(keras.layers.Dropout(f_dropout_prob_L1))
+        the_network.add(keras.layers.Dropout(f_dropout_conv))
 
     # Add batch normalization
     the_network.add(keras.layers.BatchNormalization())
@@ -164,9 +164,9 @@ def main(_):
                                                   period=1)
 
     print(the_network.summary())
-    input("Press ENTER to continue ...")
+    # input("Press ENTER to continue ...")
 
-    t_stiart = time.time()
+    t_start = time.time()
     the_network.fit(x = x_train, 
                     y = y_train, 
                     epochs=n_epochs, 
