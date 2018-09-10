@@ -36,7 +36,7 @@ n_digits_precision  = 6;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 1, 0, 0, 0, 1, 0, 1];
+v_features  = [0, 0, 0, 1, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
