@@ -18,7 +18,7 @@ frame_ms            = 100;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 25000;
+n_samples_per_count = 150000;
 n_block_size        = 25000;
 with_reverb         = 0;
 count_speakers      = 1;
@@ -35,7 +35,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 1, 0, 0, 0, 1, 0, 1];
+v_features  = [0, 0, 0, 1, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 

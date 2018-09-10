@@ -22,7 +22,7 @@ n_size_x            = 39
 n_size_y            = 30
 n_conv_blocks       = 2
 v_convs_per_block   = [2, 2, 2]
-v_pool_size         = [1, 2, 1]
+v_pool_size         = [1, 1, 1]
 v_filters_per_conv  = [32, 64, 128]
 v_krn_sz_per_conv   = [3, 3, 3]
 f_dropout_conv      = 0.75
@@ -34,7 +34,7 @@ v_dropout_fc        = [0.2, 0.2, 0.5]
 f_use_for_validation    = 0.04
 sz_batch                = 64
 n_epochs                = 160
-f_start_lr              = 0.00001
+f_start_lr              = 0.0005
 
 # Plotting & debugging
 # TODO
