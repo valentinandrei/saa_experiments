@@ -9,9 +9,9 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = '/home/valentin_m_andrei/datasets/500ms_fft_env_hist/x_train_normalized.txt'
-y_filename = '/home/valentin_m_andrei/datasets/500ms_fft_env_hist/y_train.txt'
-s_model_save_dir = '/home/valentin_m_andrei//checkpoints/'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/x_train_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/y_train.txt'
+s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
 # y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/y_dummy.txt'
@@ -22,11 +22,11 @@ n_conv_blocks       = 3
 v_convs_per_block   = [3, 3, 3]
 v_pool_size         = [1, 2, 2]
 v_filters_per_conv  = [32, 64, 128]
-v_krn_sz_per_conv   = [5, 5, 5]
+v_krn_sz_per_conv   = [8, 6, 4]
 f_dropout_conv      = 0.75
 n_fc_layers         = 3
 v_fc_layer_sz       = [1024, 512, 256]
-v_dropout_fc        = [0.1, 0.1, 0.75]
+v_dropout_fc        = [0.1, 0.1, 0.5]
 
 # Training
 f_use_for_validation    = 0.04

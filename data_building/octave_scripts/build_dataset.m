@@ -8,7 +8,7 @@ pkg load ltfat
 
 % ------------------------------------------------------------------------------
 
-v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean/*';
+v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean/*';
 n_max_speaker_directories = 40;
 
 % ------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ b_do_pca_analysis   = 0;
 %   Power Spectral Density
 %   Histogram of the signal
 
-v_features  = [0, 0, 0, 1, 0, 1, 0, 1];
+v_features  = [0, 0, 1, 0, 0, 1, 0, 1];
 
 % ------------------------------------------------------------------------------
 
