@@ -8,10 +8,10 @@ from tensorflow import keras
 from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
-# Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean-features_40s_4c/x_test_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean-features_40s_4c/y_test.txt'
-m_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/100ms_fft_env_hist/model2/the_network.h5'
+# Inputs 100ms_specgram_env_hist_40s
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/100ms_specgram_env_hist_40s/x_test_normalized.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/100ms_specgram_env_hist_40s/y_test.txt'
+m_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/100ms_specgram_env_hist/model2/the_network.h5'
 
 def main(_):
 
@@ -65,7 +65,29 @@ def main(_):
 
     print("Inference time       : ", str(t_stop - t_start))
     print("Confusion matrix     :")
-    print(confusion_matrix(y_true, y_pred))
+    c_matrix = confusion_matrix(y_true, y_pred)
+    print(c_matrix)
+
+    f_avg_accuracy = 0.0
+    for i in range(n_classes):
+        n_sum = sum(c_matrix[i][:])
+        f_accuracy = c_matrix[i][i] / n_sum
+        f_avg_accuracy += f_accuracy
+        print("Class {:d} accuracy: {:.2f}%".format(i + 1, 100.0 * f_accuracy))
+    
+    print("inference categorical accuracy: {:.2f}%".format(f_avg_accuracy / n_classes * 100.0))
+
+    t_p = c_matrix[0][0]
+    f_p = sum(c_matrix[0][1:])
+    f_n = 0
+    for i in range(n_classes - 1):
+        f_n += c_matrix[i + 1][0]
+    
+    od_prec = t_p / (t_p + f_p)
+    od_rec = t_p / (t_p + f_n)
+    print("overlap detection precision: {:.2f}".format(od_prec))
+    print("overlap detection recall: {:.2f}".format(od_rec))
+    print("overlap detection F-Score: {:.2f}".format(2 * od_rec * od_prec / (od_rec + od_prec)))
 
 if __name__ == '__main__':
 

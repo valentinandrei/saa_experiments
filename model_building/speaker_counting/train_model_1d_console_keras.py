@@ -9,8 +9,8 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/x_train_normalized.txt'
-y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/y_train.txt'
+x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/x_train_normalized_400K.txt'
+y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/100ms_specgram_env_hist_40s/y_train_400K.txt'
 s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
