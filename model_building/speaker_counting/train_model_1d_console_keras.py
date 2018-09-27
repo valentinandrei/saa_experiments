@@ -22,7 +22,7 @@ n_conv_blocks       = 3
 v_convs_per_block   = [3, 3, 3]
 v_pool_size         = [1, 2, 2]
 v_filters_per_conv  = [32, 64, 128]
-v_krn_sz_per_conv   = [8, 6, 4]
+v_krn_sz_per_conv   = [12, 8, 4]
 f_dropout_conv      = 0.75
 n_fc_layers         = 3
 v_fc_layer_sz       = [1024, 512, 256]
@@ -152,7 +152,7 @@ def main(_):
     csv_logger = CSVLogger(s_log_file, append=True, separator=';')
     
     model_saver = keras.callbacks.ModelCheckpoint(s_model_save_dir + "the_network.h5", 
-                                                  monitor='val_categorical_accuracy', 
+                                                  monitor='val_loss', 
                                                   verbose=0, 
                                                   save_best_only=True, 
                                                   save_weights_only=False, 

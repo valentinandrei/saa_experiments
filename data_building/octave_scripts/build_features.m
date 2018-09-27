@@ -25,7 +25,7 @@ function [m_features] = build_features (m_mixtures, fs, frame_ms, v_features)
   n_ar_frame_ms       = 25;
   n_fft_stop_freq     = 4000;
   n_env_resample_freq = fs/8;
-  n_histogram_bins    = 50;
+  n_histogram_bins    = 100;
   f_histogram_start   = 0;
   f_histogram_stop    = 0.5;
   
