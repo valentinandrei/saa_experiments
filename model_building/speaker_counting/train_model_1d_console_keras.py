@@ -9,8 +9,8 @@ from tensorflow.keras.callbacks import CSVLogger
 from sklearn.metrics import confusion_matrix
 
 # Inputs
-x_filename = '/home/valentin_m_andrei/datasets/500ms_mfcc_env_hist/x_train_normalized.txt'
-y_filename = '/home/valentin_m_andrei/datasets/500ms_mfcc_env_hist/y_train.txt'
+x_filename = '/home/valentin_m_andrei/datasets/1000ms_mfcc_env_hist/x_train_normalized.txt'
+y_filename = '/home/valentin_m_andrei/datasets/1000ms_mfcc_env_hist/y_train.txt'
 s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 
 # x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/x_dummy.txt'
@@ -18,11 +18,11 @@ s_model_save_dir = '/home/valentin_m_andrei/checkpoints/'
 # s_model_save_dir = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/'
 
 # Architecture
-n_conv_blocks       = 3
-v_convs_per_block   = [3, 3, 3]
-v_pool_size         = [1, 2, 2]
-v_filters_per_conv  = [32, 64, 128]
-v_krn_sz_per_conv   = [16, 8, 4]
+n_conv_blocks       = 4
+v_convs_per_block   = [3, 3, 3, 3]
+v_pool_size         = [1, 2, 2, 2]
+v_filters_per_conv  = [32, 64, 128, 256]
+v_krn_sz_per_conv   = [16, 8, 4, 4]
 f_dropout_conv      = 0.75
 n_fc_layers         = 3
 v_fc_layer_sz       = [1024, 512, 256]
@@ -152,7 +152,7 @@ def main(_):
     csv_logger = CSVLogger(s_log_file, append=True, separator=';')
     
     model_saver = keras.callbacks.ModelCheckpoint(s_model_save_dir + "the_network.h5", 
-                                                  monitor='val_categorical_accuracy', 
+                                                  monitor='val_loss', 
                                                   verbose=0, 
                                                   save_best_only=True, 
                                                   save_weights_only=False, 

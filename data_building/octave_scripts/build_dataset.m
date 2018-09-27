@@ -9,12 +9,12 @@ pkg load ltfat
 % ------------------------------------------------------------------------------
 
 v_dir_database  = '/home/valentin_m_andrei/datasets/LibriSpeech/dev-clean/*';
-n_max_speaker_directories = 35;
+n_max_speaker_directories = 40;
 
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 500;
+frame_ms            = 1000;
 frame_inc_ms        = 50;
 n_classes           = 4;
 n_max_speakers      = 4;
