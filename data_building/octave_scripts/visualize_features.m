@@ -2,7 +2,7 @@ addpath("E:/1_Proiecte_Curente/1_Speaker_Counting/3rdparty/voicebox");
 pkg load signal
 pkg load ltfat
 
-n_miliseconds = 1000;
+n_miliseconds = 2000;
 
 s_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean/84/121123/84-121123-0002.flac';
 [x_signal, FS] = audioread(s_filename);

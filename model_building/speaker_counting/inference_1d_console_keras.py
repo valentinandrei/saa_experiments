@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix
 # Inputs 100ms_specgram_env_hist_40s
 x_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/100ms_fft_env_hist_40s/x_test_normalized.txt'
 y_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/100ms_fft_env_hist_40s/y_test.txt'
-m_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/100ms_fft_env_hist/model2/the_network.h5'
+m_filename = 'E:/1_Proiecte_Curente/1_Speaker_Counting/checkpoints/100ms_fft_env_hist/model3/the_network.h5'
 
 def main(_):
 
