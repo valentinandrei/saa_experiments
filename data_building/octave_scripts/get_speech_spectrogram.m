@@ -14,9 +14,9 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
   %
   % flat_S  - Spectrogram as a column vector
   
-  debug               = 1;
+  debug               = 0;
   n_ms_spectral_slice = 10;
-  n_ms_window         = 25;
+  n_ms_window         = 20;
   n_db_max_clip       = -40;
   n_db_min_clip       = -3;
   n_magnitude         = 4000;
@@ -40,7 +40,6 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
     figure();
     imagesc (t, f, log(S));       # display in log scale
     set (gca, "ydir", "normal");  # put the 'y' direction in the correct direction
-    size(S)
   end
   
   flat_S = S(:)';

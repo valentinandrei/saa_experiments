@@ -8,18 +8,18 @@ pkg load ltfat
 
 % ------------------------------------------------------------------------------
 
-v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean/*';
-n_max_speaker_directories = 5;
+v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_dev_clean/dev-clean/*';
+n_max_speaker_directories = 50;
 
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 2000;
-frame_inc_ms        = 50;
+frame_ms            = 25;
+frame_inc_ms        = 25;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 5000;
-n_block_size        = 5000;
+n_samples_per_count = 25000;
+n_block_size        = 25000;
 with_reverb         = 0;
 count_speakers      = 1;
 b_add_square_feats  = 0;
