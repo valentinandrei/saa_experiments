@@ -14,11 +14,11 @@ n_max_speaker_directories = 50;
 % ------------------------------------------------------------------------------
 
 fs                  = 16000;
-frame_ms            = 25;
+frame_ms            = 50;
 frame_inc_ms        = 25;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_per_count = 25000;
+n_samples_per_count = 150000;
 n_block_size        = 25000;
 with_reverb         = 0;
 count_speakers      = 1;

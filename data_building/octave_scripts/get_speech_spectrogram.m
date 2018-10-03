@@ -16,7 +16,7 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
   
   debug               = 0;
   n_ms_spectral_slice = 10;
-  n_ms_window         = 20;
+  n_ms_window         = 25;
   n_db_max_clip       = -40;
   n_db_min_clip       = -3;
   n_magnitude         = 4000;
