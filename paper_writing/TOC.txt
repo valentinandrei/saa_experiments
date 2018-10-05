@@ -1,0 +1,109 @@
+1. Introduction (1-2 p)
+
+	o Why is overlapped speech detection important (BSS, Automatic Surveillance, Speaker Identification, Voice Commands Recognition)
+		+ Include prior work
+	
+	o Why is competing speaker count important (Crowd Sensing, BSS)
+		+ Include prior work
+	
+	o How do humans solve this (SAA studies)
+	
+	o Why is it a difficult problem numerically (intuition: explain that samples are very diverse and numerically overlapped)
+	
+2. Multi Speaker Perception Experiment (2p)
+
+	o Recordings description
+
+	o Describe experiment setup
+	
+	o Performance for overlapped speech detection
+	
+	o Performance for competing speaker count
+	
+3. Pattern Recognition & Statistical Inference methods (1p)
+	
+	o Performance
+	
+	o Tolerance to noise
+		
+	o Frame length dependency	
+	
+	o Poor applicability
+	
+4. Combining Speech Signals (1p)
+
+	o Simple adding and clipping and advantages of artificial recordings
+	
+	o Discuss room impulse models with reverberation control. Make some statistics experiments to demonstrate numeric shifting towards "clipping" intervals. TODO
+	
+	o Describe our database / or use LibriSpeech
+	
+	o Frame length discussion
+	
+5. Feature set selection (2p)
+
+	o Why is every feature interesting? Show pictures, tables, etc. (Cite existing work)
+	
+	o Frame length selection comments. Why did we stop at 500 ms (harder to find continuous speech after this frame length, and labeling would have been affected)
+	
+	o Explain that shorter frames can do well on overlap detection but for counting we need larger frames which carry more information
+	
+6. DNN architecture (2p)
+
+	o Conv 1D vs Conv 2D and why not combined
+	
+	o Filter size space (1D and 2D)
+	
+	o Max Pooling and signal mixing
+	
+	o Why are batch norm and dropout interesting
+	
+7. Model Training & Validation (3p)
+
+	o State objectives of training: best performance for different sets of windows
+	
+	o Explain that similar uarch was used for overlapped speech detection in ISPEECH2017 paper.
+	
+	o Training environment: TensorFlow / Keras / Google Cloud / GPU?
+
+	o FIGURE TODO: Gradients histogram w/ Tensorboard to justify starting learning rate + advocate for the usage of Adam optimizer (variable LR)
+	
+	o FIGURE: 100ms start with model1, increase model size, increase dataset.	
+	
+	o FIGURE: Loss function @100ms for 100 epochs and compare w/ ResNet50 loss functions, to demonstrate we trained the model enough
+	
+		- Comment: Training time and number of epochs
+	
+	o FIGURE TODO: 100ms 1D features vs 2D features
+	
+	o FIGURE TODO: 500ms 1D features vs 2D features	
+	
+	o FIGURE: 500ms model1 -> increase regularization -> model 2 -> increase dataset -> model 3 -> increase model size -> model4
+	
+		- Comment: Bias vs variation vs model size trade offs
+		
+		- Comment: Over-fitting for model1 and learnings from that
+	
+8. Inference Results (3p)
+
+	o TABLE: ISPEECH2017 Results and advocate for small frames and need for feature vectors.
+	
+	o FIGURE TODO: Best model inference cat_accuracy for 100, 200, 300, 500 ms
+	
+	o TABLE TODO: MAE metric for 100, 200, 300, 500 ms
+
+		- Comment: Compare w/ existing work
+
+	o FIGURE TODO: Best model inference F-Score for overlapped speech computed from speaker counting
+	
+		- Comment: Compare w/ exiting work and with ISPEECH2017
+	
+	o FIGURE TODO: Confusion matrices for 100, 200, 300, 500 ms
+	
+		- Comment: Explain the difficulty of discerning between 2 and 3
+		
+	o TABLE TODO: Inference step time on a client device & explain that GPU adds latency
+		
+		- Comment: Discuss utility of the results
+	
+9. Conclusions & Future Steps
