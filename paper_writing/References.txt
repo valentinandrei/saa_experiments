@@ -1,0 +1,79 @@
+------------
+APPLICATIONS
+------------
+
+Speaker Identification
+
+Speaker Diarization
+
+Speaker Changing
+
+----------------------
+PERCEPTION EXPERIMENTS
+----------------------
+
+A. S. Bregman, "Auditory scene analysis: The perceptual organization of sound." MIT press, 1994.
+
+T. Kawashima and T. Sato, “Perceptual limits in a simulated cocktail party” Attention, Perception and Psychophysics, vol. 77, no. 6, pp. 2108– 2120, 2015.
+
+M. Kashino and T. Hirahara, “One, two, many – judging the number of concurrent talkers.” J. Acoust. Soc. Am., vol. 99, no. 4, pp. 2596–2603, 1996.
+
+V. Andrei, H. Cucu, A. Buzo, C. Burileanu, “Detecting the number of competing speakers – human selective hearing versus spectrogram distance based estimator,” INTERSPEECH 2014 – 15th Annual Conference of the International Speech Communication Association Proceedings, 2014, pp. 467 – 470
+
+V. Andrei, H. Cucu, A. Buzo, C. Burileanu, “Counting competing speakers in a timeframe – human versus computer”, INTERSPEECH 2015 – 16th Annual Conference of the International Speech Communication Association Proceedings, 2015, pp. 3999-4003
+
+---------------------------
+OVERLAPPED SPEECH DETECTION
+---------------------------
+
+K. Boakye, B. Trueba-Hornero, O. Vinyals, G. Friedland, “Overlapped speech detection for improved speaker diarization in multiparty meetings”, ICASSP 2008 – IEEE International Conference on Acoustics, Speech and Signal Processing Proceedings, 2008
+
+W. Tsai, S. Liao, “Speaker Identification in Overlapped speech”, Journal of Information Science and Engineering, 2010, pp. 1891-1903
+
+R. Vipperla, J. T. Geiger, et. al., “Speech overlap detection and attribution using convolutive non-negative sparse coding”, ICASSP 2012 – Proceedings of International Conference on Acoustics, Speech and Signal Processing, 2012
+
+N. Shokouhi, A. Sathyanarayana, S. O. Sadjadi, J. H. L. Hansen, “Overlapped speech detection with applications to driver assessment for in-vehicle active safety systems”, ICASSP 2013 – Proceedings of International Conference on Acoustics, Speech and Signal Processing, 2013
+
+Garofolo, John, et al., “TIMIT Acoustic-Phonetic Continuous Speech Corpus LDC93S1”, Philadelphia: Linguistic Data Consortium, 1993.
+
+S. H. Yella, H. Bourlard, “Overlapped speech detection using long-term conversational features for speaker diarization in meeting room conversations”, IEEE/ACM Transactions on Audio, Speech and Language Processing, December 2014, Vol. 22, No. 12
+
+N. Shokouhi, A. Ziaei, A. Sangwan, J. H. L. Hansen, “Robust overlapped speech detection and its application in word-count estimation for prof-life-log data”, ICASSP 2015 – Proceedings of International Conference on Acoustics, Speech and Signal Processing, 2015
+
+S. A. Chowdhury, M. Danieli, G. Riccardi, “Annotating and categorizing competition in overlap speech”, ICASSP 2015 – Proceedings of International Conference on Acoustics, Speech and Signal Processing, 2015, pp. 5136-5121
+
+J. T. Geiger, F. Eyben, et. al., “Using linguistic information to detect overlapped speech”, INTERSPEECH 2013 – 15th Annual Conference of the International Speech Communication Association Proceedings, 2013
+
+J. T. Geiger, F. Eyben, B. Schuller, G. Rigoll, “Detecting overlapped speech with Long Short-Term Memory Recurrent Neural Networks”, INTERSPEECH 2013 – 14th Annual Conference of the International Speech Communication Association Proceedings, 2013
+
+V. Andrei, H. Cucu, C. Burileanu, “Detecting overlapped speech on short timeframes using deep learning”, in Proc. Interspeech Conf., 2017.
+
+----------------
+SPEAKER COUNTING
+----------------
+
+T. Arai, “Estimating number of speakers by the modulation characteristics of speech,” in Proc. IEEE Intl. Conf. on Acoustics, Speech and Signal Processing (ICASSP), vol. 2. IEEE, 2003, pp. II–197.
+
+H. Sayoud and S. Ouamour, “Proposal of a new confidence parameter estimating the number of speakers-an experimental investigation,” Journal of Information Hiding and Multimedia Signal Processing, vol. 1, no. 2, pp. 101–109, 2010.
+
+C. Xu, S. Li, G. Liu, Y. Zhang, E. Miluzzo, Y.-F. Chen, J. Li, and B. Firner, “Crowd++: Unsupervised speaker count with smartphones,” in Proceedings of the 2013 ACM international joint conference on Pervasive and ubiquitous computing. ACM, 2013, pp. 43–52.
+
+F.-R. St¨oter, S. Chakrabarty, B. Edler, and E. A. P. Habets, “Classification vs. regression in supervised learning for single channel speaker count estimation” in accepted to ICASSP, 2018.
+
+E. Zwyssig, S. Renals, M. Lincoln, Determining the number of speakers in a meeting using microphone array features, Proc. of the 2012 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pp. 4765-4768
+
+TBD: A. Agnessens, I. Bisio, F. Lavagetto, Et al. Speaker count application for smartphone platforms, Proc. of the 5th IEEE International Conference on Wireless Pervasive Computing, pp. 361-366, 2010
+
+TBD: P. Kannan, S.P. Venkatagiri, Et Al., Low cost crowd counting using audio tones, Proc. of 10th ACM Conference on Embedded Network Sensor Systems, pp. 155-168, 2012
+
+---------
+DATABASES
+---------
+
+-------------
+DEEP LEARNING
+-------------
+
+------------
+SoTA SYSTEMS
+------------

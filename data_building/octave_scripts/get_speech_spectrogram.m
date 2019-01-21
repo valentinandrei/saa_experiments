@@ -43,6 +43,7 @@ function [flat_S, v_f, v_t] = get_speech_spectrogram (x, FS)
   end
   
   flat_S = S(:)';
+  #flat_S = S;
   v_f = f;
   v_t = t;
 

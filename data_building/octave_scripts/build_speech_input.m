@@ -57,15 +57,16 @@ function [c_speech, v_n_frames_speech, n_speakers] = build_speech_input ...
         [s, start, stop, act] = get_speech_vad_mask(s_file, ...
             fs, frame_ms, frame_inc_ms);
         
-        [m_speech, n_speech] = get_speech_silence_frames(s, start, stop, act);
-            
-        m_speaker_speech = [m_speaker_speech; m_speech];
-        n_speaker_samples += n_speech;
+        if (length(act) > 1)
+          [m_speech, n_speech] = get_speech_silence_frames(s, start, stop, act);            
+          m_speaker_speech = [m_speaker_speech; m_speech];
+          n_speaker_samples += n_speech;         
+        endif
         
         printf("-");
         fflush(stdout);
         
-      endfor      
+      endfor
       
     endfor
     

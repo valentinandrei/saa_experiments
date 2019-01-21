@@ -48,11 +48,19 @@ function [speech, frame_start, frame_stop, activity] = ...
   n_samples_per_frame     = fs / 1000 * frame_ms;
   n_samples_per_increment = fs / 1000 * frame_inc_ms;
   
-  t0 = time();
+  % t0 = time();
   vad_decision            = vadsohn(speech, fs);
-  t1 = time();
+  % t1 = time();
   % printf("vadsohn duration: %.3f seconds\n", t1 - t0);
   fflush(stdout);
+  
+  if (length(vad_decision) < n_samples_per_frame)
+    speech = 0;
+    frame_start = 0;
+    frame_stop = 0;
+    activity = 0;
+    return;
+  endif
   
   n_frames                = floor((n_seconds * 1000 - (frame_ms - frame_inc_ms)) / frame_inc_ms) - 1;
   frame_start             = zeros(n_frames, 1);

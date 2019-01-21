@@ -33,7 +33,7 @@ function [m_mixtures, v_labels] = build_mixtures ...
   end
   
   m_mixtures    = zeros(n_set_size, n_frame_size);  
-  v_labels      = zeros(n_set_size, n_classes); 
+  v_labels      = zeros(n_set_size, n_classes);
   n_concurrent  = 1;
   n_label       = 0;
   n_errors      = 0;

@@ -17,9 +17,9 @@ function [v_speech_duration] = build_vad_statistics(v_dir_database, ...
   % ----------------------------------------------------------------------------
   % v_speech_duration - array with all continuous speech durations
 
-  f_speech_threshold = 0.5;
-  n_silence_threshold = 1;
-  n_min_speech_length = 1;
+  f_speech_threshold = 0.9;
+  n_silence_threshold = 5;
+  n_min_speech_length = 3;
   v_directories = glob(strcat(v_dir_database));
   v_speech_duration = [];
   

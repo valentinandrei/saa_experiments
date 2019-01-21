@@ -21,7 +21,7 @@ function [m_speech_frames, n_speech] = ...
   % m_silence         - Number of silence frames
   
   debug             = 0;
-  f_vad_threshold   = 0.99;
+  f_vad_threshold   = 0.85;
   n                 = length(activity);
   n_speech          = sum(activity == 1);
   i_speech          = 1;
