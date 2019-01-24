@@ -17,8 +17,8 @@ v_frame_ms          = [5000, 2000, 1000, 500];
 frame_inc_ms        = 250;
 n_classes           = 4;
 n_max_speakers      = 4;
-n_samples_pc_train  = 3;
-n_samples_pc_test   = 6;
+n_samples_pc_train  = 5;
+n_samples_pc_test   = 5;
 with_reverb         = 0;
 
 % ------------------------------------------------------------------------------
@@ -33,8 +33,8 @@ n_total_size = n_train_size + n_test_size;
 
 % Preallocate cell
 
-cMixturesTrain = cell(length(v_frame_ms), 2);
-cMixturesTest = cell(length(v_frame_ms), 2);
+cMixturesNoReplay = cell(length(v_frame_ms), 2);
+cMixturesReplay = cell(length(v_frame_ms), 2);
 
 % For each framelength
 
@@ -77,14 +77,14 @@ for i = 1 : length(v_frame_ms)
       n_frame_size, with_reverb, 1);     
 
   % Save Mixtures to Cell
-  cMixturesTrain{i, 1} = m_mixtures(1 : n_train_size, :);
-  cMixturesTrain{i, 2} = v_labels(1 : n_train_size, :);
-  cMixturesTest{i, 1} = m_mixtures(n_train_size + 1 : end, :);
-  cMixturesTest{i, 2} = v_labels(n_train_size + 1 : end, :);
+  cMixturesNoReplay{i, 1} = m_mixtures(1 : n_train_size, :);
+  cMixturesNoReplay{i, 2} = v_labels(1 : n_train_size, :);
+  cMixturesReplay{i, 1} = m_mixtures(n_train_size + 1 : end, :);
+  cMixturesReplay{i, 2} = v_labels(n_train_size + 1 : end, :);
   
 end
 
 % Save cell arrays
 
-save mixtures_train.mat cMixturesTrain
-save mixtures_test.mat cMixturesTest
+save mixtures_no_replay.mat cMixturesNoReplay
+save mixtures_replay.mat cMixturesReplay
