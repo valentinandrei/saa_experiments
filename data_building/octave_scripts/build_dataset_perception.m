@@ -7,7 +7,7 @@ pkg load ltfat
 
 % ------------------------------------------------------------------------------
 
-v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean-trimmed/*';
+v_dir_database  = 'E:/1_Proiecte_Curente/1_Speaker_Counting/datasets/librispeech_test_clean/test-clean/*';
 n_max_speaker_directories = 50;
 
 % ------------------------------------------------------------------------------

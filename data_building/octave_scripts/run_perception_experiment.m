@@ -64,7 +64,8 @@ for i = 1 : n_total_samples
   
 end
 
-save no_replay.mat m_norep_results
+f_out = sprintf("no_replay_%d.mat", listener_id);
+save(f_out, "m_norep_results");
 
 % ----------------
 % Run Replay Phase
@@ -77,7 +78,6 @@ v_sample_ids = randperm(n_total_samples) - 1;
 printf("Se incarca fisierul cu inregistrari.\n");
 load mixtures_replay.mat
 
-% Start the test
 % Start the test
 printf("In a doua parte a experimentului VETI PUTEA reasculta inregistrarile.\n");
 printf("Apasati orice tasta pentru a incepe experimentul.\n");
@@ -124,7 +124,8 @@ for i = 1 : n_total_samples
   
 end
 
-save with_replay.mat m_rep_results
+f_out = sprintf("with_replay_%d.mat", listener_id);
+save(f_out, "m_rep_results");
 
 printf("Experimentul a luat sfarsit. Va multumim.\n");
 fflush(stdout);
