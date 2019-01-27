@@ -24,7 +24,7 @@ fflush(stdout);
 pause();
 
 % DEBUG
-n_total_samples = 5;
+% n_total_samples = 5;
 
 % Play the sounds
 for i = 1 : n_total_samples
