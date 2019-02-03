@@ -1,0 +1,869 @@
+>> script
+Se incarca fisierul cu inregistrari.\n
+In prima parte a experimentului, nu veti putea reasculta inregistrarile.\n
+Apasati orice tasta pentru a incepe experimentul.\n
+
+1/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+2/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+3/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+4/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+5/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+6/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+7/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+8/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+9/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+10/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+11/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+12/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+13/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+14/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+15/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+16/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+17/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+18/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+19/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+20/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+21/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+22/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+23/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+24/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+25/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+26/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+27/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+28/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+29/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+30/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+31/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+32/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+33/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+34/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+35/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+36/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+37/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+38/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+39/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+40/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+41/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+42/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+43/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+44/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+45/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+46/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+47/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+48/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+49/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+50/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+51/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+52/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+53/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+54/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+55/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+56/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+57/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+58/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+59/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+60/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+61/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+62/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+63/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+64/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+65/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+66/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+67/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+68/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+69/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+70/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+71/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+73/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+74/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+75/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+76/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+78/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+
+80/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Se incarca fisierul cu inregistrari.\n
+In a doua parte a experimentului VETI PUTEA reasculta inregistrarile.\n
+Apasati orice tasta pentru a incepe experimentul.\n
+
+1/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+1/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+2/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+2/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+3/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+3/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+4/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+4/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+5/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+6/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+7/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+7/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+8/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+8/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+9/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+10/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+10/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+10/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+11/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+11/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+12/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+12/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+12/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+13/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+14/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+15/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+16/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+16/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+17/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+17/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+17/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+18/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+19/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+19/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+20/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+20/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+20/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+21/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+22/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+22/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+22/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+23/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+23/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+23/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+23/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+24/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+25/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+25/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+25/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+26/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+27/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+28/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+29/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+29/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+29/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+30/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+30/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+31/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+32/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+32/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+32/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+32/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+33/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+33/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+33/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+33/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+34/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+34/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+35/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+36/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+36/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+37/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+37/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+37/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+38/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+39/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+40/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+41/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+42/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+43/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+43/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+44/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+45/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+46/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+47/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+48/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+48/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+49/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+49/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+50/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+50/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+51/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+51/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+52/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+52/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+53/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+54/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+55/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+56/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+57/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+57/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+57/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+57/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+58/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+58/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+59/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+60/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+61/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+61/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+62/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+62/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+63/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+63/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+64/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+64/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+65/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+66/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+67/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+67/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+67/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+68/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+69/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+69/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+69/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+70/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+70/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+71/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+72/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+73/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+73/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+74/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+75/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+76/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+76/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+76/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+77/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+78/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+79/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+80/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+80/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+80/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+
+80/80 Cati vorbitori simultan ati putut numara? 
+Introduceti un numar de la 1 la 4, inclusiv.\n
+Daca doriti sa reascultati, introduceti orice alt numar.\n\n
+Experimentul a luat sfarsit. Va multumim.\n
+>> 

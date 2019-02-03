@@ -20,7 +20,8 @@ load('mixtures_no_replay_mat7.mat');
 % Start the test
 disp('In prima parte a experimentului, nu veti putea reasculta inregistrarile.\n');
 disp('Apasati orice tasta pentru a incepe experimentul.\n');
-drawnow('update');
+% drawnow('update');
+fflush(stdout);
 pause();
 
 % DEBUG
@@ -45,7 +46,8 @@ for i = 1 : n_total_samples
   sMsg = sprintf('\n%d/%d Cati vorbitori simultan ati putut numara? ', i, n_total_samples);
   disp(sMsg);
   disp('Introduceti un numar de la 1 la 4, inclusiv.\n');
-  drawnow('update');
+  % drawnow('update');
+  fflush(stdout);
 
   while (n_claimed_speaker_count == 0)
     try
@@ -82,7 +84,8 @@ load('mixtures_replay_mat7.mat');
 % Start the test
 disp('In a doua parte a experimentului VETI PUTEA reasculta inregistrarile.\n');
 disp('Apasati orice tasta pentru a incepe experimentul.\n');
-drawnow('update');
+% drawnow('update');
+fflush(stdout);
 pause();
 
 % Play the sounds
@@ -107,7 +110,8 @@ for i = 1 : n_total_samples
     disp(sMsg);
     disp('Introduceti un numar de la 1 la 4, inclusiv.\n');
     disp('Daca doriti sa reascultati, introduceti orice alt numar.\n\n');
-    drawnow('update');
+    % drawnow('update');
+    fflush(stdout);
  
     try
       n_claimed_speaker_count = menu('Cati vorbitori ati putut numara?', '1', '2', '3', '4', 'Repetare');
@@ -132,4 +136,5 @@ f_out = sprintf('with_replay_%d.mat', listener_id);
 save(f_out, 'm_rep_results');
 
 disp('Experimentul a luat sfarsit. Va multumim.\n');
-drawnow('update');
+% drawnow('update');
+fflush(stdout);
