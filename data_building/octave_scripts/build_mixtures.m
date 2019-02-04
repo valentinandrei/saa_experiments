@@ -31,7 +31,7 @@ function [m_mixtures, v_labels] = build_mixtures ...
   if (count_speakers == 1)
     n_classes = n_max_speakers;
   end
-  
+    
   m_mixtures    = zeros(n_set_size, n_frame_size);  
   v_labels      = zeros(n_set_size, n_classes);
   n_concurrent  = 1;

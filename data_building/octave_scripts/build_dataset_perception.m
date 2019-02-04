@@ -71,20 +71,28 @@ for i = 1 : length(v_frame_ms)
   end
 
   % Create Train Mixtures
-  [m_mixtures, v_labels] = build_mixtures ...
+  [m_mixtures1, v_labels1] = build_mixtures ...
     ( c_speech_eligible, v_n_frames_eligible, ...
-      n_total_size, n_max_speakers, n_eligible_speakers, ...
+      n_train_size, n_max_speakers, n_eligible_speakers, ...
       n_frame_size, with_reverb, 1);     
 
   % Save Mixtures to Cell
-  cMixturesNoReplay{i, 1} = m_mixtures(1 : n_train_size, :);
-  cMixturesNoReplay{i, 2} = v_labels(1 : n_train_size, :);
-  cMixturesReplay{i, 1} = m_mixtures(n_train_size + 1 : end, :);
-  cMixturesReplay{i, 2} = v_labels(n_train_size + 1 : end, :);
+  cMixturesNoReplay{i, 1} = m_mixtures1;
+  cMixturesNoReplay{i, 2} = v_labels1;
+  
+  % Create Test Mixtures
+  [m_mixtures2, v_labels2] = build_mixtures ...
+    ( c_speech_eligible, v_n_frames_eligible, ...
+      n_test_size, n_max_speakers, n_eligible_speakers, ...
+      n_frame_size, with_reverb, 1);
+
+  % Save Mixtures to Cell      
+  cMixturesReplay{i, 1} = m_mixtures2;
+  cMixturesReplay{i, 2} = v_labels2;
   
 end
 
 % Save cell arrays
 
-save mixtures_no_replay.mat cMixturesNoReplay
-save mixtures_replay.mat cMixturesReplay
+save -mat7-binary mixtures_no_replay.mat cMixturesNoReplay
+save -mat7-binary mixtures_replay.mat cMixturesReplay

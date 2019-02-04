@@ -43,27 +43,29 @@ for i = 1 : n_volunteers
         n_sz_id = 4;
     end
     
-    m_vol_conf_matrices(n_sz_id, n_claimed, n_correct) += 1;
-    m_agg_conf_matrices(n_sz_id, n_claimed, n_correct) += 1;
+    m_vol_conf_matrices(n_claimed, n_correct, n_sz_id) += 1;
+    m_agg_conf_matrices(n_claimed, n_correct, n_sz_id) += 1;
   
   end
   
   for n_sz_id = 1 : 4
     f_speaker_acc = 0;
     for s_id = 1 : n_speakers
-      f_speaker_acc += (m_vol_conf_matrices(n_sz_id, s_id, s_id) / n_recs_per_speaker);
+      n_recs = sum(m_vol_conf_matrices(:, s_id, n_sz_id));
+      f_speaker_acc += (m_vol_conf_matrices(s_id, s_id, n_sz_id) / n_recs);
     end
     m_individual_cat_acc(i, n_sz_id) = f_speaker_acc / n_speakers;
   end
     
 end
 
-for sz_id = 1 : 4
+for n_sz_id = 1 : 4
   f_speaker_acc = 0;
   for s_id = 1 : n_speakers
-    f_speaker_acc += (m_agg_conf_matrices(sz_id, s_id, s_id) / n_recs_per_speaker / n_volunteers);
+    n_recs = sum(m_agg_conf_matrices(:, s_id, n_sz_id));
+    f_speaker_acc += (m_agg_conf_matrices(s_id, s_id, n_sz_id) / n_recs);
   end
-  m_aggregated_cat_acc(sz_id) = f_speaker_acc / n_speakers;
+  m_aggregated_cat_acc(n_sz_id) = f_speaker_acc / n_speakers;
 end
 
 endfunction
