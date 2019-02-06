@@ -1,5 +1,5 @@
-s_dir_norep = "E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/paper_writing/Perception_Experiment/no_replay";
-s_dir_wrep = "E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/paper_writing/Perception_Experiment/with_replay";
+s_dir_norep = "E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/paper_writing/Perception_Experiment/session_1/no_replay";
+s_dir_wrep = "E:/1_Proiecte_Curente/1_Speaker_Counting/saa_experiments/paper_writing/Perception_Experiment/session_1/with_replay";
 
 # Extract no replay files
 [n_volunteers, m_individual_cat_acc, m_aggregated_cat_acc, m_conf] ...

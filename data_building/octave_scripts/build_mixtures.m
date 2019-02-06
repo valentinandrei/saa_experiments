@@ -36,7 +36,10 @@ function [m_mixtures, v_labels] = build_mixtures ...
   v_labels      = zeros(n_set_size, n_classes);
   n_concurrent  = 1;
   n_label       = 0;
-  n_errors      = 0;
+  n_errors      = 0;  
+  
+  % Use this array to fully balance classes when set size is small
+  v_perm = randperm(n_set_size);
   
   i = 1;
   while (i <= n_set_size)
@@ -44,13 +47,13 @@ function [m_mixtures, v_labels] = build_mixtures ...
     % Select number of speakers
     n_concurrent = 1;
     if (count_speakers == 1)
-      n_concurrent = randi(n_max_speakers);
+      n_concurrent = 1 + mod(v_perm(i), n_max_speakers); % randi(n_max_speakers);
       v_labels(i, n_concurrent) = 1.0;
     else
       single_multi = randi(2);
        
       if (single_multi ~= 1)
-        n_concurrent = randi(n_max_speakers);
+        n_concurrent = 1 + mod(v_perm(i), n_max_speakers);
         v_labels(i) = 1.0;
       end
     end
