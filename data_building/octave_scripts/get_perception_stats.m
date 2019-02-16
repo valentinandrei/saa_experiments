@@ -1,5 +1,5 @@
 function [n_volunteers, m_individual_cat_acc, m_aggregated_cat_acc, ...
-  m_agg_conf_matrices] = get_perception_stats (s_folder)
+  m_agg_conf_matrices, m_agg_spkr_acc] = get_perception_stats (s_folder)
 
 n_durations           = 4;
 n_speakers            = 4;
@@ -10,6 +10,8 @@ n_volunteers          = length(v_files);
 m_individual_cat_acc  = zeros(n_volunteers, n_durations);
 m_aggregated_cat_acc  = zeros(1, n_durations);
 m_agg_conf_matrices   = zeros(n_durations, n_speakers, n_speakers);
+m_agg_spkr_acc        = zeros(n_durations, n_speakers);
+m_total_samples       = zeros(n_durations, n_speakers);
 
 % Load mat files
 
@@ -30,17 +32,11 @@ for i = 1 : n_volunteers
     n_duration  = m_results(rows, 1);
     n_claimed   = m_results(rows, 2);
     n_correct   = m_results(rows, 3);
-    n_sz_id     = 0;
+    n_sz_id     = find(v_frame_sizes == n_duration);
     
-    switch n_duration
-      case 500
-        n_sz_id = 1;
-      case 1000
-        n_sz_id = 2;
-      case 2000
-        n_sz_id = 3;
-      case 5000
-        n_sz_id = 4;
+    m_total_samples(n_sz_id, n_correct) += 1;
+    if (n_claimed == n_correct)
+      m_agg_spkr_acc(n_sz_id, n_correct) += 1;
     end
     
     m_vol_conf_matrices(n_claimed, n_correct, n_sz_id) += 1;
@@ -67,5 +63,7 @@ for n_sz_id = 1 : 4
   end
   m_aggregated_cat_acc(n_sz_id) = f_speaker_acc / n_speakers;
 end
+
+m_agg_spkr_acc = m_agg_spkr_acc ./ m_total_samples;
 
 endfunction

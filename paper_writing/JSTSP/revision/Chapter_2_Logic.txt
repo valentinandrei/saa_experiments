@@ -1,0 +1,37 @@
+Intro:
+
+	o Mention the 3 session as individual experiments with the benefit for validating each other.
+	o Discuss the machine lead experiment to enforce the respecting of rules.
+
+Session 1:
+
+	o Mixtures created using voices from Youtube.
+	o Measured classification accuracy for 1 to 10 speakers. (Fig. 1.1)
+	o Volunteers were told that there are maximum 10 speakers.
+	o Measured some degree of correlation between listening time and accuracy. (Fig. 1.2)
+	
+Session 2:
+
+	o Wanted to use other mixtures.
+	o Mixtures recorded in a soundproof room.
+	o Measured classification accuracy for 1 to 10 speakers. (Fig. 2.1)
+	o Volunteers were told that there are maximum 10 speakers.
+	o Controlled correlation between listening time and accuracy by fixing times. (Fig. 2.2)
+	o Measured the impact of using known voices. (Fig. 2.1)
+	
+Session 3:
+
+	o Decided that 10 speakers is a huge number. Wanted to compare against machine performance and set target to 4 speakers.
+	o Mixtures created from Librispeech database.
+	o Volunteers were English speakers. Used ~80 volunteers.
+	o Measured the impact of listening time by fixing time-frame lengths to 0.5, 1, 2, 5 seconds. (Fig. 3.1)
+	o Measured the impact of listening time by allowing replaying. (Fig. 3.2)
+	o Measured the confusion matrix (Fig. 4)
+	
+Comments and conclusions
+
+	o Showcase table from 2014 experiment. (Table 1)
+	o Discuss correlation between sessions.
+	o Conclude on listening time.
+	o Conclude of using known voices.
+	o Conclude on overall human performance.
